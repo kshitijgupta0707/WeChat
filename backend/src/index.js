@@ -1,6 +1,7 @@
 import express from 'express'
 import { dbConnect } from './config/database.js'
-import router from './routes/auth.route.js'
+import authRoutes from './routes/auth.route.js'
+import messageRoutes from "./routes/message.route.js"
 import cookieParser from 'cookie-parser'
 import {connectCloudinary} from '../src/config/cloudinary.js'
 
@@ -16,11 +17,13 @@ dotenv.config()
 app.use(express.json());
 
 //so that we can access the data in the cookie file
+
 app.use(cookieParser());
 
-
 //merging the router with server
-app.use("/api/v1" , router);
+app.use("/api/auth" , authRoutes);
+app.use("/api/message" , messageRoutes);
+
 
 
 
