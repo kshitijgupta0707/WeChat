@@ -3,7 +3,7 @@ import Message from "../models/message.model.js";
 
 import { connectCloudinary } from "../config/cloudinary.js";
 import cloudinary from "cloudinary"
-// import { getReceiverSocketId, io } from "../lib/socket.js";
+import { getReceiverSocketId, io } from "../config/socket.js";
        
 
 //fetch all th user except yourself for the side bar 
@@ -68,11 +68,18 @@ export const sendMessage = async (req, res) => {
 
     await newMessage.save();
       
-    //real time functionality goes here we will do it afterwards
-    // const receiverSocketId = getReceiverSocketId(receiverId);
-    // if (receiverSocketId) {
-    //   io.to(receiverSocketId).emit("newMessage", newMessage);
-    // }
+    // real time functionality goes here we will do it afterwards
+
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    
+
+   //send in real time if the user is online
+    if (receiverSocketId) {
+      
+      //only send to particular client
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+      console.log("Notified to front end ")
+    }
 
     res.status(201).json(newMessage);
   } catch (error) {

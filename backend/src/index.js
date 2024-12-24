@@ -4,11 +4,12 @@ import authRoutes from './routes/auth.route.js'
 import messageRoutes from "./routes/message.route.js"
 import cookieParser from 'cookie-parser'
 import { connectCloudinary } from '../src/config/cloudinary.js'
+import { app , server } from './config/socket.js'
 import fileUpload from "express-fileupload";
 import cors from "cors"
 
 //initiating the server
-const app = express()
+// const app = express()
 
 //for fetching env data
 import dotenv from "dotenv"
@@ -45,7 +46,7 @@ app.use("/api/messages", messageRoutes);
 
 //starting the server
 const PORT = process.env.PORT || 3000
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server started at port ${PORT}`);
   //connects the database
   dbConnect()

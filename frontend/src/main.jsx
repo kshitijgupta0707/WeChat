@@ -6,9 +6,11 @@ import { BrowserRouter } from 'react-router-dom'
 
 //daisy ui theme in index file - so that it applied to all
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+
+  //it render useeffect 2 times in development
+  // <StrictMode>
     <BrowserRouter>
      <App />
     </BrowserRouter>
-  </StrictMode>,
+  // </StrictMode>
 )

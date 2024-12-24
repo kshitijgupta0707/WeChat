@@ -13,36 +13,36 @@ const ChatContainer = () => {
     getMessages,
     isMessagesLoading,
     selectedUser,
-    // subscribeToMessages,
-    // unsubscribeFromMessages,
+    subscribeToMessages,
+    unsubscribeFromMessages,
   } = useChatStore();
-  const { authUser } = useAuthStore();
+  const { authUser,socket } = useAuthStore();
   const messageEndRef = useRef(null);
-  useEffect(() => {
-    console.log("Fetched Messages:", messages);
-  }, [messages]);
+  // useEffect(() => {
+  //   console.log("Fetched Messages:", messages);
+  // }, [messages]);
   
 
+  
   useEffect(() => {
     // console.log("selected user is " ,selectedUser.firstName);
     // console.log("sender is" ,authUser.firstName);
     if (selectedUser&& authUser) {
       getMessages(selectedUser._id);
+      subscribeToMessages(socket);
     }
-
-    // subscribeToMessages();
-
-    // return () => unsubscribeFromMessages();
+    //2 times CALLING
+    //CLEARING EVENT LISTENER
+    return () => unsubscribeFromMessages(socket);
   },
-  [selectedUser._id , authUser._id,getMessages]
-  //  [selectedUser._id, getMessages, subscribeToMessages, unsubscribeFromMessages]
+   [selectedUser._id, getMessages, subscribeToMessages, unsubscribeFromMessages]
   );
 
-//   useEffect(() => {
-//     if (messageEndRef.current && messages) {
-//       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
-//     }
-//   }, [messages]);
+  useEffect(() => {
+    if (messageEndRef.current && messages) {
+      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   if (isMessagesLoading) {
     return (
@@ -65,7 +65,7 @@ const ChatContainer = () => {
         {messages.map((message , i) => {
            const isSender = message.senderId == authUser._id
 
-           console.log(i , " " ,message.senderId , authUser , authUser._id , "", isSender , authUser.firstName);
+          //  console.log(i , " " ,message.senderId , authUser , authUser._id , "", isSender , authUser.firstName);
            return(
           <div
             key={message._id}
