@@ -3,9 +3,19 @@ import { useChatStore } from "../store/useChatStore";
 import Sidebar from "../components/Sidebar";
 import NoChatSelected from "../components/NoChatSelected";
 import ChatContainer from "../components/ChatContainer";
+import { useEffect } from "react";
+import { useAuthStore } from "../store/useAuthStore";
 
 const HomePage = () => {
   const { selectedUser } = useChatStore();
+  const {authUser} = useAuthStore();
+  useEffect(()=>{
+   console.log("You are at home page for the first time")
+   console.log(authUser);
+  },[])
+  useEffect(()=>{
+   console.log("Selected User is ", selectedUser)
+  },[selectedUser])
 
   return (
     <div className="h-screen bg-base-200">

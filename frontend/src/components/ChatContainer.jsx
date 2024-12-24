@@ -26,13 +26,15 @@ const ChatContainer = () => {
   useEffect(() => {
     // console.log("selected user is " ,selectedUser.firstName);
     // console.log("sender is" ,authUser.firstName);
-    getMessages(selectedUser._id);
+    if (selectedUser&& authUser) {
+      getMessages(selectedUser._id);
+    }
 
     // subscribeToMessages();
 
     // return () => unsubscribeFromMessages();
   },
-  [selectedUser._id,getMessages]
+  [selectedUser._id , authUser._id,getMessages]
   //  [selectedUser._id, getMessages, subscribeToMessages, unsubscribeFromMessages]
   );
 
@@ -51,16 +53,23 @@ const ChatContainer = () => {
       </div>
     );
   }
+  if (!authUser  || !selectedUser || isMessagesLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="flex-1 flex flex-col overflow-auto">
       <ChatHeader />
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((message) => (
+        {messages.map((message , i) => {
+           const isSender = message.senderId == authUser._id
+
+           console.log(i , " " ,message.senderId , authUser , authUser._id , "", isSender , authUser.firstName);
+           return(
           <div
             key={message._id}
-            className={`chat ${message.senderId === authUser._id ? "chat-end" : "chat-start"}`}
+            className={`chat ${isSender ? "chat-end" : "chat-start"}`}
             ref={messageEndRef}
           >
             <div className=" chat-image avatar">
@@ -91,7 +100,8 @@ const ChatContainer = () => {
               {message.text && <p>{message.text}</p>}
             </div>
           </div>
-        ))}
+           )
+            })}
       </div>
 
       <MessageInput />

@@ -1,0 +1,1 @@
+Socket.IO is a JavaScript library used to enable real-time, bi-directional, and event-driven communication between clients (like web browsers or mobile devices) and servers. It is particularly useful for applications that require real-time updates, such as chat apps, online gaming, live notifications.
