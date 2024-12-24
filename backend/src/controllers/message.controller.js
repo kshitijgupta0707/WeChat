@@ -3,11 +3,12 @@ import Message from "../models/message.model.js";
 
 import { connectCloudinary } from "../config/cloudinary.js";
 // import { getReceiverSocketId, io } from "../lib/socket.js";
-
+       
 
 //fetch all th user except yourself for the side bar 
 export const getUsersForSidebar = async (req, res) => {
   try {
+    console.log("Backend : GetUsersForSidebar function called")
     const loggedInUserId = req.user._id;
     const filteredUsers = await User.find({ _id: { $ne: loggedInUserId } }).select("-password");
 

@@ -2,32 +2,38 @@ import { User } from '../models/user.model.js';
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
+import cloudinary from "cloudinary"
+import { uploadImageToCloudinary } from '../utils/imageUploader.js';
 dotenv.config()
 
 
-export const signup = async(req , res) => {
-  try{
+export const signup = async (req, res) => {
+  try {
     //fetch the data from the request
-      const {firstName , lastName , email , password, confirmPassword } = req.body
-  
-     //check if some data is missing
-      if (!firstName|| !lastName || !email || !password || !confirmPassword){ 
-        return res.status(400).json({
-          success: false,
-          message: "All fields are required" });
-      }
-      //check whether both password are same
-      if(password != confirmPassword){
-        return res.status(400).json({
-          success: false,
-          message: "Password do not matches"});
-      }
-      //check whether length is >= 6
-      if (password.length < 6) {
-        return res.status(400).json({
-          success: false,
-          message: "Password must be at least 6 characters" });
-      }
+    const { firstName, lastName, email, password, confirmPassword } = req.body
+    console.log(firstName, lastName, email, password, confirmPassword);
+
+    //check if some data is missing
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required"
+      });
+    }
+    //check whether both password are same
+    if (password != confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Password do not matches"
+      });
+    }
+    //check whether length is >= 6
+    if (password.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must be at least 6 characters"
+      });
+    }
 
     //check if user already exist
     //use find one it gives an single object
@@ -71,7 +77,7 @@ export const signup = async(req , res) => {
       email,
       password: hashedPassword
     })
-    
+
     return res.status(200).json({
       success: true,
       message: "User created successfully",
@@ -79,24 +85,24 @@ export const signup = async(req , res) => {
     });
 
 
-    }catch(error){
-      console.log(error);
-      res.json({
-        message: "User cannot be registed, Please try again later",
-      }).status(500);
-      }
+  } catch (error) {
+    console.log(error);
+    res.json({
+      message: "User cannot be registed, Please try again later",
+    }).status(500);
+  }
 }
 export const login = async (req, res) => {
   try {
     //get data
-    const { email, password} = req.body;
-    
-      //validation on email and password
+    const { email, password } = req.body;
+
+    //validation on email and password
     if (!email || !password) {
-        return res.status(400).json({
-          success: false,
-          message: "Please fills all the details",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Please fills all the details",
+      });
     }
 
     //check whethrer user exists or not
@@ -105,50 +111,56 @@ export const login = async (req, res) => {
     if (!user) {
       return res.status(401).json({
         success: false,
-        data: "User is not registered",
+        message: "User is not registered",
       });
     }
-  
-     //take the hash password
-     console.log(user.password);
-     const { password: hashedPassword } = user;
-   
-     //now verify the password //decrypt
-     
-     const isPasswordCorrect = await bcrypt.compare(password , hashedPassword)
-     
-     if (!isPasswordCorrect) {
-       return res.status(400).json({ message: "Invalid credentials" });
-      }
-      //if correct
 
-      //Data that you want to hide in the token
-     const payload = { id: user._id, email: user.email}
-      
-     const token = jwt.sign(payload, process.env.JWT_SECRET,{
+    //take the hash password
+    console.log(user.password);
+    const { password: hashedPassword } = user;
+
+    //now verify the password //decrypt
+
+    const isPasswordCorrect = await bcrypt.compare(password, hashedPassword)
+
+    if (!isPasswordCorrect) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+    //if correct
+
+    //Data that you want to hide in the token
+    const payload = { id: user._id, email: user.email }
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: "7d"
-     })
-    
-      // Create response object without password
+    })
 
-      const responseUser = {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        token
-      };
-      //creating a cookie
-      let options = {
-        expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-        httpOnly: true,
-      };
-     return res.cookie("token", token, options).status(200).json({
-        success: true,
-        token,
-        responseUser,
-        message: "User logged in successfully",
-      }); 
-  
+    // Create response object without password
+
+    const responseUser = {
+      id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      profilePic: user.profilePic,
+      token
+    };
+    //creating a cookie
+    let options = {
+      expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+      httpOnly: true,
+    };
+
+
+    // user.password = ""
+    // user.token = token
+    return res.cookie("token", token, options).status(200).json({
+      success: true,
+      token,
+      responseUser,
+      message: "User logged in successfully",
+    });
+
   } catch (error) {
 
     console.error(e);
@@ -156,7 +168,7 @@ export const login = async (req, res) => {
       success: false,
       data: "Not able to get the data",
     })
-    }
+  }
 };
 export const logout = (req, res) => {
   //we have to just clear out the cookies
@@ -170,14 +182,18 @@ export const logout = (req, res) => {
 };
 export const updateProfile = async (req, res) => {
   try {
-    const { profilePic } = req.body;
-    const userId = req.user._id;
+    console.log("At update profile");
+    console.log("Request body:", req.body);
+    console.log("Request files:", req.files);
+
+    const userId = req.user._id; // Inserted in the protected middleware
+    const profilePic = req.files?.profilePic; // Extract the file from `req.files`
 
     if (!profilePic) {
-      return res.status(400).json({ message: "Profile pic is required" });
+      return res.status(400).json({ message: "Profile picture is required" });
     }
 
-    const uploadResponse = await cloudinary.uploader.upload(profilePic);
+    const uploadResponse = await uploadImageToCloudinary(profilePic, "CHATAPP");
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { profilePic: uploadResponse.secure_url },
