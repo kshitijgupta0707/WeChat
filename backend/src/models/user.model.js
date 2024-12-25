@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 //create schema
 
+
 const userSchema = mongoose.Schema({
   firstName: {
     type: String,
@@ -27,7 +28,18 @@ const userSchema = mongoose.Schema({
     type: String,
     default: ""
   }
-
+  , 
+  //initially as empty during sign up
+  friends: [ {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+     }
+  ],
+  friendRequests: [ {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+}
+]
 } , {
   timestamps: true
 })

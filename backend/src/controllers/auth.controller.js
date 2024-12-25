@@ -75,7 +75,9 @@ export const signup = async (req, res) => {
       firstName,
       lastName,
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      friends: [],
+      friendRequests: []
     })
 
     return res.status(200).json({
@@ -137,14 +139,8 @@ export const login = async (req, res) => {
 
     // Create response object without password
 
-    const responseUser = {
-      _id: user._id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      profilePic: user.profilePic,
-      token
-    };
+    const responseUser = user;
+    responseUser.password = ""
     //creating a cookie
     let options = {
       expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),

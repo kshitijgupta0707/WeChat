@@ -10,6 +10,10 @@ export const useChatStore = create((set, get) => ({
   selectedUser: null,
   isUsersLoading: false,
   isMessagesLoading: false,
+   
+  setUsers: async(filteredUser) =>{
+    set({ users: filteredUser });
+  },
 
   getUsers: async () => {
     set({ isUsersLoading: true });
@@ -46,7 +50,7 @@ export const useChatStore = create((set, get) => ({
     }
   },
  
-  
+
   subscribeToMessages: (socket) => {
     console.log("subscribed to message called");
     const { selectedUser } = get();

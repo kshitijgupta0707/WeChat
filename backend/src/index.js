@@ -2,6 +2,7 @@ import express from 'express'
 import { dbConnect } from './config/database.js'
 import authRoutes from './routes/auth.route.js'
 import messageRoutes from "./routes/message.route.js"
+import friendRoutes from "./routes/friend.route.js"
 import cookieParser from 'cookie-parser'
 import { connectCloudinary } from '../src/config/cloudinary.js'
 import { app , server } from './config/socket.js'
@@ -41,6 +42,7 @@ app.use(cors(
 //merging the router with server
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/api/friends", friendRoutes);
 
 
 

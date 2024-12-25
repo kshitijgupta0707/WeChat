@@ -12,8 +12,8 @@ export const useAuthStore = create((set,get) => ({
   isUpdatingProfile: false,
   //when you refresh the page check ki loggin in hain?
   isCheckingAuth: true,
-    onlineUsers: [],
-    socket: null,
+  onlineUsers: [],
+  socket: null,
 
   checkAuth: async () => {
     try {
