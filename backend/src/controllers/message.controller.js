@@ -75,7 +75,7 @@ export const sendMessage = async (req, res) => {
 
    //send in real time if the user is online
     if (receiverSocketId) {
-      
+
       //only send to particular client
       io.to(receiverSocketId).emit("newMessage", newMessage);
       console.log("Notified to front end ")

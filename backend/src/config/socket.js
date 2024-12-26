@@ -23,7 +23,7 @@ export function getReceiverSocketId(userId) {
   }
   
 
-io.on("connection" , (socket) =>{
+ io.on("connection", (socket) =>{
 
     console.log("User connected" , socket.id)
     const userId = socket.handshake.query.userId

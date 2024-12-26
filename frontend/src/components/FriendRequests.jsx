@@ -11,8 +11,10 @@ const FriendRequests = () => {
     const { friends, friendRequests, isFriendRequestsLoading, isFriendsLoading, getFriendRequests, getFriends,
         acceptFriendRequest,
         declineFriendRequest,
+        subscribeToFriendRequests,
+        unSubscribeToFriendRequests
     } = useFriendStore()
-    const { onlineUsers } = useAuthStore();
+    const { onlineUsers , socket , authUser} = useAuthStore();
     const [showOnlineOnly, setShowOnlineOnly] = useState(false)
     const [search, setSearch] = useState("")
     const [searchedUser, setsearchedUser] = useState([])
@@ -51,6 +53,24 @@ const FriendRequests = () => {
         console.log("called function get freinds")
         getFriendRequests();
     }, [getFriendRequests]);
+    useEffect(() => {
+        // console.log("selected user is " ,selectedUser.firstName);
+        // console.log("sender is" ,authUser.firstName);
+        if ( authUser) {
+            getFriendRequests();
+            subscribeToFriendRequests(socket);
+        }
+        //2 times CALLING
+        //CLEARING EVENT LISTENER
+        return () => unSubscribeToFriendRequests(socket);
+      },
+       [getFriendRequests, subscribeToFriendRequests, unSubscribeToFriendRequests]
+      );
+
+
+
+
+
 
     const filteredUsers = showOnlineOnly
         ? users.filter((user) => onlineUsers.includes(user._id))

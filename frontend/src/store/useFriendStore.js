@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import { axiosInstance } from "../lib/axios";
 import { useAuthStore } from "./useAuthStore";
 import { set } from "mongoose";
+import { useSideBarStore } from "./useSideBarStore";
 
 export const useFriendStore = create((set, get) => ({
   friends: [],
@@ -40,7 +41,6 @@ export const useFriendStore = create((set, get) => ({
         console.log("Sending the request ");
         const res = await axiosInstance.post(`/friends/sendFriendRequest/${id}`);
         toast.success("Friend Request sent Successfully");
-      set({ messages: [...messages, res.data] });
     } catch (error) {
         toast.error(error.response.data.message);
     }
@@ -51,7 +51,6 @@ export const useFriendStore = create((set, get) => ({
       console.log("Accepting the request ");
       const res = await axiosInstance.post(`/friends/acceptFriendRequest/${id}`);
       toast.success("Friend Request accepted Successfully");
-      set({ messages: [...messages, res.data] });
     } catch (error) {
         toast.error(error.response.data.message);
     }
@@ -61,11 +60,52 @@ declineFriendRequest: async(id)=>{
         console.log("Declining the request ");
         const res = await axiosInstance.post(`/friends/declineFriendRequest/${id}`);
         toast.success("Friend Request Decline Successfully");
-        set({ messages: [...messages, res.data] });
     } catch (error) {
         toast.error(error.response.data.message);
     }
    
 }
+
+//RealTime Functionality goes here
+,
+subscribeToFriendRequests: (socket) => {
+  console.log("subscribed to Friend Request is called");
+  const selectedScreen = useSideBarStore.getState().selectedScreen;
+  if (selectedScreen != "friendRequests") return;
+
+
+  socket.on("newFriendRequest", (data) => {
+    // console.log("this is w")
+    console.log("Message Recieved")
+    set({
+      friendRequests: data
+    });
+    console.log("new friend request data = " , friendRequests)
+  });
+},
+
+unSubscribeToFriendRequests: (socket) => {
+     socket.off("newFriendRequest");
+},
+
+subscribeToFriends: (socket) => {
+  console.log("subscribed to Friends is called");
+  const selectedScreen = useSideBarStore.getState().selectedScreen;
+  if (selectedScreen != "chats") return;
+
+
+  socket.on("newFriend", (data) => {
+    console.log("Message Recieved")
+    set({
+      friends: data.updatedFriends
+    });
+    console.log("new friends data = " , friendRequests)
+  });
+},
+
+unSubscribeToFriends: (socket) => {
+     socket.off("newFriend");
+},
+
  
 }));

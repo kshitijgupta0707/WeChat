@@ -8,9 +8,11 @@ import { useFriendStore } from "../store/useFriendStore";
 
 const Sidebar = () => {
   const { getUsers, users, setUsers, selectedUser, setSelectedUser, isUsersLoading } = useChatStore();
-      const {friends , friendRequests , isFriendRequestsLoading , isFriendsLoading , getFriendRequests , getFriends} = useFriendStore()
+      const {friends , friendRequests , isFriendRequestsLoading , isFriendsLoading , getFriendRequests , getFriends
+        ,subscribeToFriends , unSubscribeToFriends
+      } = useFriendStore()
   
-  const { onlineUsers } = useAuthStore();
+  const { onlineUsers , socket , authUser } = useAuthStore();
   const [showOnlineOnly, setShowOnlineOnly] = useState(false);
 
   const [search , setSearch] = useState("")
@@ -44,6 +46,26 @@ const Sidebar = () => {
   useEffect(() => {
     getFriends();
   }, [getFriends]);
+
+  useEffect(() => {
+    // console.log("selected user is " ,selectedUser.firstName);
+    // console.log("sender is" ,authUser.firstName);
+    if ( authUser) {
+        getFriends();
+        subscribeToFriends(socket);
+    }
+    //2 times CALLING
+    //CLEARING EVENT LISTENER
+    return () => unSubscribeToFriends(socket);
+  },
+   [getFriends, subscribeToFriends, unSubscribeToFriends]
+  );
+
+
+
+
+
+
   useEffect(()=>{
      setfilteredFriends(friends)
   } , [friends])

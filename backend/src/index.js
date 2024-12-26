@@ -44,8 +44,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/friends", friendRoutes);
 
-
-
 //starting the server
 const PORT = process.env.PORT || 3000
 server.listen(PORT, () => {
