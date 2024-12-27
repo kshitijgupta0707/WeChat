@@ -2,7 +2,7 @@ import { create } from "zustand";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../lib/axios";
 import { useAuthStore } from "./useAuthStore";
-
+import { useNotification } from "./useNotification";
 
 export const useChatStore = create((set, get) => ({
   messages: [],
@@ -10,11 +10,9 @@ export const useChatStore = create((set, get) => ({
   selectedUser: null,
   isUsersLoading: false,
   isMessagesLoading: false,
-   
   setUsers: async(filteredUser) =>{
     set({ users: filteredUser });
   },
-
   getUsers: async () => {
     set({ isUsersLoading: true });
     try {
@@ -26,7 +24,6 @@ export const useChatStore = create((set, get) => ({
       set({ isUsersLoading: false });
     }
   },
-
   getMessages: async (userId) => {
     set({ isMessagesLoading: true });
     try {
@@ -49,28 +46,38 @@ export const useChatStore = create((set, get) => ({
       toast.error(error.response.data.message);
     }
   },
- 
-
   subscribeToMessages: (socket) => {
     console.log("subscribed to message called");
     const { selectedUser } = get();
-    if (!selectedUser) return;
-
-
-    socket.on("newMessage", (newMessage) => {
+    const { showNotification } = useNotification.getState();
+    
+    
+    socket.on("newMessage", (data) => {
       console.log("Message Recieved")
-      const isMessageSentFromSelectedUser = newMessage.senderId === selectedUser._id;
+      console.log("recieved notification")
+      showNotification(`New Message from ${data.name}`)
+      
+      if (!selectedUser) return;
+      const isMessageSentFromSelectedUser = data.message.senderId === selectedUser._id;
       if (!isMessageSentFromSelectedUser) return;
-
       set({
-        messages: [...get().messages, newMessage],
+        messages: [...get().messages, data.message],
       });
     });
   },
-
   unsubscribeFromMessages: (socket) => {
+    console.log("subscriber tomessage unsubcribe")
     socket.off("newMessage");
   },
-
   setSelectedUser: (selectedUser) => set({ selectedUser }),
+
+  setMessagesAsSeen: async(id)=>{
+    try {
+      console.log("Marking messages as seen of " , id);
+      const res = await axiosInstance.post(`/messages/markMessageAsSeen/${id}`);
+      toast.success("Message seen updated");
+    } catch (error) {
+      toast.error(error.response.data.message);
+  }
+  }
 }));

@@ -8,7 +8,7 @@ import { connectCloudinary } from '../src/config/cloudinary.js'
 import { app , server } from './config/socket.js'
 import fileUpload from "express-fileupload";
 import cors from "cors"
-
+// import { deleteMessages } from './seeds/deleteAllMessages.js'
 //initiating the server
 // const app = express()
 

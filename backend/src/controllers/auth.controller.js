@@ -157,7 +157,7 @@ export const login = async (req, res) => {
       message: "User logged in successfully",
     });
 
-  } catch (error) {
+  } catch (e) {
 
     console.error(e);
     res.status(400).json({

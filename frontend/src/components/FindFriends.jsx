@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
 import SidebarSkeleton from "./skeletons/SidebarSkeleton";
-import { Users , Loader2 } from "lucide-react";
+import { Users , Loader2 , X} from "lucide-react";
 import extremeSideBar from "./ExtremeSideBar";
 import Button from '@mui/material/Button';
 import { useFriendStore } from "../store/useFriendStore";
+import { useSideBarStore } from "../store/useSideBarStore";
 const FindFriends = () => {
     const {authUser} = useAuthStore()
     const { getUsers, users, setUsers, selectedUser, setSelectedUser, isUsersLoading } = useChatStore();
@@ -20,10 +21,8 @@ const FindFriends = () => {
     function getRandomNumber() {
         return Math.floor(Math.random() * 500) + 1;
       }
-      
-      // Example usage
-      console.log(getRandomNumber());
-      
+       
+     const {selectedScreen , setSelectedScreen} = useSideBarStore() 
 
     const handleOnSearch = (e) => {
         e.preventDefault()
@@ -66,14 +65,14 @@ const FindFriends = () => {
 
     return (
         <aside className="h-full  lg:w-[27rem]  border-r border-base-300 flex flex-col transition-all duration-200">
-            <div className="border-b border-base-300 w-full p-5">
+            <div className="border-b border-base-300 w-full p-5 flex flex-col gap-2">
                 <div className="flex items-center gap-2">
                     <Users className="size-6" />
-                    <span className="font-medium hidden lg:block">Find a Friend</span>
+                    <span className="font-medium ">Find a Friend</span>
                 </div>
                 
-                <form onSubmit={handleOnSearch} className=" mt-3" >
-              <label className="input input-bordered flex items-center gap-5 h-9 max-w-[230px]">
+                <form onSubmit={handleOnSearch} className=" mt-3 w-96" >
+              <label className="input input-bordered flex items-center gap-5 h-10 ">
                 <input type="text"
                  className="grow w-[10px] h-4" 
                  placeholder="Search"
@@ -103,7 +102,10 @@ const FindFriends = () => {
                         key={user._id}
                         onClick={() => {
                             setSelectedUser(user)
-                            document.getElementById(user._id).showModal()                       
+                          
+                              document.getElementById(user._id).showModal()                       
+                            
+                            
                         }}
                         className={`
               w-full p-3 flex items-center gap-3
@@ -117,9 +119,17 @@ const FindFriends = () => {
                 
 
                   {/* //dialogue box */}
-                  <dialog id={user._id} className="modal p-0 ">
-  <div className="modal-box p-0 ">
-  <div className="flex flex-col items-center shadow-lg rounded-lg p-6 w-[500px] gap-4 m-auto ">
+                  <dialog id={user._id} className="modal p-0  ">
+  <div className="modal-box   p-0 flex flex-col justify-center ">
+  <div className="modal-action relative m-0  ">
+      <form method="dialog">
+        {/* if there is a button in form, it will close the modal */}
+        <button className="btn bg-none ">
+        <X/>
+        </button>
+      </form>
+    </div>
+      <div className="flex flex-col items-center shadow-lg rounded-lg p-6 w-[500px] gap-4 m-auto ">
   {/* Profile Section */}
   <div className="flex justify-between items-center w-full">
     {/* Profile Picture */}
@@ -156,33 +166,45 @@ const FindFriends = () => {
 
   {/* Action Button */}
   <div className="w-full">
+    {friends.some(friend => friend._id === user._id) ?
     <button
      
-     onClick={
-      () =>{
-        handleSendRequest(user._id)
-      }
+    onClick={
+     () =>{
+       setSelectedScreen("chats")
      }
-    
-    className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-all border-0 ">
-       {isSendingRequest ? (
-                                        <Loader2 className="h-5 w-5 animate-spin m-auto " />
-                                                                        ) : (
-                                  "Add Friend"
-                                )}
-    </button>
+    }
+   
+   className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-all border-0 ">
+    Send Message
+            
+   </button>:
+   <button
+     
+   onClick={
+    () =>{
+      handleSendRequest(user._id)
+    }
+   }
+  
+  className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-all border-0 ">
+     { 
+            isSendingRequest ? (
+                                      <Loader2 className="h-5 w-5 animate-spin m-auto " />
+                                                                      ) : (
+                                "Add Friend"
+                              )}
+  </button>  
+  
+  
+  }
   </div>
-</div>
+      </div>
 
                         
 
     
-    <div className="modal-action">
-      <form method="dialog">
-        {/* if there is a button in form, it will close the modal */}
-        <button className="btn">Close</button>
-      </form>
-    </div>
+  
   </div>
 </dialog>
 
@@ -217,7 +239,7 @@ const FindFriends = () => {
                         </div>
 
                         {/* User info - only visible on larger screens */}
-                        <div className="hidden lg:block text-left min-w-0">
+                        <div className=" text-left min-w-0">
                             <div className="font-medium truncate">{user.firstName}</div>
                             <div className="text-sm text-zinc-400">
                                 {onlineUsers.includes(user._id) ? "Online" : "Offline"}
@@ -225,22 +247,12 @@ const FindFriends = () => {
                         </div>
                         </div>
 
-                        <div className="flex gap-3" >
+                        <div>
 
-                            {friends.some(friend => friend._id === user._id)    && ( <button className="btn bg-blue-600 rounded-2xl hover:bg-blue-500  ">
+                            {friends.some(friend => friend._id === user._id)    && ( <button onClick={()=>{
+                              setSelectedScreen("chats")
+                            }} className="btn bg-blue-600 rounded-2xl hover:bg-blue-500  ">
                                 Send Message
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-6 w-6"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                </svg>
                             </button>
                             )}
 

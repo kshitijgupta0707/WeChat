@@ -1,11 +1,113 @@
 import { User } from '../models/user.model.js';
 import dotenv from "dotenv"
+import Message from '../models/message.model.js';
 dotenv.config()
 import { getReceiverSocketId , io } from '../config/socket.js';
 export const getAllFriends = async (req, res) => {
     try {
       // Fetch the requesting user's ID from the authenticated request
-      const userId = req.user._id;
+        const userId = req.user._id;
+     
+        const friendIds = req.user.friends
+        const pipeline = [
+          // Match all messages related to the user (sender or receiver)
+          {
+            $match: {
+              $or: [
+                { senderId: userId },
+                { receiverId: userId }
+              ]
+            }
+          },
+          // Sort by createdAt to ensure the latest message comes first
+         
+          {
+            $group: {
+              // we want saamne wala banda---
+              // Group by friend (sender or receiver) based on who is the opposite of the current user
+              _id: {
+                $cond: [
+                  { $eq: ["$senderId", userId] }, 
+                  "$receiverId", // If the sender is the user, take the receiver as the friend
+                  "$senderId"    // Otherwise, take the sender as the friend
+                ]
+              },
+              // Get the last message text
+              lastMessage: { $last: "$text" }, 
+              // Get the last message timestamp
+              lastMessageTime: { $last: "$createdAt" },
+              // Count the number of unseen messages for the user
+              unseenCount: {
+                $sum: {
+                  $cond: [
+                    { 
+                      $and: [
+                        { $eq: ["$receiverId", userId] }, // Is the user the receiver?
+                        { $eq: ["$isSeen", false] }        // Is the message unseen?
+                      ]
+                    },
+                    1,  // Increment the count if both conditions are true
+                    0   // Else, do nothing
+                  ]
+                } 
+              }
+            }
+          },
+          // Use $lookup to fetch the user details (firstName, lastName, email) for each friend
+          {
+            $lookup: {
+              from: "users",  // The name of the user collection
+              localField: "_id",  // Match the userId (friend) with the _id field of the user collection
+              foreignField: "_id",  // Ensure matching with the _id field of the User document
+              as: "userDetails"  // Store the user details in a new field called userDetails
+            }
+          },
+          // Unwind the userDetails array to access individual user info
+          {
+            $unwind: "$userDetails"
+          },
+          // Project the desired fields to send in the response
+          {
+            $project: {
+              _id: 1,  // Remove the _id field from the output
+              friendId: "$_id",  // Add the friendId (the other user in the conversation)
+              firstName: "$userDetails.firstName",  // Add the friend's firstName
+              lastName: "$userDetails.lastName",    // Add the friend's lastName
+              email: "$userDetails.email",          // Add the friend's email
+              lastMessage: 1,                       // Include the last message text
+              lastMessageTime: 1,                   // Include the last message timestamp
+              unseenCount: 1                        // Include the unseen message count
+            }
+          },
+          // Sort by the last message timestamp in descending order to show the most recent conversations first
+          { 
+            $sort: { lastMessageTime: -1 } 
+          }
+        ]
+const friendsWithLastMessages = await Message.aggregate(pipeline);
+// Step 2: Fetch friends with no messages
+const friendsWithMessagesIds = friendsWithLastMessages.map(friend => friend.friendId);
+
+const friendsWithNoMessages = await User.find({
+  _id: { $nin: [...friendsWithMessagesIds, userId],
+          $in: friendIds
+   }, // Exclude friends with messages AND the user's own account
+  /* Additional criteria for fetching friends if needed */
+})
+// .select("firstName lastName email");
+const combinedFriends = [
+  ...friendsWithLastMessages,
+  ...friendsWithNoMessages
+  ]
+
+return res.status(200).json({
+  success: true,
+  message: "all friends are fetched according to the lastest messages",
+  data: combinedFriends,
+});
+
+
+
         
       // Find the user to whom the friend request is being sent
       const fetchedUser = await User.findOne({ _id: userId }).select("-password").populate("friends");
@@ -115,7 +217,9 @@ export const getAllFriendRequests = async (req, res) => {
       if (receiverSocketId) {
         console.log("this is what I am sending to the client:");
         console.log(updatedUser.friendRequests);
-        io.to(receiverSocketId).emit("newFriendRequest", updatedUser.friendRequests);
+        console.log("printing from backend");
+        console.log(req.user.firstName);
+        io.to(receiverSocketId).emit("newFriendRequest",{ friendRequests:updatedUser.friendRequests , name: req.user.firstName});
         console.log("Notified the front end about the friend request");
       }
   

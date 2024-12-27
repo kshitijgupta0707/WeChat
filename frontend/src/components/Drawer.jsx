@@ -27,7 +27,7 @@ function Drawer() {
           className="drawer-overlay" 
           onClick={closeSideBar}
         ></label>
-        <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4 text-center">
+        <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4 text-center flex flex-col">
           {/* Sidebar content here */}
          
           <li>
@@ -39,16 +39,14 @@ function Drawer() {
                 ${selectedScreen === "chats" ? "bg-base-300 ring-1 ring-base-300" : ""}
               `}
             >
-              <div className="relative mx-auto lg:mx-0">
+              <div className="relative  lg:mx-0">
                 <MessageCircle />
               </div>
-              <div className="hidden lg:block text-left min-w-0">
+              <div className=" lg:block text-left min-w-0">
                 <div className="font-medium truncate">Messages</div>
               </div>
             </button>
           </li>
-
-
           <li>
             <button
               onClick={() => handleScreenChange("friendRequests")}
@@ -58,10 +56,10 @@ function Drawer() {
                 ${selectedScreen === "friendRequests" ? "bg-base-300 ring-1 ring-base-300" : ""}
               `}
             >
-              <div className="relative mx-auto lg:mx-0">
+              <div className="relative  lg:mx-0">
                 <UserPlus />
               </div>
-              <div className="hidden lg:block text-left min-w-0">
+              <div className=" lg:block text-left min-w-0">
                 <div className="font-medium truncate">Friend Requests</div>
               </div>
             </button>
@@ -75,10 +73,10 @@ function Drawer() {
                 ${selectedScreen === "findFriends" ? "bg-base-300 ring-1 ring-base-300" : ""}
               `}
             >
-              <div className="relative mx-auto lg:mx-0">
+              <div className="relative  lg:mx-0">
                 <Users />
               </div>
-              <div className="hidden lg:block text-left min-w-0">
+              <div className=" lg:block text-left min-w-0">
                 <div className="font-medium truncate">Find Friends</div>
               </div>
             </button>
@@ -92,10 +90,10 @@ function Drawer() {
                 ${selectedScreen === "settings" ? "bg-base-300 ring-1 ring-base-300" : ""}
               `}
             >
-              <div className="relative mx-auto lg:mx-0">
+              <div className="relative  lg:mx-0">
                 <Settings />
               </div>
-              <div className="hidden lg:block text-left min-w-0">
+              <div className=" lg:block text-left min-w-0">
                 <div className="font-medium truncate">Settings</div>
               </div>
             </button>
@@ -109,15 +107,15 @@ function Drawer() {
                 ${selectedScreen === "profile" ? "bg-base-300 ring-1 ring-base-300" : ""}
               `}
             >
-              <div className="relative mx-auto lg:mx-0">
+              <div className="relative  lg:mx-0">
                 <UserRoundPen />
               </div>
-              <div className="hidden lg:block text-left min-w-0">
+              <div className=" lg:block text-left min-w-0">
                 <div className="font-medium truncate">Profile</div>
               </div>
             </button>
           </li>
-          <li>
+          <li className='  items-end justify-end content-end   ' >
             <button
               onClick={() => handleScreenChange("logout")}
               className={`
@@ -126,10 +124,10 @@ function Drawer() {
                 ${selectedScreen === "logout" ? "bg-base-300 ring-1 ring-base-300" : ""}
               `}
             >
-              <div className="relative mx-auto lg:mx-0">
+              <div className="relative  lg:mx-0">
                 <LogOut />
               </div>
-              <div className="hidden lg:block text-left min-w-0">
+              <div className=" lg:block text-left min-w-0">
                 <div className="font-medium truncate">Logout</div>
               </div>
             </button>

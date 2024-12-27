@@ -3,6 +3,7 @@ import { axiosInstance } from "../lib/axios.js";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 
+
 const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5001" : "/";
 
 export const useAuthStore = create((set,get) => ({
@@ -31,13 +32,15 @@ export const useAuthStore = create((set,get) => ({
   },
 
   signup: async (data) => {
+
+   
     set({ isSigningUp: true });
     try {
       const res = await axiosInstance.post("/auth/signup", data);
-
       //so that the user get authenticated soon after the signup
       set({ authUser: res.data });
-      toast.success("Account created successfully");
+      toast.success("Account created successfully");  
+      window.location.href = "/login"
       // get().connectSocket();
     } catch (error) {
       toast.error(error.response.data.message);

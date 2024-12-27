@@ -83,7 +83,7 @@ const FriendRequests = () => {
             <div className="border-b border-base-300 w-full p-5">
                 <div className="flex items-center gap-2">
                     <Users className="size-6" />
-                    <span className="font-medium hidden lg:block">Friend Requests</span>
+                    <span className="font-medium ">Friend Requests</span>
                 </div>
 
             </div>
@@ -116,7 +116,7 @@ const FriendRequests = () => {
                             </div>
 
                             {/* User info - only visible on larger screens */}
-                            <div className="hidden lg:block text-left min-w-0">
+                            <div className="text-left min-w-0">
                                 <div className="font-medium truncate">{user.firstName}</div>
                                 <div className="text-sm text-zinc-400">
                                     {onlineUsers.includes(user._id) ? "Online" : "Offline"}
@@ -179,7 +179,7 @@ const FriendRequests = () => {
                     </button>
                 ))}
 
-                {filteredUsers.length === 0 && (
+                {friendRequests.length === 0 && (
                     <div className="text-center text-zinc-500 py-4">No Friend Requests</div>
                 )}
             </div>

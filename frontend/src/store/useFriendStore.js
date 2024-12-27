@@ -4,7 +4,8 @@ import { axiosInstance } from "../lib/axios";
 import { useAuthStore } from "./useAuthStore";
 import { set } from "mongoose";
 import { useSideBarStore } from "./useSideBarStore";
-
+import { useChatStore } from "./useChatStore";
+import { useNotification } from "./useNotification";
 export const useFriendStore = create((set, get) => ({
   friends: [],
   friendRequests: [],
@@ -71,14 +72,20 @@ declineFriendRequest: async(id)=>{
 subscribeToFriendRequests: (socket) => {
   console.log("subscribed to Friend Request is called");
   const selectedScreen = useSideBarStore.getState().selectedScreen;
-  if (selectedScreen != "friendRequests") return;
-
-
+  
+  // Access the showNotification function from the notification store
+  const { showNotification } = useNotification.getState();
+  
   socket.on("newFriendRequest", (data) => {
-    // console.log("this is w")
-    console.log("Message Recieved")
+   console.log(data)
+    console.log("Friend Request Recieved")
+    // Show the notification
+    console.log(data.name)
+    console.log(data.friendRequests)
+    showNotification(`You have a new friend request from ${data.name} !`);
+    if (selectedScreen != "friendRequests") return;
     set({
-      friendRequests: data
+      friendRequests: data.friendRequests
     });
     console.log("new friend request data = " , friendRequests)
   });
@@ -87,6 +94,40 @@ subscribeToFriendRequests: (socket) => {
 unSubscribeToFriendRequests: (socket) => {
      socket.off("newFriendRequest");
 },
+
+subscribeToMessageReciever: () =>{
+  console.log("subsciber for reciever called");
+  const socket = useAuthStore.getState().socket
+  socket.on("newMessage", (data) => {
+  console.log("Message Recieved")
+   console.log(data)
+  const senderId = data.message.senderId;
+  const text = data.message.text;
+  console.log("message recieved by ", senderId)
+  console.log(" text Recieved = " , text)
+  const {friends} = get()
+  const filteredSender = friends.filter(item => item._id === senderId);
+    filteredSender[0].lastMessage = text
+    filteredSender[0].unseenCount++
+// Filter out the rest of the objects (not matching senderId)
+  const restOfTheArray = friends.filter(item => item._id !== senderId);
+
+// Concatenate the filteredSender object at the front of the rest of the array
+  const sortedArray = [ , ...filteredSender,...restOfTheArray ];
+
+  //jisne bheja hainmessage i have his id so bring that at top
+   console.log("i have setted the friends ");
+   console.log(sortedArray)
+   set({friends: sortedArray}) 
+  });
+},
+
+unSubscribeToMessageReciever: () => {
+  const socket = useAuthStore.getState().socket
+  socket.off("newMessage");
+},
+
+
 
 subscribeToFriends: (socket) => {
   console.log("subscribed to Friends is called");

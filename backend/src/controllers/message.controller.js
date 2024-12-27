@@ -69,6 +69,10 @@ export const sendMessage = async (req, res) => {
     await newMessage.save();
       
     // real time functionality goes here we will do it afterwards
+  
+
+ 
+
 
     const receiverSocketId = getReceiverSocketId(receiverId);
     
@@ -77,7 +81,7 @@ export const sendMessage = async (req, res) => {
     if (receiverSocketId) {
 
       //only send to particular client
-      io.to(receiverSocketId).emit("newMessage", newMessage);
+      io.to(receiverSocketId).emit("newMessage", { message: newMessage , name: req.user.firstName});
       console.log("Notified to front end ")
     }
 
@@ -86,4 +90,37 @@ export const sendMessage = async (req, res) => {
     console.log("Error in sendMessage controller: ", error.message);
     res.status(500).json({ error: "Internal server error" });
   }
+};
+
+export const markMessagesAsSeen = async (req , res) => {
+try{
+  const userId = req.user._id;
+  const {id: friendId} = req.params;
+  if(friendId && userId){
+    const messges = await Message.updateMany(
+      {
+        senderId: friendId,  // Messages sent by the friend
+        receiverId: userId,  // Received by the user
+        isSeen: false        // Only unseen messages
+      },
+      {
+        $set: { isSeen: true } // Mark them as seen
+      }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "All messages seened"
+    })
+  }else{
+    res.status(404).json({
+      success: false,
+      message: "Provide the sender and reciever id "
+    })
+  }
+}
+catch(e){
+  console.log(e);
+  console.log("Eror in mark message as seen");
+}
 };
