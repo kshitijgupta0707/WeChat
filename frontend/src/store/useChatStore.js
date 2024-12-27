@@ -37,7 +37,6 @@ export const useChatStore = create((set, get) => ({
   },
   sendMessage: async (messageData) => {
     const { selectedUser, messages } = get();
-    console.log(selectedUser)
     try {
       const res = await axiosInstance.post(`/messages/send/${selectedUser._id}`, messageData);
       toast.success("Message sent Successfully");
@@ -46,23 +45,35 @@ export const useChatStore = create((set, get) => ({
       toast.error(error.response.data.message);
     }
   },
-  subscribeToMessages: (socket) => {
-    console.log("subscribed to message called");
-    const { selectedUser } = get();
+
+  //get notification about only message in real time
+  showMessageNotification: (socket) =>{
+    console.log("(Notification subscription)")
     const { showNotification } = useNotification.getState();
     
-    
+     socket.on("newMessage", (data) => {
+      console.log("Message Recieved by " , data.name)
+      console.log("i am show notification fnction")
+      showNotification(`You recieved a new Message from ${data.name}`)
+    });
+  },
+  dontShowMessageNotification:(socket) =>{
+    console.log("Notification subscription unsubcribe")
+    socket.off("newMessage");
+  },
+
+  //Below two function are just to show real time messaging between two persons (messages update of paticular user)
+  subscribeToMessages: (socket) => {
+    const { selectedUser } = get();  
     socket.on("newMessage", (data) => {
-      console.log("Message Recieved")
-      console.log("recieved notification")
-      showNotification(`New Message from ${data.name}`)
-      
-      if (!selectedUser) return;
-      const isMessageSentFromSelectedUser = data.message.senderId === selectedUser._id;
-      if (!isMessageSentFromSelectedUser) return;
-      set({
-        messages: [...get().messages, data.message],
-      });
+    console.log("(subscribe to message) Message Recieved by someone");    
+    
+     if (!selectedUser) return;
+     const isMessageSentFromSelectedUser = data.message.senderId === selectedUser._id;
+     if (!isMessageSentFromSelectedUser) return;
+     set({
+       messages: [...get().messages, data.message],
+     });
     });
   },
   unsubscribeFromMessages: (socket) => {
@@ -71,13 +82,17 @@ export const useChatStore = create((set, get) => ({
   },
   setSelectedUser: (selectedUser) => set({ selectedUser }),
 
+
+  // tell backend that messages are seened
   setMessagesAsSeen: async(id)=>{
     try {
       console.log("Marking messages as seen of " , id);
       const res = await axiosInstance.post(`/messages/markMessageAsSeen/${id}`);
-      toast.success("Message seen updated");
     } catch (error) {
       toast.error(error.response.data.message);
   }
+  },
+  subscribeToSeenMessages:(socket) =>{
+
   }
 }));

@@ -10,37 +10,28 @@ import { useSideBarStore } from "../store/useSideBarStore";
 const FindFriends = () => {
     const {authUser} = useAuthStore()
     const { getUsers, users, setUsers, selectedUser, setSelectedUser, isUsersLoading } = useChatStore();
-    const {friends , friendRequests , isFriendRequestsLoading , isFriendsLoading , getFriendRequests , getFriends,
-      sendFriendRequest ,
-    } = useFriendStore()
+    const {friends , friendRequests , isFriendRequestsLoading , isFriendsLoading , 
+                   getFriendRequests , getFriends, sendFriendRequest ,beMyFriends
+         } = useFriendStore()
     const { onlineUsers } = useAuthStore();
     const [showOnlineOnly, setShowOnlineOnly] = useState(false);
-
     const [search, setSearch] = useState("")
-    const [filteredUsers , setfilteredUsers] = useState(users)
-    function getRandomNumber() {
-        return Math.floor(Math.random() * 500) + 1;
-      }
-       
-     const {selectedScreen , setSelectedScreen} = useSideBarStore() 
-
+    const [filteredUsers , setfilteredUsers] = useState(users)  
+    const {selectedScreen , setSelectedScreen} = useSideBarStore() 
     const handleOnSearch = (e) => {
+
         e.preventDefault()
         // asynchronous hota hain toh it take time
         setfilteredUsers(users.filter((user) => (user.firstName.startsWith(search))))
+        filteredUsers.length == 0 ? setfilteredUsers(users) :""
         setSearch("")
+  
         // console.log("Users are " , filteredUsers)
     }
-    // useEffect(() => {
-    //     console.log("Filtered users (updated state): ", filteredUsers);
-    //     setUsers(searchedUser)
-    // }, [searchedUser]);
-
     useEffect(() => {
         getUsers();
         getFriends();
     }, [getUsers , getFriends]);
-
     useEffect(() => {
       setfilteredUsers(users)
     } , [users])
@@ -64,11 +55,11 @@ const FindFriends = () => {
     if (isUsersLoading) return <SidebarSkeleton />;
 
     return (
-        <aside className="h-full  lg:w-[27rem]  border-r border-base-300 flex flex-col transition-all duration-200">
+        <aside className="h-full w-full   md:w-[27rem]  border-r border-base-300 flex flex-col transition-all duration-200">
             <div className="border-b border-base-300 w-full p-5 flex flex-col gap-2">
                 <div className="flex items-center gap-2">
                     <Users className="size-6" />
-                    <span className="font-medium ">Find a Friend</span>
+                    <span className=" hidd sm:visible font-medium ">Find a Friend</span>
                 </div>
                 
                 <form onSubmit={handleOnSearch} className=" mt-3 w-96" >
@@ -129,13 +120,17 @@ const FindFriends = () => {
         </button>
       </form>
     </div>
-      <div className="flex flex-col items-center shadow-lg rounded-lg p-6 w-[500px] gap-4 m-auto ">
+      <div className="flex flex-col  shadow-lg rounded-lg p-6 w-[500px] gap-4  lg:h-[300px] ">
   {/* Profile Section */}
   <div className="flex justify-between items-center w-full">
     {/* Profile Picture */}
     <div>
       <img src={user.profilePic || "/avatar.png"} className="rounded-full w-[100px] h-[100px]" alt="Profile" />
+      <div className="flex flex-col ml-0" >
       <span className="font-bold text-lg mt-2">{user.firstName+ " " + user.lastName}</span>
+      <span className=" text-sm ">{user.email}</span>
+
+      </div>
     </div>
     {/* Stats Section */}
     <div className="flex gap-6">
@@ -160,14 +155,15 @@ const FindFriends = () => {
   </div>
 
   {/* Bio Section */}
-  <div className=" items-start">
-    <p className="text-sm">Hey there, I am using a Textify App!</p>
+  <div className="text-sm ml-0 w-fit">
+     Hey there, I am using a Textify App!
   </div>
 
   {/* Action Button */}
+  
   <div className="w-full">
     {friends.some(friend => friend._id === user._id) ?
-    <button
+    (<button
      
     onClick={
      () =>{
@@ -178,23 +174,34 @@ const FindFriends = () => {
    className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-all border-0 ">
     Send Message
             
-   </button>:
-   <button
+   </button>)
+   :
+   (
+    
+      beMyFriends.includes(user._id) ? 
+      <button className="w-full bg-blue-500 text-white py-2 rounded-md  transition-all border-0 ">
+      Pending...
+      </button>
+      :
+      <button
      
-   onClick={
-    () =>{
-      handleSendRequest(user._id)
-    }
-   }
+      onClick={
+       () =>{
+         handleSendRequest(user._id)
+       }
+      }
+     
+     className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-all border-0 ">
+   
+   
+   
+                 { isSendingRequest ? (<Loader2 className="h-5 w-5 animate-spin m-auto " />) : "Add Friend"
+                  
+                  }
+       </button>
+    
   
-  className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-all border-0 ">
-     { 
-            isSendingRequest ? (
-                                      <Loader2 className="h-5 w-5 animate-spin m-auto " />
-                                                                      ) : (
-                                "Add Friend"
-                              )}
-  </button>  
+  )
   
   
   }
@@ -206,7 +213,7 @@ const FindFriends = () => {
     
   
   </div>
-</dialog>
+                  </dialog>
 
 
 

@@ -12,7 +12,7 @@ function extremeSideBar() {
 
   const {isVisible , setIsVisible , message , showNotification} = useNotification()
   return (
-    <aside className= {`h-full  w-[6rem]  items-center border-r border-base-300 flex flex-col transition-all duration-200 overflow-x-hidden `}>
+    <aside className= {`h-full  w-[6rem]   items-center border-r border-base-300 flex flex-col transition-all duration-200 overflow-x-hidden  `}>
 
 
     <Drawer/>        
@@ -52,7 +52,7 @@ function extremeSideBar() {
         //   key={user._id}
           onClick={() => setSelectedScreen("chats")}
           className={`
-            w-full p-6 flex items-center ""
+            w-full p-3 sm:p-6 flex items-center ""
             hover:bg-base-300 transition-colors
             ${selectedScreen === "chats" ? "bg-base-300 ring-1 ring-base-300" : ""}
             tooltip
@@ -74,7 +74,7 @@ function extremeSideBar() {
             setSelectedUser(null)
           }}
           className={`
-            w-full p-6 flex items-center ""
+            w-full p-3 sm:p-6 flex items-center ""
             hover:bg-base-300 transition-colors
             ${selectedScreen === "findFriends" ? "bg-base-300 ring-1 ring-base-300" : ""}
             tooltip
@@ -104,7 +104,7 @@ function extremeSideBar() {
         }}
 
           className={`
-            w-full p-6 flex items-center 
+            w-full p-3 sm:p-6 flex items-center 
             hover:bg-base-300 transition-colors
             tooltip
             ${selectedScreen === "friendRequests" ? "bg-base-300 ring-1 ring-base-300" : ""}
@@ -137,7 +137,7 @@ data-tip="Requests"
             setSelectedUser(null)
           }}
           className={`
-            w-full p-6 flex items-center ""
+            w-full p-3 sm:p-6 flex items-center ""
             hover:bg-base-300 transition-colors
             ${selectedScreen === "profile" ? "bg-base-300 ring-1 ring-base-300" : ""}
 
@@ -169,7 +169,7 @@ data-tip="Requests"
           setSelectedUser("")
         }}
           className={`
-            w-full p-6 flex items-center ""
+            w-full p-3 sm:p-6 flex items-center ""
             hover:bg-base-300 transition-colors
             ${selectedScreen === "settings" ? "bg-base-300 ring-1 ring-base-300" : ""}
             tooltip
@@ -205,7 +205,7 @@ data-tip="Requests"
         }
           className={`
             tooltip
-            w-full p-6 flex items-center
+            w-full p-3 sm:p-6 flex items-center
           
             hover:bg-base-300 transition-colors
             ${selectedScreen === "logout" ? "bg-base-300 ring-1 ring-base-300" : ""}

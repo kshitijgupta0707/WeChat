@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
 import SidebarSkeleton from "./skeletons/SidebarSkeleton";
-import { Users , Loader2 } from "lucide-react";
+import { Users , Loader2 , X } from "lucide-react";
 import extremeSideBar from "./ExtremeSideBar";
 import Button from '@mui/material/Button';
 import { useFriendStore } from "../store/useFriendStore";
@@ -18,12 +18,15 @@ const FriendRequests = () => {
     const [showOnlineOnly, setShowOnlineOnly] = useState(false)
     const [search, setSearch] = useState("")
     const [searchedUser, setsearchedUser] = useState([])
+   
 
+    //only for updating the status - otherwise no use
     const [acceptingRequests, setAcceptingRequests] = useState({});  // Track accepting status for each user
     const [decliningRequests, setDecliningRequests] = useState({});  // Track declining status for each user
 
     const handleAcceptRequest = (userId) => {
         setAcceptingRequests((prev) => ({ ...prev, [userId]: true }));
+        
         acceptFriendRequest(userId).finally(() => {
             setAcceptingRequests((prev) => ({ ...prev, [userId]: false }));
         });
@@ -53,12 +56,16 @@ const FriendRequests = () => {
         console.log("called function get freinds")
         getFriendRequests();
     }, [getFriendRequests]);
+
+
+   //real time show yehi krra hain
     useEffect(() => {
         // console.log("selected user is " ,selectedUser.firstName);
         // console.log("sender is" ,authUser.firstName);
         if ( authUser) {
             getFriendRequests();
             subscribeToFriendRequests(socket);
+            console.log("called by friend request page")
         }
         //2 times CALLING
         //CLEARING EVENT LISTENER
@@ -72,14 +79,13 @@ const FriendRequests = () => {
 
 
 
-    const filteredUsers = showOnlineOnly
-        ? users.filter((user) => onlineUsers.includes(user._id))
-        : users;
+    const filteredUsers = showOnlineOnly ? users.filter((user) => onlineUsers.includes(user._id))
+  : users;
 
     if (isUsersLoading) return <SidebarSkeleton />;
 
     return (
-        <aside className="h-full  lg:w-[27rem]  border-r border-base-300 flex flex-col transition-all duration-200">
+        <aside className="h-full w-full  md:w-[27rem]  border-r border-base-300 flex flex-col transition-all duration-200">
             <div className="border-b border-base-300 w-full p-5">
                 <div className="flex items-center gap-2">
                     <Users className="size-6" />
@@ -138,7 +144,10 @@ const FriendRequests = () => {
                                     </>
                                 ) : (
                                     <>
+                                    <span className=" hidden sm:inline" >
                                     Confirm
+                                    </span>
+                                
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         className="h-6 w-6"
@@ -165,9 +174,13 @@ const FriendRequests = () => {
                                         <Loader2 className="h-5 w-5 animate-spin" />
                                         declining
                                     </>
-                                ) : (
-                               "Decline"
-                                )}
+                                ) : <>
+                              <span className=" hidden sm:inline" >
+                                    Decline
+                                    </span>
+                               <X/>
+                                </>
+                                }
                               
                                 
                                 </button>

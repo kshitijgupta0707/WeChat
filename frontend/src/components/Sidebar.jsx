@@ -61,7 +61,7 @@ const Sidebar = () => {
         getFriends();
         subscribeToFriends(socket);
         subscribeToMessageReciever();
-
+         console.log("called by sidebar page")
         // subscribeToMessages()
     }
     //2 times CALLING
@@ -92,7 +92,7 @@ const Sidebar = () => {
   if (isUsersLoading) return <SidebarSkeleton />;
 
   return (
-    <aside className="h-full w-[23rem] lg:w-[27rem]  border-r border-base-300 flex flex-col transition-all duration-200">
+    <aside className="h-full w-100  lg:w-[27rem]  border-r border-base-300 flex flex-col transition-all duration-200">
       <div className="border-b border-base-300 w-full p-5 flex flex-col">
         <div className="flex items-center gap-2">
           <Users className="size-6" />
@@ -189,14 +189,19 @@ const Sidebar = () => {
             
             {
              
-             user.unseenCount &&   user.unseenCount > 0 ? user.unseenCount: ""
+             selectedUser && selectedUser._id === user._id? "":
+                user.unseenCount &&   user.unseenCount > 0 ? user.unseenCount
+                : ""
             }
             
           </button>
         ))}
 
-        {filteredFriends.length === 0 && (
+        {filteredFriends.length === 0 && showOnlineOnly && (
           <div className="text-center text-zinc-500 py-4">No online users</div>
+        )}
+        {filteredFriends.length === 0 && !showOnlineOnly && (
+          <div className="text-center text-zinc-500 py-4">No Friends</div>
         )}
       </div>
     </aside>

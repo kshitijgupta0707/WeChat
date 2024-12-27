@@ -13,10 +13,11 @@ import { useSideBarStore } from "../store/useSideBarStore";
 import { useFriendStore } from "../store/useFriendStore";
 import { useState } from "react";
 const HomePage = () => {
-  const { selectedUser  , subscribeToMessages , unsubscribeFromMessages} = useChatStore();
+  
+  const { selectedUser  , subscribeToMessages , unsubscribeFromMessages , showMessageNotification , dontShowMessageNotification} = useChatStore();
   const {authUser,socket} = useAuthStore();
   const {selectedScreen} = useSideBarStore()
-  const {friends , subscribeToFriends , unSubscribeToFriends ,subscribeToFriendRequests , unSubscribeToFriendRequests } = useFriendStore()
+  const {friends , subscribeToFriends , unSubscribeToFriends ,subscribeToFriendRequests , unSubscribeToFriendRequests , subscribeToMessageReciever ,unSubscribeToMessageReciever} = useFriendStore()
   const [toggleModeOn, setToggleModeOn] = useState(false); 
   
 
@@ -29,19 +30,12 @@ const HomePage = () => {
     return () => window.removeEventListener('resize', handleResize); 
   }, []);
 
-  useEffect(()=>{
-   console.log("You are at home page for the first time")
-   console.log(authUser);
-  },[])
-  useEffect(()=>{
-   console.log("Selected User is ", selectedUser)
-  },[selectedUser])
-  
   useEffect(() => {
-
     if ( authUser) {
         subscribeToFriendRequests(socket);
         subscribeToFriends(socket)
+        showMessageNotification(socket)
+        subscribeToMessageReciever();
     }
     //2 times CALLING
     //CLEARING EVENT LISTENER
@@ -49,21 +43,25 @@ const HomePage = () => {
       {
         unSubscribeToFriendRequests(socket)
         subscribeToFriends(socket)
+        dontShowMessageNotification(socket)
+        unSubscribeToMessageReciever()
       }
   },
-   [subscribeToFriendRequests, unSubscribeToFriendRequests , subscribeToFriends , unSubscribeToFriends]
+  [
+    authUser,                 // Dependency on the authentication status
+    subscribeToFriendRequests,
+    unSubscribeToFriendRequests,
+    subscribeToFriends,
+    unSubscribeToFriends,
+    subscribeToMessageReciever,
+    unSubscribeToMessageReciever,
+    socket              ,      // Dependency on the socket instance,
+    showMessageNotification,
+    dontShowMessageNotification
+]
   );
    
-  useEffect(() => {
-   if (authUser) {
-      subscribeToMessages(socket);
-    }
-    //2 times CALLING
-    //CLEARING EVENT LISTENER
-    // return () => unsubscribeFromMessages(socket);
-  },
-   [ subscribeToMessages, unsubscribeFromMessages]
-  );
+ 
 
 
   return (
@@ -95,16 +93,6 @@ const HomePage = () => {
               <ChatContainer />:
               <NoChatSelected /> 
               }
-            
-      
-
-
-
-
-
-
-
-
           </div>
         </div>
       </div>

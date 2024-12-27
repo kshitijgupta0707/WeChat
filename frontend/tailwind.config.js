@@ -7,8 +7,14 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        'md-lg': {'min': '768px', 'max': '1023px'}, // Custom range between md and lg
+      },
+
+    },
   },
+
   plugins: [daisyui],
   daisyui: {
     themes: [

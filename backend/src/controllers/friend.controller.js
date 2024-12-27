@@ -301,7 +301,8 @@ export const getAllFriendRequests = async (req, res) => {
         console.log(updatedFetchedUser.friends);
         io.to(receiverSocketId).emit("newFriend", {
           updatedFriends: updatedFetchedUser.friends,
-          name: fetchedUser.firstName 
+          name: fetchedUser.firstName,
+          personWhoHasAccepted: userId
         });
         console.log("Notified the front end about the friend accept");
       }

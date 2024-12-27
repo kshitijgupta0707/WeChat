@@ -18,15 +18,11 @@ const ChatContainer = () => {
   } = useChatStore();
   const { authUser,socket } = useAuthStore();
   const messageEndRef = useRef(null);
-  // useEffect(() => {
-  //   console.log("Fetched Messages:", messages);
-  // }, [messages]);
+
   
 
   
   useEffect(() => {
-    // console.log("selected user is " ,selectedUser.firstName);
-    // console.log("sender is" ,authUser.firstName);
     if (selectedUser&& authUser) {
       getMessages(selectedUser._id);
       subscribeToMessages(socket);
@@ -37,6 +33,9 @@ const ChatContainer = () => {
   },
    [selectedUser._id, getMessages, subscribeToMessages, unsubscribeFromMessages]
   );
+
+
+
 
   useEffect(() => {
     if (messageEndRef.current && messages) {
@@ -58,7 +57,7 @@ const ChatContainer = () => {
   }
 
   return (
-    <div className=" flex flex-1  flex-col ">
+    <div className="  flex flex-1  flex-col w-full md-lg:w-1/2 md-lg:flex-none ">
       <ChatHeader />
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
