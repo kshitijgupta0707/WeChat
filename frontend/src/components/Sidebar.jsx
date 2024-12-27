@@ -62,20 +62,6 @@ const Sidebar = () => {
         subscribeToFriends(socket);
         subscribeToMessageReciever();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         // subscribeToMessages()
     }
     //2 times CALLING

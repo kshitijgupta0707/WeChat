@@ -16,7 +16,7 @@ const HomePage = () => {
   const { selectedUser  , subscribeToMessages , unsubscribeFromMessages} = useChatStore();
   const {authUser,socket} = useAuthStore();
   const {selectedScreen} = useSideBarStore()
-  const {friends ,subscribeToFriendRequests , unSubscribeToFriendRequests } = useFriendStore()
+  const {friends , subscribeToFriends , unSubscribeToFriends ,subscribeToFriendRequests , unSubscribeToFriendRequests } = useFriendStore()
   const [toggleModeOn, setToggleModeOn] = useState(false); 
   
 
@@ -41,12 +41,17 @@ const HomePage = () => {
 
     if ( authUser) {
         subscribeToFriendRequests(socket);
+        subscribeToFriends(socket)
     }
     //2 times CALLING
     //CLEARING EVENT LISTENER
-    return () => unSubscribeToFriendRequests(socket);
+    return () => 
+      {
+        unSubscribeToFriendRequests(socket)
+        subscribeToFriends(socket)
+      }
   },
-   [subscribeToFriendRequests, unSubscribeToFriendRequests]
+   [subscribeToFriendRequests, unSubscribeToFriendRequests , subscribeToFriends , unSubscribeToFriends]
   );
    
   useEffect(() => {

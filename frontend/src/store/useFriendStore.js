@@ -132,11 +132,13 @@ unSubscribeToMessageReciever: () => {
 subscribeToFriends: (socket) => {
   console.log("subscribed to Friends is called");
   const selectedScreen = useSideBarStore.getState().selectedScreen;
-  if (selectedScreen != "chats") return;
+  const { showNotification } = useNotification.getState();
 
-
+  
   socket.on("newFriend", (data) => {
-    console.log("Message Recieved")
+    console.log("Friend Request accetpted by " , data.name);
+    showNotification(`Your friend request has accepted by ${data.name} `)
+    if (selectedScreen != "chats") return;
     set({
       friends: data.updatedFriends
     });

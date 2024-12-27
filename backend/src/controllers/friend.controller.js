@@ -294,13 +294,14 @@ export const getAllFriendRequests = async (req, res) => {
     
       // real-time functionality: send in real time if the user is online
       const receiverSocketId = getReceiverSocketId(friendId);
-  
+       console.log("this is what i am sending to frontend ",fetchedUser.firstName)
       // Send in real-time if the user is online
       if (receiverSocketId) {
         console.log("this is what I am sending to the client:");
         console.log(updatedFetchedUser.friends);
         io.to(receiverSocketId).emit("newFriend", {
           updatedFriends: updatedFetchedUser.friends,
+          name: fetchedUser.firstName 
         });
         console.log("Notified the front end about the friend accept");
       }
