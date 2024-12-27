@@ -12,18 +12,13 @@ function extremeSideBar() {
 
   const {isVisible , setIsVisible , message , showNotification} = useNotification()
   return (
-    <aside className= {`h-full  w-[6rem]   items-center border-r border-base-300 flex flex-col transition-all duration-200 overflow-x-hidden  `}>
+    <aside className= {`h-full  w-[6rem]   items-center border-r border-base-300 flex flex-col transition-all duration-200 overflow-x-hidden`}>
 
 
     <Drawer/>        
-    <div className="overflow-y-auto w-full h-full py-3 pt-0 flex flex-col   justify-between  ">
-          
-
-
-          
-
-
-              <div>
+    <div className="overflow-y-auto w-full h-full py-3 pt-0 flex flex-col   justify-between   ">
+        
+              <div className='' >
 
         <button
         //   key={user._id}
@@ -32,7 +27,7 @@ function extremeSideBar() {
             w-full p-5 flex items-center
             hover:bg-base-300 transition-colors
           ring-1 ring-base-300
-           pb-7
+           pb-3
            mb-1
           
           `}
@@ -209,6 +204,7 @@ data-tip="Requests"
           
             hover:bg-base-300 transition-colors
             ${selectedScreen === "logout" ? "bg-base-300 ring-1 ring-base-300" : ""}
+            hidden
             
           `}
           data-tip= "Logout"

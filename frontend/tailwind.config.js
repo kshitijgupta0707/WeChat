@@ -10,12 +10,36 @@ export default {
     extend: {
       screens: {
         'md-lg': {'min': '768px', 'max': '1023px'}, // Custom range between md and lg
+        'special': {'max': '599px'},
+         'addFriend': {'max': '560px'}
       },
 
     },
   },
+  plugins: [
+    daisyui,  // Keep daisyUI plugin
+    function ({ addComponents }) {
+      addComponents({
+        '.custom-fixed-bottom': {
+          '@screen special': { // Applies styles when screen width is below 500px
+            display: 'flex',
+            position: 'fixed',
+            bottom: '0',
+            alignItems: 'center',
+            left: '50%',
+            transform: 'translateX(-50%)',
+          },
+          'special-small-screen': {
+            '@screen special': { // Applies styles when screen width is below 500px
+              width: '0%',
+              height: '0vh'
+            },
+          }
 
-  plugins: [daisyui],
+        },
+      })
+    },
+  ],
   daisyui: {
     themes: [
       "light",

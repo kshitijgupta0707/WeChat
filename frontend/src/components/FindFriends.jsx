@@ -2,14 +2,16 @@ import { useEffect, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
 import SidebarSkeleton from "./skeletons/SidebarSkeleton";
-import { Users , Loader2 , X} from "lucide-react";
+import { Users , Loader2 , X,MessageSquare} from "lucide-react";
 import extremeSideBar from "./ExtremeSideBar";
 import Button from '@mui/material/Button';
 import { useFriendStore } from "../store/useFriendStore";
 import { useSideBarStore } from "../store/useSideBarStore";
 const FindFriends = () => {
-    const {authUser} = useAuthStore()
-    const { getUsers, users, setUsers, selectedUser, setSelectedUser, isUsersLoading } = useChatStore();
+
+
+    const {authUser,socket} = useAuthStore()
+    const { getUsers, users, setUsers, selectedUser, setSelectedUser, isUsersLoading , showMessageNotification , dontShowMessageNotification} = useChatStore();
     const {friends , friendRequests , isFriendRequestsLoading , isFriendsLoading , 
                    getFriendRequests , getFriends, sendFriendRequest ,beMyFriends
          } = useFriendStore()
@@ -18,6 +20,22 @@ const FindFriends = () => {
     const [search, setSearch] = useState("")
     const [filteredUsers , setfilteredUsers] = useState(users)  
     const {selectedScreen , setSelectedScreen} = useSideBarStore() 
+
+    useEffect(() => {
+    showMessageNotification(socket)
+      return () => 
+        {
+ 
+          dontShowMessageNotification(socket)
+
+        }
+    },
+    [
+      showMessageNotification,
+      dontShowMessageNotification
+    ]
+    );
+     
     const handleOnSearch = (e) => {
 
         e.preventDefault()
@@ -120,11 +138,11 @@ const FindFriends = () => {
         </button>
       </form>
     </div>
-      <div className="flex flex-col  shadow-lg rounded-lg p-6 w-[500px] gap-4  lg:h-[300px] ">
+      <div className="flex flex-col  shadow-lg rounded-lg p-6 w-[500px] gap-4  lg:h-[300px] addFriend:w-auto  ">
   {/* Profile Section */}
-  <div className="flex justify-between items-center w-full">
+  <div className="flex justify-between items-center w-full addFriend:w-fit addFriend:m-auto ">
     {/* Profile Picture */}
-    <div>
+    <div className="text-center flex flex-col items-center  "   >
       <img src={user.profilePic || "/avatar.png"} className="rounded-full w-[100px] h-[100px]" alt="Profile" />
       <div className="flex flex-col ml-0" >
       <span className="font-bold text-lg mt-2">{user.firstName+ " " + user.lastName}</span>
@@ -133,7 +151,7 @@ const FindFriends = () => {
       </div>
     </div>
     {/* Stats Section */}
-    <div className="flex gap-6">
+    <div className="flex gap-6 addFriend:hidden ">
       {/* Posts */}
       <div className="flex flex-col items-center">
         <span className="font-bold text-lg">25</span>
@@ -155,13 +173,12 @@ const FindFriends = () => {
   </div>
 
   {/* Bio Section */}
-  <div className="text-sm ml-0 w-fit">
+  <div className="text-sm ml-0 w-fit addFriend:m-auto ">
      Hey there, I am using a Textify App!
   </div>
 
   {/* Action Button */}
-  
-  <div className="w-full">
+   <div className="w-full">
     {friends.some(friend => friend._id === user._id) ?
     (<button
      
@@ -258,8 +275,8 @@ const FindFriends = () => {
 
                             {friends.some(friend => friend._id === user._id)    && ( <button onClick={()=>{
                               setSelectedScreen("chats")
-                            }} className="btn bg-blue-600 rounded-2xl hover:bg-blue-500  ">
-                                Send Message
+                            }} className="btn rounded-2xl hover:bg-primary/15  ">
+                                <MessageSquare className="w-5 h-5 text-primary bg-primary/10 " />
                             </button>
                             )}
 

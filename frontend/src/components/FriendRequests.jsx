@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
 import SidebarSkeleton from "./skeletons/SidebarSkeleton";
-import { Users , Loader2 , X } from "lucide-react";
+import { Users , Loader2 , X , ThumbsUp , ThumbsDown } from "lucide-react";
 import extremeSideBar from "./ExtremeSideBar";
 import Button from '@mui/material/Button';
 import { useFriendStore } from "../store/useFriendStore";
 const FriendRequests = () => {
-    const { getUsers, users, setUsers, selectedUser, setSelectedUser, isUsersLoading } = useChatStore();
+    const { getUsers, users, setUsers, selectedUser, setSelectedUser, isUsersLoading , showMessageNotification , dontShowMessageNotification } = useChatStore();
     const { friends, friendRequests, isFriendRequestsLoading, isFriendsLoading, getFriendRequests, getFriends,
         acceptFriendRequest,
         declineFriendRequest,
@@ -73,7 +73,21 @@ const FriendRequests = () => {
       },
        [getFriendRequests, subscribeToFriendRequests, unSubscribeToFriendRequests]
       );
-
+    
+      useEffect(() => {
+        showMessageNotification(socket)
+          return () => 
+            {
+     
+              dontShowMessageNotification(socket)
+    
+            }
+        },
+        [
+          showMessageNotification,
+          dontShowMessageNotification
+        ]
+        );
 
 
 
@@ -136,7 +150,7 @@ const FriendRequests = () => {
                              onClick={()=>{
                                 handleAcceptRequest(user._id);
                              }}
-                            className="btn bg-blue-600 rounded-2xl hover:bg-blue-500  ">
+                            className="btn bg-primary/40 rounded-2xl hover:bg-primary/15   ">
                                 {acceptingRequests[user._id] ? (
                                     <>
                                         <Loader2 className="h-5 w-5 animate-spin" />
@@ -145,21 +159,10 @@ const FriendRequests = () => {
                                 ) : (
                                     <>
                                     <span className=" hidden sm:inline" >
-                                    Confirm
+                                    <ThumbsUp/>
                                     </span>
                                 
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-6 w-6"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                    </svg>
+    
                                     </>
                                 )}
                               
@@ -168,7 +171,7 @@ const FriendRequests = () => {
                               onClick={()=>{
                                 handleDeclineRequest(user._id);
                              }}
-                            className="btn btn-outline rounded-2xl border-0 btn-neutral bg-[#121212] ">
+                            className="btn btn-outline rounded-2xl border-0 btn-neutral bg-primary/10 hover:bg-primary/15 ">
                             {decliningRequests[user._id] ? (
                                     <>
                                         <Loader2 className="h-5 w-5 animate-spin" />
@@ -176,9 +179,9 @@ const FriendRequests = () => {
                                     </>
                                 ) : <>
                               <span className=" hidden sm:inline" >
-                                    Decline
+                              <ThumbsDown/>
                                     </span>
-                               <X/>
+                               
                                 </>
                                 }
                               

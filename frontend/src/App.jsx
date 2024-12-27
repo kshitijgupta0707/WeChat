@@ -15,6 +15,7 @@ import { useThemeStore } from "./store/useThemeStore"
 import { useEffect } from "react"
 import { useState } from "react"
 import { useNotification } from "./store/useNotification"
+import "./App.css"
 const App = () => {
  
  
@@ -48,8 +49,11 @@ const App = () => {
       <Navbar />
 
       {isVisible && (
-        <div className="z-50 fixed left-[50%] -translate-x-1/2 lg:w-[600px]">
-          <div role="alert" className="alert shadow-lg">
+        <div className="z-50 fixed left-[50%] -translate-x-1/2 w-[400px]  lg:w-[600px]">
+          <div role="alert" className="  alert shadow-lg flex justify-between">
+            
+                <div className="flex align-center justify-center items-center gap-3" >
+            <div  >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -63,14 +67,24 @@ const App = () => {
                 d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               ></path>
             </svg>
+
+            </div>
             <div>
-              <h3 className="font-bold">Notification</h3>
+              <h3 className="font-bold hidden sm:block ">Notification</h3>
               <div className="text-xs">{message}</div>
             </div>
-            <button className="btn btn-sm" onClick={() => setIsVisible(false)}>
+
+                  </div>
+               <button className=" hidden sm:block  btn btn-sm" onClick={() => setIsVisible(false)}>
               Close
-            </button>
+                </button>
           </div>
+
+          <div className="relative w-full h-1">
+  <div className="absolute bottom-0 left-0 h-[2px] animate-progress-bar"></div>
+</div>
+
+          
         </div>
       )}
 

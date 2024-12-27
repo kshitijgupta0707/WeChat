@@ -29,6 +29,9 @@ export const useFriendStore = create((set, get) => ({
       set({ isFriendsLoading: false });
     }
   },
+  setFriends: async(friends) =>{
+    set(friends)
+  },
   getFriendRequests: async () => {
     set({ isFriendRequestsLoading: true });
     try {
@@ -128,18 +131,10 @@ unSubscribeToFriendRequests: (socket) => {
 },
 
 subscribeToMessageReciever: () =>{
-  console.log("(Friedns updatino)subsciber for  reciever called");
   const socket = useAuthStore.getState().socket
-  const { showNotification } = useNotification.getState();
   socket.on("newMessage", (data) => {
-  console.log("Message Recieved")
-   console.log(data)
   const senderId = data.message.senderId;
   const text = data.message.text;
-  console.log("message recieved by ", senderId)
-
-  console.log(" text Recieved = " , text)
-  showNotification(`You recieveddd a new Message from ${data.name}`)
   const {friends} = get()
   const filteredSender = friends.filter(item => item._id === senderId);
     filteredSender[0].lastMessage = text
@@ -148,12 +143,9 @@ subscribeToMessageReciever: () =>{
   const restOfTheArray = friends.filter(item => item._id !== senderId);
 
 // Concatenate the filteredSender object at the front of the rest of the array
-console.log("friend array updation")
   const sortedArray = [ , ...filteredSender,...restOfTheArray ];
 
   //jisne bheja hainmessage i have his id so bring that at top
-   console.log("i have setted the friends ");
-   console.log(sortedArray)
    set({friends: sortedArray}) 
   });
 },

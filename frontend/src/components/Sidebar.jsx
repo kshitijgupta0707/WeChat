@@ -7,7 +7,7 @@ import extremeSideBar from "./ExtremeSideBar";
 import { useFriendStore } from "../store/useFriendStore";
 
 const Sidebar = () => {
-  const { getUsers, users, setUsers, selectedUser, setSelectedUser, isUsersLoading } = useChatStore();
+  const { getUsers, users, setUsers, selectedUser, setSelectedUser, isUsersLoading , showMessageNotification , dontShowMessageNotification   } = useChatStore();
       const {friends , friendRequests , isFriendRequestsLoading , isFriendsLoading , getFriendRequests , getFriends
         ,subscribeToFriends , unSubscribeToFriends,
         subscribeToMessageReciever,
@@ -61,6 +61,7 @@ const Sidebar = () => {
         getFriends();
         subscribeToFriends(socket);
         subscribeToMessageReciever();
+        showMessageNotification(socket)
          console.log("called by sidebar page")
         // subscribeToMessages()
     }
@@ -69,12 +70,15 @@ const Sidebar = () => {
     return () => {
       unSubscribeToFriends(socket);
       unSubscribeToMessageReciever()
+      dontShowMessageNotification(socket)
     }
   },
    [getFriends, subscribeToFriends, unSubscribeToFriends , subscribeToMessages
      , unsubscribeFromMessages,
      subscribeToMessageReciever,
-     unSubscribeToMessageReciever
+     unSubscribeToMessageReciever,
+     showMessageNotification,
+     dontShowMessageNotification
    ]
   );
 
@@ -92,7 +96,7 @@ const Sidebar = () => {
   if (isUsersLoading) return <SidebarSkeleton />;
 
   return (
-    <aside className="h-full w-100  lg:w-[27rem]  border-r border-base-300 flex flex-col transition-all duration-200">
+    <aside className="h-full w-full  md:w-[27rem]  border-r border-base-300 flex flex-col transition-all duration-200">
       <div className="border-b border-base-300 w-full p-5 flex flex-col">
         <div className="flex items-center gap-2">
           <Users className="size-6" />

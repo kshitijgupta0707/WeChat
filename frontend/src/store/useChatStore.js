@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import { axiosInstance } from "../lib/axios";
 import { useAuthStore } from "./useAuthStore";
 import { useNotification } from "./useNotification";
+import { useFriendStore } from "./useFriendStore";
 
 export const useChatStore = create((set, get) => ({
   messages: [],
@@ -40,6 +41,11 @@ export const useChatStore = create((set, get) => ({
     try {
       const res = await axiosInstance.post(`/messages/send/${selectedUser._id}`, messageData);
       toast.success("Message sent Successfully");
+      //update in the chat to show
+      //on friends
+      const {friends , setFriends} = useFriendStore().getState()
+   console.log(messageData)
+
       set({ messages: [...messages, res.data] });
     } catch (error) {
       toast.error(error.response.data.message);
@@ -88,6 +94,9 @@ export const useChatStore = create((set, get) => ({
     try {
       console.log("Marking messages as seen of " , id);
       const res = await axiosInstance.post(`/messages/markMessageAsSeen/${id}`);
+
+      //refresh friends here
+      
     } catch (error) {
       toast.error(error.response.data.message);
   }

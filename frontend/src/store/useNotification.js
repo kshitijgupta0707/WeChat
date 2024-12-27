@@ -14,6 +14,7 @@ export const useNotification = create((set) => ({
 
   // Function to trigger notification
   showNotification: (text) => {
+    console.log("show notification is called here ")
     set({ message: text, isVisible: true }); // Set the message and make it visible
     // Hide the notification after 2 seconds
     setTimeout(() => {

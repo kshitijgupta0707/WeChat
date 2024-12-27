@@ -6,6 +6,7 @@ import ChatContainer from "../components/ChatContainer";
 import { useEffect } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import ExtremeSideBar from "../components/ExtremeSideBar";
+import BottomBar from "../components/BottomBar";
 import FriendRequests from "../components/FriendRequests"
 // import FindFriends from "../components/FindFriends";
 import FindFriends from "../components/FindFriends";
@@ -19,12 +20,13 @@ const HomePage = () => {
   const {selectedScreen} = useSideBarStore()
   const {friends , subscribeToFriends , unSubscribeToFriends ,subscribeToFriendRequests , unSubscribeToFriendRequests , subscribeToMessageReciever ,unSubscribeToMessageReciever} = useFriendStore()
   const [toggleModeOn, setToggleModeOn] = useState(false); 
-  
+  const [showBottomBar , setShowBottomBar] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
       setToggleModeOn(window.innerWidth <= 768); 
-    };
+      setShowBottomBar(window.innerWidth <=  768)
+        };
     window.addEventListener('resize', handleResize);
     handleResize(); // Initial check on load
     return () => window.removeEventListener('resize', handleResize); 
@@ -69,7 +71,13 @@ const HomePage = () => {
       <div className="flex items-center justify-center pt-20 px-4">
         <div className="bg-base-100 rounded-lg shadow-cl w-[100%] h-[calc(100vh-8rem)]">
           <div className="flex h-full rounded-lg overflow-hidden">
-            <ExtremeSideBar/>
+        { !showBottomBar ?
+        <ExtremeSideBar/>
+        :
+        selectedScreen != "chats" || !selectedUser ?
+        <BottomBar/>:
+        ""
+      }
 
 
       {toggleModeOn && selectedScreen && (

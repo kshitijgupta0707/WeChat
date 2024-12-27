@@ -1,0 +1,38 @@
+/* Moving line animation */
+@keyframes progressBar {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 100%;
+    }
+  }
+  
+  .animate-progress-bar {
+    animation: progressBar 4s linear forwards;
+    height: 2px; /* Slightly thicker for better visibility */
+    background: linear-gradient(
+      90deg,
+      #ff6a00,
+      #ee0979,
+      #8e44ad,
+      #3498db,
+      #2ecc71,
+      #f1c40f,
+      #ff6a00
+    );
+    background-size: 300%; /* Make gradient flow smoothly */
+    background-position: 0% 50%;
+    animation: progressBar 4s linear forwards, gradientShift 4s infinite;
+  }
+  
+  /* Gradient shift animation for a moving gradient */
+  @keyframes gradientShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 100% 50%;
+    }
+  }
+  
