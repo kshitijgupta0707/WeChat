@@ -2,7 +2,6 @@ import { create } from "zustand";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../lib/axios";
 import { useAuthStore } from "./useAuthStore";
-import { set } from "mongoose";
 import { useSideBarStore } from "./useSideBarStore";
 import { useChatStore } from "./useChatStore";
 import { useNotification } from "./useNotification";

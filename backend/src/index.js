@@ -7,7 +7,8 @@ import cookieParser from 'cookie-parser'
 import { connectCloudinary } from '../src/config/cloudinary.js'
 import { app , server } from './config/socket.js'
 import fileUpload from "express-fileupload";
-import cors from "cors"
+import cors from "cors";
+import path from "path"
 import { deleteMessages } from './seeds/deleteAllMessages.js'
 import { seedDatabase } from './seeds/user.seeds.js'
 //initiating the server
@@ -46,6 +47,18 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/friends", friendRoutes);
 
 //starting the server
+
+const __dirname = path.resolve()
+ 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+  });
+}
+
+
 const PORT = process.env.PORT || 3000
 server.listen(PORT, () => {
   console.log(`Server started at port ${PORT}`);
