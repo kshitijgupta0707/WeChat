@@ -80,7 +80,7 @@ const FindFriends = () => {
                     <span className=" hidd sm:visible font-medium ">Find a Friend</span>
                 </div>
                 
-                <form onSubmit={handleOnSearch} className=" mt-3 w-96" >
+                <form onSubmit={handleOnSearch} className=" m-auto mt-3  w-[95%]" >
               <label className="input input-bordered flex items-center gap-5 h-10 ">
                 <input type="text"
                  className="grow w-[10px] h-4" 
