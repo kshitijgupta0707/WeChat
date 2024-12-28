@@ -3,11 +3,11 @@ import { User } from "../models/user.model.js"
 export const protectRoute = async (req, res, next) => {
 
   // console.log("protected route funtion called");
-  console.log("Req ke user mein user daaldiya hainSSS")
+  // console.log("Req ke user mein user daaldiya hainSSS")
 
   try {
     const token = req.cookies.token;
-    console.log("token ", token)
+    // console.log("token ", token)
     if (!token) {
       return res.status(401).json({ message: "Unauthorized - No Token Provided" });
     }

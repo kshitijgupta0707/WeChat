@@ -11,7 +11,7 @@ export const signup = async (req, res) => {
   try {
     //fetch the data from the request
     const { firstName, lastName, email, password, confirmPassword } = req.body
-    console.log(firstName, lastName, email, password, confirmPassword);
+    // console.log(firstName, lastName, email, password, confirmPassword);
 
     //check if some data is missing
     if (!firstName || !lastName || !email || !password || !confirmPassword) {
@@ -39,8 +39,8 @@ export const signup = async (req, res) => {
     //use find one it gives an single object
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      console.log("User already exists");
-      console.log(existingUser);
+      // console.log("User already exists");
+      // console.log(existingUser);
       return res.status(400).json({
         success: false,
         message: "User already exists",
@@ -118,7 +118,7 @@ export const login = async (req, res) => {
     }
 
     //take the hash password
-    console.log(user.password);
+    // console.log(user.password);
     const { password: hashedPassword } = user;
 
     //now verify the password //decrypt
@@ -178,9 +178,9 @@ export const logout = (req, res) => {
 };
 export const updateProfile = async (req, res) => {
   try {
-    console.log("At update profile");
-    console.log("Request body:", req.body);
-    console.log("Request files:", req.files);
+    // console.log("At update profile");
+    // console.log("Request body:", req.body);
+    // console.log("Request files:", req.files);
 
     const userId = req.user._id; // Inserted in the protected middleware
     const profilePic = req.files?.profilePic; // Extract the file from `req.files`

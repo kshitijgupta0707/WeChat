@@ -146,7 +146,7 @@ export const getAllFriendRequests = async (req, res) => {
           message: "User not found",
         });
       }
-      console.log("fetched User is",fetchedUser)
+      // console.log("fetched User is",fetchedUser)
 
       return res.status(200).json({
         success: true,
@@ -294,7 +294,7 @@ export const getAllFriendRequests = async (req, res) => {
     
       // real-time functionality: send in real time if the user is online
       const receiverSocketId = getReceiverSocketId(friendId);
-       console.log("this is what i am sending to frontend ",fetchedUser.firstName)
+      //  console.log("this is what i am sending to frontend ",fetchedUser.firstName)
       // Send in real-time if the user is online
       if (receiverSocketId) {
         console.log("this is what I am sending to the client:");
