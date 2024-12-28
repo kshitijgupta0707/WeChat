@@ -29,15 +29,16 @@ const MessageInput = () => {
   };
 
   const handleSendMessage = async (e) => {
+    console.log("handle send message")
     e.preventDefault();
     if (!text.trim() && !imagePreview) return;
-
+    console.log("handle")
     try {
       await sendMessage({
         text: text.trim(),
         image: imagePreview,
       });
-
+ console.log("ho")
       // Clear form
       setText("");
       setImagePreview(null);

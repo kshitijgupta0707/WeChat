@@ -39,14 +39,19 @@ export const useChatStore = create((set, get) => ({
   sendMessage: async (messageData) => {
     const { selectedUser, messages } = get();
     try {
+      
       const res = await axiosInstance.post(`/messages/send/${selectedUser._id}`, messageData);
       toast.success("Message sent Successfully");
       //update in the chat to show
       //on friends
-      const {friends , setFriends} = useFriendStore().getState()
-   console.log(messageData)
+       const {messages} = get()
+       console.log("purane messages",messages)
+      const  newMessages = [...messages , res.data]
+      console.log("nayeMessages", newMessages);
+      // const {friends , setFriends} = useFriendStore().getState()
+   console.log("Message updated", newMessages)
 
-      set({ messages: [...messages, res.data] });
+      set({ messages: newMessages});
     } catch (error) {
       toast.error(error.response.data.message);
     }

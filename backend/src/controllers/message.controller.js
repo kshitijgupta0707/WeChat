@@ -64,7 +64,7 @@ export const sendMessage = async (req, res) => {
       image: imageUrl,
     });
       
-
+  console.log(newMessage);
 
     await newMessage.save();
       
@@ -76,15 +76,13 @@ export const sendMessage = async (req, res) => {
 
     const receiverSocketId = getReceiverSocketId(receiverId);
     
+
    //send in real time if the user is online
     if (receiverSocketId) {
 
       //only send to particular client
       io.to(receiverSocketId).emit("newMessage", { message: newMessage , name: req.user.firstName});
       console.log("Notified to front end ")
-    }
-    else{
-      console.log("i am not sending")
     }
 
     res.status(201).json(newMessage);
