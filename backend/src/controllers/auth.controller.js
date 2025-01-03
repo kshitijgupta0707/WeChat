@@ -287,8 +287,9 @@ export const logout = (req, res) => {
         if (!allowedTypes.includes(profilePic.mimetype)) {
           return res.status(400).json({ message: "Only JPG and PNG files are allowed" });
         }
-        if (profilePic.size > 5 * 1024 * 1024) {
-          return res.status(400).json({ message: "File size must be less than 5MB" });
+        // only 5 mb photo rquired
+        if (profilePic.size > 1 * 1024 * 1024) {
+          return res.status(400).json({ message: "File size must be less than 1MB" });
         }
   
         const uploadResponse = await uploadImageToCloudinary(profilePic, "CHATAPP");
