@@ -132,9 +132,12 @@ unSubscribeToFriendRequests: (socket) => {
      socket.off("newFriendRequest");
 },
 
+
 subscribeToMessageReciever: () =>{
+  console.log("SUBSCRIBE TO MESSAGE RECIEVER")
   const socket = useAuthStore.getState().socket
   socket.on("newMessage", (data) => {
+  console.log("UI UPDATE FUNCTION")
   const senderId = data.message.senderId;
   const text = data.message.text;
   const {friends} = get()
@@ -145,7 +148,7 @@ subscribeToMessageReciever: () =>{
   const restOfTheArray = friends.filter(item => item._id !== senderId);
 
 // Concatenate the filteredSender object at the front of the rest of the array
-  const sortedArray = [ , ...filteredSender,...restOfTheArray ];
+  const sortedArray = [  ...filteredSender,...restOfTheArray ];
 
   //jisne bheja hainmessage i have his id so bring that at top
    set({friends: sortedArray}) 
@@ -153,6 +156,7 @@ subscribeToMessageReciever: () =>{
 },
 
 unSubscribeToMessageReciever: () => {
+  console.log(" UN SUBSCRIBE TO MESAGE RECIEVER")
   const socket = useAuthStore.getState().socket
   socket.off("newMessage");
 },
@@ -182,7 +186,6 @@ subscribeToFriends: (socket) => {
     console.log("new friends data = " , friendRequests)
   });
 },
-
 
 
 unSubscribeToFriends: (socket) => {

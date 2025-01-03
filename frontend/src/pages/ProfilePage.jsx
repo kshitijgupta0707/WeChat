@@ -48,8 +48,8 @@ const ProfilePage = () => {
       const base64Image = reader.result;
       console.log("image :", base64Image)
       //so that image get shown in circle immediately
-      setSelectedImg(base64Image);
       await updateProfile({ profilePic: file });
+      setSelectedImg(base64Image);
     };
   };
   const handlePredefinedPhotoSelect = async (photo) => {

@@ -72,14 +72,16 @@ const AIChat = () => {
             key={message._id}
             className={`chat ${isUserSender ? "chat-end" : "chat-start"}`}
             ref={messageEndRef}
-          >
+          >{
+            console.log(authUser)
+          }
             <div className=" chat-image avatar">
               <div className="size-10 rounded-full border">
                 <img
                   src={
                     message.sender == "user"
-                      ? authUser.profilePic ||'./avatar.jpg'
-                      :  `${"./aiProfile.jpg"}`
+                      ? (authUser.profilePic ||'./avatar.png')
+                      :  "./aiProfile.jpg" 
                   }
                   alt="profile pic"
                 />

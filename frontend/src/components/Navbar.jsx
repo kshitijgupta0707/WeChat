@@ -26,7 +26,7 @@ const Navbar = () => {
                 </div>
 
               </button>
-                <h1 className=" text-lg font-bold">Textify</h1>
+                <h1 className=" text-lg font-bold">BuzzzBuddy</h1>
               </Link>
              
 

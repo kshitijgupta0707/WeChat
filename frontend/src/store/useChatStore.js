@@ -63,8 +63,7 @@ export const useChatStore = create((set, get) => ({
     const { showNotification } = useNotification.getState();
     
      socket.on("newMessage", (data) => {
-      console.log("Message Recieved by " , data.name)
-      console.log("i am show notification fnction")
+      console.log("SHOW MESSAGE FUNCTION")
       showNotification(`You recieved a new Message from ${data.name}`)
     });
   },
