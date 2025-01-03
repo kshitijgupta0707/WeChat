@@ -2,6 +2,12 @@ import { useEffect, useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import { Camera, Mail, User } from "lucide-react";
 import Sidebar from "../components/Sidebar";
+// Array of pre-defined photos
+const predefinedPhotos = [
+  "./avatar/1.jpg","./avatar/2.jpg","./avatar/3.jpg",
+  "./avatar/4.jpg","./avatar/5.jpg","./avatar/6.jpg","./avatar/7.jpg",
+  "./avatar/8.jpg","./avatar/9.jpg"
+];
 
 const ProfilePage = () => {
   const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
@@ -13,7 +19,7 @@ const ProfilePage = () => {
   useEffect(() => {
     console.log("Auth user");
     console.log(authUser);
-  },[])
+  }, [])
   const handleImageUpload = async (e) => {
 
     // grabs the first file selected by the user.
@@ -46,13 +52,19 @@ const ProfilePage = () => {
       await updateProfile({ profilePic: file });
     };
   };
+  const handlePredefinedPhotoSelect = async (photo) => {
+    // photo = photo.slice(8)
+    // const newPhoto = './' + photo
+    setSelectedImg(photo); // Update UI immediately
+    await updateProfile({ profilePic: photo }); // Send the selected photo to the backend
+  };
 
   return (
     <div className="h-screen pt-20">
-      <div className="max-w-2xl mx-auto p-4 py-8">
+      <div className=" max-w-2xl  md:max-w-3xl mx-auto p-4 py-8">
         <div className="bg-base-300 rounded-xl p-6 space-y-8">
-      
-                    {/* starting  */}
+
+          {/* starting  */}
           <div className="text-center">
             <h1 className="text-2xl font-semibold ">Profile</h1>
             <p className="mt-2">Your profile information</p>
@@ -87,13 +99,37 @@ const ProfilePage = () => {
                   onChange={handleImageUpload}
                   disabled={isUpdatingProfile}
                 />
-              </label>     
+              </label>
             </div>
             <p className="text-sm text-zinc-400">
-              {isUpdatingProfile ? "Uploading..." : "Click the camera icon to update your photo"}
+              {isUpdatingProfile ? "Uploading..." : "Click the camera icon to update your photo or choose an avatar"}
             </p>
           </div>
 
+        
+              {/* Predefined photo selection */}
+              <div className="space-y-4">
+
+
+               <div className="flex justify-center gap-1 md:gap-2 avatarScreen:flex-wrap ">
+                 {predefinedPhotos.map((photo, index) => (
+                <div key={index} className="relative">
+                  <img
+                    src={photo}
+                    alt={`Avatar ${index + 1}`}
+                    className={` w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 cursor-pointer  
+                      ${selectedImg === photo ? "border-green-500" : "border-gray-300"}`}
+                    onClick={() => handlePredefinedPhotoSelect(photo)}
+                  />
+                </div>
+              ))}
+               </div>
+
+
+
+             </div>
+    
+      
           <div className="space-y-6">
             <div className="space-y-1.5">
               <div className="text-sm text-zinc-400 flex items-center gap-2">

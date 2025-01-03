@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import AuthImagePattern from "../components/AuthImagePattern";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare } from "lucide-react";
 import toast from "react-hot-toast";
 
 const LoginPage = () => {
+  const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const { login, isLoggingIn } = useAuthStore();
+  const { login, isLoggingIn  } = useAuthStore();
 
   const validateForm = () => {
     console.log("validating form function called");
@@ -49,7 +50,7 @@ const LoginPage = () => {
                 <MessageSquare className="w-6 h-6 text-primary" />
               </div>
               <h1 className="text-2xl font-bold mt-2">Welcome Back</h1>
-              <p className="text-base-content/60">Sign in to your account</p>
+              <p className="text-base-content/60">Login in to your account</p>
             </div>
           </div>
 
@@ -109,8 +110,14 @@ const LoginPage = () => {
                   Loading...
                 </>
               ) : (
-                "Sign in"
+                "Login"
               )}
+            </button>
+            <button onClick={()=>{window.location.href = "http://localhost:5001/auth/google/callback";
+}} type="button" className="btn bg-[#f7faff] text-black w-full hover:bg-slate-300" disabled={isLoggingIn}>
+             
+                <img className="w-5"  src={"./google.png"} alt="google" />
+                Login with Google
             </button>
           </form>
 
@@ -128,7 +135,7 @@ const LoginPage = () => {
       {/* Right Side - Image/Pattern */}
       <AuthImagePattern
         title={"Welcome back!"}
-        subtitle={"Sign in to continue your conversations and catch up with your messages."}
+        subtitle={"Login to continue your conversations and catch up with your messages."}
       />
     </div>
   );

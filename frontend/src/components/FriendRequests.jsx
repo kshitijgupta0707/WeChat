@@ -158,7 +158,7 @@ const FriendRequests = () => {
                                     </>
                                 ) : (
                                     <>
-                                    <span className=" hidden sm:inline" >
+                                    <span  >
                                     <ThumbsUp/>
                                     </span>
                                 
@@ -178,7 +178,7 @@ const FriendRequests = () => {
                                         declining
                                     </>
                                 ) : <>
-                              <span className=" hidden sm:inline" >
+                              <span className="" >
                               <ThumbsDown/>
                                     </span>
                                

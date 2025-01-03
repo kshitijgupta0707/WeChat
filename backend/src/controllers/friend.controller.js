@@ -74,6 +74,7 @@ export const getAllFriends = async (req, res) => {
               firstName: "$userDetails.firstName",  // Add the friend's firstName
               lastName: "$userDetails.lastName",    // Add the friend's lastName
               email: "$userDetails.email",          // Add the friend's email
+              profilePic: "$userDetails.profilePic",
               lastMessage: 1,                       // Include the last message text
               lastMessageTime: 1,                   // Include the last message timestamp
               unseenCount: 1                        // Include the unseen message count

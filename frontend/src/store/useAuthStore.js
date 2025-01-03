@@ -4,10 +4,12 @@ import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 
 
+
 const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5001" : "/";
 
 export const useAuthStore = create((set,get) => ({
   authUser: null,
+  isSendingOtp: false ,
   isSigningUp: false,
   isLoggingIn: false,
   isUpdatingProfile: false,
@@ -15,7 +17,7 @@ export const useAuthStore = create((set,get) => ({
   isCheckingAuth: true,
   onlineUsers: [],
   socket: null,
-
+  
   checkAuth: async () => {
     try {
       console.log("check auth function in the store get called");
@@ -31,23 +33,50 @@ export const useAuthStore = create((set,get) => ({
     }
   },
 
-  signup: async (data) => {
+  sendOtp: async (data , navigate) => {
 
    
+    set({ isSendingOtp: true });
+    try {
+      const res1 = await axiosInstance.post("/auth/sendotp" , data)
+      console.log("Mail has send successfully to your account check kro")
+      // const res = await axiosInstance.post("/auth/signup", data);
+      // //so that the user get authenticated soon after the signup
+      toast.success("Otp Send on mail");  
+      set({ isSendingOtp: false });
+      setTimeout(() => {
+        // Use React Router's navigate function to redirect and pass state
+        navigate("/otp", { state: { formData: data } });
+      }, 2000); // Adjust delay as needed
+      // get().connectSocket();
+    } catch (error) {
+      toast.error(error.response.data.message);
+    } finally {
+      set({ isSendingOtp: false });
+     
+    }
+  },
+  signup: async (data , navigate) => {
     set({ isSigningUp: true });
     try {
       const res = await axiosInstance.post("/auth/signup", data);
       //so that the user get authenticated soon after the signup
-      set({ authUser: res.data });
+      // set({ authUser: res.data });
       toast.success("Account created successfully");  
-      window.location.href = "/login"
+      set({ isSigningUp: false });
+      setTimeout(() => {
+        // Use React Router's navigate function to redirect and pass state
+        navigate("/login");
+      }, 2000); // Adjust delay as needed
       // get().connectSocket();
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
       set({ isSigningUp: false });
+
     }
   },
+  
 
   login: async (data) => {
     set({ isLoggingIn: true });

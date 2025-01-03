@@ -108,6 +108,19 @@ try{
       }
     );
 
+
+     //give signal to the person who messages are seened
+
+    // const receiverSocketId = getReceiverSocketId(friendId);
+    
+
+    // //send in real time if the user is online
+    //  if (receiverSocketId) {
+    //    //only send to particular client
+    //    io.to(receiverSocketId).emit("messagesSeen", { message: newMessage , name: req.user.firstName});
+    //    console.log("Notified to front end ")
+    //  }
+
     res.status(200).json({
       success: true,
       message: "All messages seened"

@@ -11,7 +11,9 @@ export default {
       screens: {
         'md-lg': {'min': '768px', 'max': '1023px'}, // Custom range between md and lg
         'special': {'max': '599px'},
-         'addFriend': {'max': '560px'}
+         'addFriend': {'max': '560px'},
+         'avatarScreen': {'max': '475px'},
+         'sm-md':{ "min": '640px' , "max": "768px"}
       },
 
     },

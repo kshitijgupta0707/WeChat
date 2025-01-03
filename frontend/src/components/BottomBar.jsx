@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import {MessageCircle , UserPlus, Users , Settings , UserRoundPen , LogOut, ChevronsRight, ChevronRight} from "lucide-react"
+import {MessageCircle , Circle ,MessageSquare, UserPlus, Users , Settings , UserRoundPen , LogOut, ChevronsRight, ChevronRight} from "lucide-react"
 import Drawer from './Drawer';
 import { useSideBarStore } from '../store/useSideBarStore';
 import { Link } from 'react-router-dom';
 import { useChatStore } from '../store/useChatStore';
 import { useNotification } from '../store/useNotification';
+import Lottie from "react-lottie"
 function BottomBar() {
+  // const defaultOptions = {
+  //   loop: true,
+  //   autoplay: true,
+  //   animationData: aiAnimation,
+  //   rendererSettings: {
+  //     preserveAspectRatio: "xMidYMid slice",
+  //   },
+  // };
 
   const {showSideBar , toggleSideBar , openSideBar , closeSideBar , selectedScreen , setSelectedScreen } = useSideBarStore() 
   const {selectedUser , setSelectedUser} = useChatStore()
@@ -65,6 +74,42 @@ function BottomBar() {
     {/* <div className="font-medium truncate">Find Friends</div> */}
   </div>
 </button>
+
+
+<button
+        //   key={user._id}
+          onClick={() => {setSelectedScreen("chatWithAi")
+
+            setSelectedUser(null)
+          }}
+          className={`
+            w-full  sm:p-6 flex items-center justify-center m-auto
+            hover:bg-base-300 transition-colors
+            ${selectedScreen === "chatWithAi" ? "bg-base-300 ring-1 ring-base-300" : ""}
+            tooltip
+          `}
+          data-tip="Chat with AI"
+        >
+       <div className="relative mx-auto  ">
+       {/* <Squircle className='w-10 h-10 hover:animate-spin  text-primary' /> */}
+       {/* <Lottie options={defaultOptions} height={60} width={60} /> */}
+       {/* <AISymbol/> */}
+     
+     
+       {/* <MessageSquare className="w-10 h-10 text-primary" /> */}
+
+       <Circle className='w-8 h-8 animate-ping focus:animate-none absolute  text-cyan-200' />
+       <Circle className='w-8 h-8    text-cyan-200' />
+       
+          {/* <img src={chatbot} className='rounded-full w-32'  /> */}
+        </div> 
+
+          {/* User info - only visible on larger screens */}
+          <div className="hidden lg:block text-left min-w-0">
+            {/* <div className="font-medium truncate">Find Friends</div> */}
+          </div>
+        </button>
+
 
 
 <button

@@ -1,0 +1,36 @@
+import { X } from "lucide-react";
+import { useEffect } from "react";
+import { useSideBarStore } from "../store/useSideBarStore.js";
+const AIChatHeader = () => {
+  const {  selectedScreen, setSelectedScreen } = useSideBarStore();
+ useEffect(()=>{
+  console.log(selectedScreen)
+ },[selectedScreen])
+  return (
+    <div className="p-2.5 border-b border-base-300">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          {/* Avatar */}
+          <div className="avatar">
+            <div className="size-10 rounded-full relative">
+              <img src={"./aiProfile.jpg"} alt ={"AI"} />
+            </div>
+          </div>
+
+          {/* User info */}
+          <div>
+            <h3 className="font-medium">{"Chat Assistant "}</h3>
+            <p className="text-sm text-base-content/70">
+              {"Online"}
+            </p>
+          </div>
+        </div>
+           {/* Close button */}
+           <button onClick={() => setSelectedScreen("chats")}>
+          <X />
+        </button>
+      </div>
+    </div>
+  );
+};
+export default AIChatHeader;

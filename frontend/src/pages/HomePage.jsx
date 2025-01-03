@@ -2,6 +2,7 @@ import { useChatStore } from "../store/useChatStore";
 
 import Sidebar from "../components/Sidebar";
 import NoChatSelected from "../components/NoChatSelected";
+import AIChat from "../components/AIChat";
 import ChatContainer from "../components/ChatContainer";
 import { useEffect } from "react";
 import { useAuthStore } from "../store/useAuthStore";
@@ -74,16 +75,19 @@ const HomePage = () => {
         { !showBottomBar ?
         <ExtremeSideBar/>
         :
-        selectedScreen != "chats" || !selectedUser ?
+        (selectedScreen != "chats" )|| !selectedUser ?
         <BottomBar/>:
         ""
       }
 
+      
 
       {toggleModeOn && selectedScreen && (
              selectedScreen === "friendRequests" ? <FriendRequests />
             : selectedScreen === "findFriends" ? <FindFriends />
-            : (selectedScreen === "chats" && selectedUser && friends && friends.some(friend => friend._id === selectedUser._id) ? <ChatContainer/> : <Sidebar/> ) 
+            : (selectedScreen === "chats" && selectedUser && friends && friends.some(friend => friend._id === selectedUser._id) ? <ChatContainer/> 
+            : selectedScreen == "chatWithAi" ? <AIChat/>
+            : <Sidebar/> ) 
        )
       }
 
@@ -99,6 +103,9 @@ const HomePage = () => {
           
             {!toggleModeOn && (selectedScreen == "chats" && selectedUser && friends.some(friend => friend._id === selectedUser._id))  ? 
               <ChatContainer />:
+              !toggleModeOn && selectedScreen == "chatWithAi" ?
+                <AIChat/>
+              :
               <NoChatSelected /> 
               }
           </div>

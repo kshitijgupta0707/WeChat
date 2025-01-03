@@ -1,7 +1,12 @@
 import express from 'express'
 import { dbConnect } from './config/database.js'
+//googgle login
 import authRoutes from './routes/auth.route.js'
 import messageRoutes from "./routes/message.route.js"
+import googleAuth from "./routes/authRoutes.js"
+import geminiRouter from "./routes/gemini.route.js"
+import aiChatRouter from "./routes/aichat.route.js"
+import mistralRouter from "./routes/mistralRoute.js"
 import friendRoutes from "./routes/friend.route.js"
 import cookieParser from 'cookie-parser'
 import { connectCloudinary } from '../src/config/cloudinary.js'
@@ -45,6 +50,11 @@ app.use(cors(
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/friends", friendRoutes);
+// /AUTH/GOOGLE/CALLBACK
+app.use("/auth", googleAuth);
+app.use("/api/", geminiRouter);
+app.use("/api/",mistralRouter);
+app.use("/api/",aiChatRouter);
 
 //starting the server
 

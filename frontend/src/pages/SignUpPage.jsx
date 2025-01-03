@@ -16,7 +16,7 @@ const SignUpPage = () => {
     confirmPassword: ""
   });
 
-  const { signup, isSigningUp } = useAuthStore();
+  const { signup, isSigningUp ,sendOtp , isSendingOtp} = useAuthStore();
   const navigate = useNavigate();
 
   const validateForm = () => {
@@ -40,8 +40,8 @@ const SignUpPage = () => {
     const success = validateForm();
 
     if (success === true) {
-     signup(formData);
-
+     sendOtp(formData , navigate);
+    //  navigate("/otp", { state: { formData } });
     }
   };
 
@@ -193,7 +193,7 @@ const SignUpPage = () => {
 
 
             <button type="submit" className="btn btn-primary w-full" disabled={isSigningUp}>
-              {isSigningUp ? (
+              {isSendingOtp ? (
                 <>
                   <Loader2 className="size-5 animate-spin" />
                   Loading...
@@ -201,6 +201,12 @@ const SignUpPage = () => {
               ) : (
                 "Create Account"
               )}
+            </button>
+            <button onClick={()=>{window.location.href = "http://localhost:5001/auth/google/callback";
+            }} type="button" className="btn bg-[#f7faff] text-black w-full hover:bg-slate-300" >
+                         
+                            <img className="w-5"  src={"./google.png"} alt="google" />
+                            Sign Up with Google
             </button>
           </form>
 

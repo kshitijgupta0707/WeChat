@@ -1,20 +1,81 @@
 import { User } from '../models/user.model.js';
+import { OTP } from '../models/otp.model.js';
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
 import cloudinary from "cloudinary"
 import { uploadImageToCloudinary } from '../utils/imageUploader.js';
+import otpGenerator from "otp-generator";
 dotenv.config()
 
+
+
+export const sendOtp = async (req , res) =>{
+  try {
+    //fetch email from the request body
+    const { email } = req.body;
+
+    //check if user already exists
+    const existingUser = await User.findOne({ email });
+
+    //if user already exist , then return a respoonse
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "User already registered",
+      });
+    }
+
+    //generate otp
+    const otp = otpGenerator.generate(6, {
+      upperCaseAlphabets: false,
+      specialChars: false,
+      lowerCaseAlphabets: false,
+    });
+    console.log("otp generated ", otp);
+
+    //check unique otp or not
+    const result = await OTP.findOne({ otp });
+    while (result) {
+      otp = otpGenerator.generate(6, {
+        upperCaseAlphabets: false,
+        specialChars: false,
+        lowerCaseAlphabets: false,
+      });
+      console.log("otp generated ", otp);
+      result = await OTP.findOne({ otp });
+    }
+
+    //create an entry in db for otp
+    const otpPayLoad = { email, otp };
+    const otpBody = await OTP.create(otpPayLoad);
+    console.log(otpBody);
+
+    //return succesfull response
+    return res.status(200).json({
+      success: true,
+      message: "Otp sent successfully",
+      otp,
+    });
+  } catch (e) {
+    console.log("Error in sending otp");
+    console.log(e);
+    return res.status(400).json({
+      success: false,
+      message: "Otp not generated",
+      error: e,
+    });
+  }
+}
 
 export const signup = async (req, res) => {
   try {
     //fetch the data from the request
-    const { firstName, lastName, email, password, confirmPassword } = req.body
+    const { firstName, lastName, email, password, confirmPassword , otp } = req.body
     // console.log(firstName, lastName, email, password, confirmPassword);
 
     //check if some data is missing
-    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+    if (!firstName || !lastName || !email || !password || !confirmPassword || !otp) {
       return res.status(400).json({
         success: false,
         message: "All fields are required"
@@ -46,6 +107,39 @@ export const signup = async (req, res) => {
         message: "User already exists",
       });
     }
+  //compare the otp
+    //find the most recent stored for the user
+
+    const recentOtp = await OTP.find({ email })
+      .sort({
+        createdAt: -1,
+      })
+      .limit(1);
+
+    console.log("Recent otp", recentOtp);
+
+    //validate otp
+    if (recentOtp.length == 0) {
+      //otp not found
+      return res.status(400).json({
+        success: false,
+        message: "Otp is expired",
+      });
+    }
+    console.log(otp);
+    console.log(recentOtp[0].otp);
+    //compare otp
+    if (otp != recentOtp[0].otp) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid otp",
+      });
+    }
+
+
+
+
+
 
     //secure the password
 
@@ -176,32 +270,45 @@ export const logout = (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
-export const updateProfile = async (req, res) => {
-  try {
-    // console.log("At update profile");
-    // console.log("Request body:", req.body);
-    // console.log("Request files:", req.files);
-
-    const userId = req.user._id; // Inserted in the protected middleware
-    const profilePic = req.files?.profilePic; // Extract the file from `req.files`
-
-    if (!profilePic) {
-      return res.status(400).json({ message: "Profile picture is required" });
+ export const updateProfile = async (req, res) => {
+    try {
+      const userId = req.user._id;
+      const profilePic = req.files?.profilePic;
+      const predefinedPhoto = req.body.profilePic; // Predefined photo URL
+  
+      if (!profilePic && !predefinedPhoto) {
+        return res.status(400).json({ message: "Profile picture is required" });
+      }
+  
+      let profilePicUrl = predefinedPhoto;
+  
+      if (profilePic) {
+        const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+        if (!allowedTypes.includes(profilePic.mimetype)) {
+          return res.status(400).json({ message: "Only JPG and PNG files are allowed" });
+        }
+        if (profilePic.size > 5 * 1024 * 1024) {
+          return res.status(400).json({ message: "File size must be less than 5MB" });
+        }
+  
+        const uploadResponse = await uploadImageToCloudinary(profilePic, "CHATAPP");
+        profilePicUrl = uploadResponse.secure_url;
+      }
+  
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { profilePic: profilePicUrl },
+        { new: true }
+      );
+  
+      res.status(200).json(updatedUser);
+    } catch (error) {
+      console.error("Error updating profile:", error.message);
+      res.status(500).json({ message: "Internal server error" });
     }
+  };
+  
 
-    const uploadResponse = await uploadImageToCloudinary(profilePic, "CHATAPP");
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { profilePic: uploadResponse.secure_url },
-      { new: true }
-    );
-
-    res.status(200).json(updatedUser);
-  } catch (error) {
-    console.log("error in update profile:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-};
 
 export const checkAuth = (req, res) => {
   try {

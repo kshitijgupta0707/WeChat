@@ -6,6 +6,7 @@ import SignUpPage from "./pages/SignUpPage"
 import LoginPage from "./pages/LoginPage"
 import SettingsPage from "./pages/SettingsPage"
 import ProfilePage from "./pages/ProfilePage"
+import OtpPage from "./pages/OtpPage"
 import { Navigate } from "react-router-dom"
 import { Loader } from "lucide-react"
 import { Toaster } from "react-hot-toast"
@@ -101,6 +102,7 @@ const App = () => {
         <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
+        <Route path="/otp" element={authUser ? <HomePage /> : <OtpPage />} />
       </Routes>
       <Toaster />
 

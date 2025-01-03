@@ -104,7 +104,10 @@ export const useFriendStore = create((set, get) => ({
 //RealTime Functionality goes here
 ,
 subscribeToFriendRequests: (socket) => {
-  console.log("subscribed to Friend Request is called");
+  console.log("subscribed to Friend Request is called")
+  if(!socket) {
+    return
+  }
   const selectedScreen = useSideBarStore.getState().selectedScreen;
   
   // Access the showNotification function from the notification store
@@ -157,18 +160,21 @@ unSubscribeToMessageReciever: () => {
 
 
 subscribeToFriends: (socket) => {
+  if(!socket) {
+    return
+  }
   console.log("subscribed to Friends is called");
   const selectedScreen = useSideBarStore.getState().selectedScreen;
   const { showNotification } = useNotification.getState();
     
    socket.on("newFriend", (data) => {
-
+     showNotification(`Your friend request has accepted by ${data.name} `)
+      console.log("friend req got accepted by some user")
     const{beMyFriends} = get()
      const newBeMyFriends = beMyFriends.filter((id) => id !== data.personWhoHasAccepted)
      localStorage.setItem("beMyFriends", newBeMyFriends)
      set({beMyFriends: newBeMyFriends})
     console.log("Friend Request accetpted by " , data.name);
-    showNotification(`Your friend request has accepted by ${data.name} `)
     if (selectedScreen != "chats") return;
     set({
       friends: data.updatedFriends

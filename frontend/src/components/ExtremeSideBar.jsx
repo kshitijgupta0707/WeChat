@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import {MessageCircle , UserPlus, Users , Settings , UserRoundPen , LogOut, ChevronsRight, ChevronRight} from "lucide-react"
+import {MessageCircle , UserPlus, Users , Settings , UserRoundPen , LogOut, ChevronsRight, ChevronRight , 
+ Circle , Squircle} from "lucide-react"
 import Drawer from './Drawer';
 import { useSideBarStore } from '../store/useSideBarStore';
 import { Link } from 'react-router-dom';
 import { useChatStore } from '../store/useChatStore';
 import { useNotification } from '../store/useNotification';
+import Lottie from "react-lottie"
+
 function extremeSideBar() {
+
+ 
 
   const {showSideBar , toggleSideBar , openSideBar , closeSideBar , selectedScreen , setSelectedScreen } = useSideBarStore() 
   const {selectedUser , setSelectedUser} = useChatStore()
@@ -83,6 +88,35 @@ function extremeSideBar() {
               className="size-12 object-cover rounded-full"
             /> */}
             <Users size={32} />
+        </div> 
+
+          {/* User info - only visible on larger screens */}
+          <div className="hidden lg:block text-left min-w-0">
+            {/* <div className="font-medium truncate">Find Friends</div> */}
+          </div>
+        </button>
+        <button
+        //   key={user._id}
+          onClick={() => {
+            setSelectedScreen("chatWithAi")
+            setSelectedUser(null)
+          }}
+          className={`
+            w-full  sm:p-6 flex items-center justify-center m-auto
+            hover:bg-base-300 transition-colors
+            ${selectedScreen === "chatWithAi" ? "bg-base-300 ring-1 ring-base-300" : ""}
+            tooltip
+          `}
+          data-tip="Chat with AI"
+        >
+       <div className="relative mx-auto ">
+
+       <Circle className='w-8 h-8 animate-ping focus:animate-none absolute  text-cyan-200' />
+       <Circle className='w-8 h-8    text-cyan-200' />
+       
+
+       {/* <Lottie options={defaultOptions} height={60} width={60} /> */}
+       {/* <img src="./chatbot.png" className='  rounded-full'  /> */}
         </div> 
 
           {/* User info - only visible on larger screens */}

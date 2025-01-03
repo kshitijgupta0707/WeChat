@@ -40,6 +40,8 @@ const FindFriends = () => {
 
         e.preventDefault()
         // asynchronous hota hain toh it take time
+        console.log(users)
+        console.log(search)
         setfilteredUsers(users.filter((user) => (user.firstName.startsWith(search))))
         filteredUsers.length == 0 ? setfilteredUsers(users) :""
         setSearch("")

@@ -20,6 +20,7 @@ const Sidebar = () => {
   } = useChatStore()
   
   const { onlineUsers , socket , authUser } = useAuthStore();
+  const [friendsOnline , setFriendsOnline] = useState([]);
   const [showOnlineOnly, setShowOnlineOnly] = useState(false);
 
   const [search , setSearch] = useState("")
@@ -83,15 +84,25 @@ const Sidebar = () => {
   );
 
 
+  useEffect(() =>{
+    if (selectedUser) {
+      setfilteredFriends((prevFriends) =>
+        prevFriends.map((friend) =>
+          friend._id === selectedUser._id
+            ? { ...friend, unseenCount: 0 } // Mark selected user's chats as seen
+            : friend
+        )
+      );
+    }
+  },[selectedUser])
 
 
 
 
   useEffect(()=>{
      setfilteredFriends(friends)
-  } , [friends])
+  } , [friends ])
 
- 
 
   if (isUsersLoading) return <SidebarSkeleton />;
 
@@ -113,7 +124,7 @@ const Sidebar = () => {
             />
             <span className="text-sm">Show online only</span>
           </label>
-          <span className="text-xs text-zinc-500">({onlineUsers.length - 1} online)</span>
+          <span className="text-xs text-zinc-500">({         onlineUsers.length - 1} online)</span>
         </div>
          <form className="   m-auto w-[95%]"   onSubmit={handleOnSearch} >
               <label className="input input-bordered flex items-center gap-5 h-10 ">
@@ -172,11 +183,11 @@ const Sidebar = () => {
             {/* User info - only visible on larger screens */}
             <div className=" lg:block text-left min-w-0">
               <div className="font-medium truncate">{user.firstName} 
-                <span className=" ml-2  text-sm text-zinc-400" >
+                {/* <span className=" ml-2  text-sm text-zinc-400" >
                  ({onlineUsers.includes(user._id) ? "Online" : "Offline"}) 
 
                 </span>
-                
+                 */}
                  </div>
               <div className="text-sm text-zinc-400">
                 {/* {onlineUsers.includes(user._id) ? "Online" : "Offline"} */}
@@ -192,12 +203,10 @@ const Sidebar = () => {
             </div>
             
             {
-             
-             selectedUser && selectedUser._id === user._id? "":
                 user.unseenCount &&   user.unseenCount > 0 ? user.unseenCount
                 : ""
-            }
-            
+            } 
+            {/* {user.unseenCount} */}
           </button>
         ))}
 

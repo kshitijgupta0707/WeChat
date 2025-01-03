@@ -6,43 +6,51 @@ import mongoose from "mongoose";
 const userSchema = mongoose.Schema({
   firstName: {
     type: String,
-    required: true
+    // required: true
   }
   ,
   lastName: {
     type: String,
-    required: true
+    // required: true
+  },
+  googleId: {
+    type: String
+  },
+  picture: {
+    type: String,
+    default: 'https://cdn-icons-png.flaticon.com/512/149/149071.png'
+
   },
   email: {
     type: String,
     required: true,
     unique: true,
-   },
-   password: {
-    type: String ,
-    required: true,
+  },
+  password: {
+    type: String,
+    // required: true,
     minLength: 6
-   }
-   ,
-   profilePic: {
+  }
+  ,
+  profilePic: {
     type: String,
     default: ""
   }
-  , 
+  ,
   //initially as empty during sign up
-  friends: [ {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
-     }
-  ],
-  friendRequests: [ {
+  friends: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-}
-]
-} , {
+  }
+  ],
+  friendRequests: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  }
+  ]
+}, {
   timestamps: true
 })
 
-const User = mongoose.model("User",userSchema);
+const User = mongoose.model("User", userSchema);
 export { User };

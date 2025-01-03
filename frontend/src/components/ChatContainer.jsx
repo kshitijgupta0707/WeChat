@@ -6,6 +6,10 @@ import MessageInput from "./MessageInput";
 import MessageSkeleton from "./skeletons/MessageSkeleton";
 import { useAuthStore } from "../store/useAuthStore";
 import { formatMessageTime } from "../lib/utils";
+import { useFriendStore } from "../store/useFriendStore";
+
+
+
 
 const ChatContainer = () => {
   const {
@@ -20,6 +24,51 @@ const ChatContainer = () => {
   const messageEndRef = useRef(null);
 
   
+  
+
+  const { subscribeToFriends , unSubscribeToFriends ,subscribeToFriendRequests , unSubscribeToFriendRequests , subscribeToMessageReciever ,unSubscribeToMessageReciever} = useFriendStore()
+  const {  showMessageNotification , dontShowMessageNotification} = useChatStore();
+   
+  useEffect(() => {
+      if ( authUser) {
+          subscribeToFriendRequests(socket);
+          subscribeToFriends(socket)
+          showMessageNotification(socket)
+          subscribeToMessageReciever();
+      }
+      //2 times CALLING
+      //CLEARING EVENT LISTENER
+      return () => 
+        {
+          unSubscribeToFriendRequests(socket)
+          subscribeToFriends(socket)
+          dontShowMessageNotification(socket)
+          unSubscribeToMessageReciever()
+        }
+    },
+    [
+      authUser,                 // Dependency on the authentication status
+      subscribeToFriendRequests,
+      unSubscribeToFriendRequests,
+      subscribeToFriends,
+      unSubscribeToFriends,
+      subscribeToMessageReciever,
+      unSubscribeToMessageReciever,
+      socket              ,      // Dependency on the socket instance,
+      showMessageNotification,
+      dontShowMessageNotification
+  ])
+
+
+
+
+
+
+
+
+
+
+
 
   
   useEffect(() => {
