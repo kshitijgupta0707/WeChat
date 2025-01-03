@@ -94,5 +94,19 @@ const getAIChatHistory = async (req , res) => {
       return [];
     }
   };
+
+  const clearChatHistory = async (req , res) => {
+    try {
+      console.log("clear chat history called")
+      const userId = req.user._id
+      const chat = await AIChat.findOneAndDelete({ userId }, {new:true});
+      console.log(chat)
+      return res.json(chat ? chat.messages : []).status(200);
+    } catch (error) {
+      console.error('Error retrieving AI chat history:', error);
+      return res.json({}).status(400);
+    }
+  };
   
-export {sendMessageToGemini , getAIChatHistory}
+  
+export {sendMessageToGemini , getAIChatHistory,clearChatHistory}

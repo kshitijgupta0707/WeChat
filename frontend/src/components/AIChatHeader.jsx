@@ -1,8 +1,10 @@
 import { X } from "lucide-react";
 import { useEffect } from "react";
 import { useSideBarStore } from "../store/useSideBarStore.js";
+import { useAIStore } from "../store/useAIStore.js";
 const AIChatHeader = () => {
   const {  selectedScreen, setSelectedScreen } = useSideBarStore();
+  const {clearChatHistory} = useAIStore()
  useEffect(()=>{
   console.log(selectedScreen)
  },[selectedScreen])
@@ -26,9 +28,17 @@ const AIChatHeader = () => {
           </div>
         </div>
            {/* Close button */}
+           <div className="flex gap-5" >
+           <button onClick={() =>{
+              clearChatHistory()
+           }}>
+            <img src="./delete.png" className="w-10  rounded-full " />
+        </button>
            <button onClick={() => setSelectedScreen("chats")}>
           <X />
         </button>
+
+           </div>
       </div>
     </div>
   );

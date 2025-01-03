@@ -22,6 +22,20 @@ export const useAIStore = create((set, get) => ({
       set({ isAIMessagesLoading: false });
     }
   },
+  clearChatHistory: async () => {
+    set({ isAIMessagesLoading: true });
+    try {
+      console.log("clearChat history called")
+      const res = await axiosInstance.post("/clearChats");
+      console.log("response is ", res)
+      set({ aimessages: []});
+      toast.success("Chat cleared successfully")
+    } catch (error) {
+      toast.error(error.response.data.message);
+    } finally {
+      set({ isAIMessagesLoading: false });
+    }
+  },
   sendMessageToAi: async (data) => {
     const { aimessages } = get();
     set({ isAIMessagesSending: true });
