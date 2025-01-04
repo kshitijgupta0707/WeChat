@@ -1,7 +1,7 @@
 
-# WeChat
+# ![Image description](./frontend/public/logo3.svg) WeChat 
 
-**Tagline**: *Where every conversation becomes a moment*
+ *Where every conversation becomes a moment*
 
 WeChat is a feature-rich chat application designed to make your conversations seamless, engaging, and memorable. With a focus on real-time interactions, personalization, and intelligent features, WeChat elevates the way you connect with others.
 
@@ -158,6 +158,8 @@ http://localhost:5173
 
 ---
 
+- **To know how backend and socket.io works:** [Socket.io Flow Diagram](https://miro.com/app/board/uXjVLxyQEGQ=/?share_link_id=634243021723)  
+
 ## Technologies Used
 
 - **Frontend:** React.js, Tailwind CSS  
@@ -189,6 +191,8 @@ We welcome contributions to WeChat! Follow these steps to contribute:
 5. Open a pull request.
 
 ---
+
+
 
 ## License
 
