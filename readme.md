@@ -76,10 +76,134 @@ Buzz Buddy is a feature-rich chat application designed to make your conversation
 - MongoDB
 - Any modern web browser
 
-### Steps
-1. Clone the repository:
+# Buzz Buddy
+
+## Steps
+
+### 1. Clone the repository:
+```bash
+git clone https://github.com/kshitijgupta0707/BuzzzBuddy.git
+```
+
+### 2. Navigate to the frontend directory:
+```bash
+cd frontend
+```
+
+### 3. Install dependencies:
+```bash
+npm i
+```
+
+### 4. Navigate to the backend directory:
+```bash
+cd ..
+cd backend
+```
+
+### 3. Install dependencies:
+```bash
+npm i
+```
+
+### 4. Set up environment variables:
+- Create a `.env` file in the root directory.
+- Add the following variables:
+
+```env
+
+PORT = 5001
+//mongodb database url
+DATABASE_URL = yourmongodbconnecionstring
+
+JWT_SECRET = anything
+
+//cloudinary
+CLOUD_NAME = 
+API_KEY = 
+API_SECRET = 
+    
+//mail  
+MAIL_HOST = smtp.gmail.com
+MAIL_USER = yourGmailId
+MAIL_PASS = appPassword
+
+//home url
+VITE_SITE_URL = "http://localhost:frontendport"
+
+GEMINI_API_KEY = ""
+//not in working for now
+HUGGING_FACE_TOKEN = ""
+
+//google login
+CLIENT_ID = 
+CLIENT_SECRET = 
+CALLBACK_URL = "/auth/google/callback"
+```
+
+### 5. Start the backend server and frontend server on 2 different terminals:
+```bash
+cd frontend
+npm run dev
+```
+```bash
+cd backend
+npm run dev
+```
+
+### 6. Open your browser and navigate to:
+```arduino
+http://localhost:5173
+```
+
+---
+
+## Technologies Used
+
+- **Frontend:** React.js, Tailwind CSS  
+- **Backend:** Node.js, Express.js 
+- **Database:** MongoDB  
+- **Authentication:** JSON Web Tokens (JWT), Google OAuth 2.0  
+- **Email Service:** Nodemailer   
+- **Real-Time Updates:** Socket.IO  
+
+---
+
+## Contributing
+
+We welcome contributions to Buzz Buddy! Follow these steps to contribute:
+
+1. Fork the repository.
+2. Create a feature branch:
    ```bash
-   git clone https://github.com/username/buzz-buddy.git
+   git checkout -b feature/your-feature-name
+   ```
+3. Commit your changes:
+   ```bash
+   git commit -m "Add your feature description"
+   ```
+4. Push to the branch:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+5. Open a pull request.
+
+---
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for more details.
+
+---
+
+## Contact
+
+For any inquiries or support, please contact:
+
+- **Email:** kshitijgupta070704@gmail.com  
+- **GitHub:** [GitHub Repository](https://github.com/kshitijgupta0707/BuzzzBuddy)  
+
+Thank you for choosing Buzz Buddy! Enjoy connecting with your friends and exploring intelligent features.
 
 how to get gmail app password?
 how to get gmail login ?
