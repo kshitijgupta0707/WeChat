@@ -145,7 +145,7 @@ const FindFriends = () => {
     <div className="text-center flex flex-col items-center  "   >
       <img src={user.profilePic || "/avatar.png"} className="rounded-full w-[100px] h-[100px]" alt="Profile" />
       <div className="flex flex-col ml-0" >
-      <span className="font-bold text-lg mt-2">{user.firstName+ " " + user.lastName}</span>
+      <span className="font-bold text-lg mt-2">{user.firstName+ " " } {user.lastName ? user.lastName: ""}</span>
       <span className=" text-sm ">{user.email}</span>
 
       </div>

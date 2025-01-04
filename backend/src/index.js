@@ -76,6 +76,6 @@ server.listen(PORT, () => {
   //connects the database
   dbConnect()
   connectCloudinary()
-  // deleteMessages()
+  deleteMessages()
   // seedDatabase()
 })
