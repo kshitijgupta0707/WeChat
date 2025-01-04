@@ -39,7 +39,6 @@ const getResponseFromGemini = async(prompt) =>{
 const sendMessageToGemini = async (req,res) => {
   try {
     const { text} = req.body
-    console.log("text recieved is ", text)
     const userId =  req.user._id
     let chat = await AIChat.findOne({ userId });
     if(!text ||!userId || !text.trim()){
