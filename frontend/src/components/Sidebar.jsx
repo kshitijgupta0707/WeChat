@@ -29,18 +29,14 @@ const Sidebar = () => {
   const handleOnSearch = (e) =>{
      e.preventDefault()
    // asynchronous hota hain toh it take time
-   console.log("Handling on search called " );
    setfilteredFriends(friends.filter((user) => (user.firstName.startsWith(search))))
     setSearch("")
-    console.log("Users are " , filteredFriends)
   }
   const handleOnOnlineToggle= (e) =>{
     e.preventDefault()
   // asynchronous hota hain toh it take time
-  console.log("Handling on search called " );
   setfilteredFriends(friends.filter((user) => (user.firstName.startsWith(search))))
    setSearch("")
-   console.log("Users are " , filteredFriends)
  }
   useEffect(()=>{
     if(showOnlineOnly){
@@ -63,7 +59,6 @@ const Sidebar = () => {
         subscribeToFriends(socket);
         subscribeToMessageReciever();
         showMessageNotification(socket)
-         console.log("called by sidebar page")
         // subscribeToMessages()
     }
     //2 times CALLING

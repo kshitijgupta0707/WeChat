@@ -5,9 +5,7 @@ import { useAIStore } from "../store/useAIStore.js";
 const AIChatHeader = () => {
   const {  selectedScreen, setSelectedScreen } = useSideBarStore();
   const {clearChatHistory} = useAIStore()
- useEffect(()=>{
-  console.log(selectedScreen)
- },[selectedScreen])
+
   return (
     <div className="p-2.5 border-b border-base-300">
       <div className="flex items-center justify-between">

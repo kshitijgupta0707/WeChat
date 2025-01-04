@@ -19,12 +19,6 @@ const AIChat = () => {
   } = useAIStore();
   const { authUser } = useAuthStore();
   const messageEndRef = useRef(null);
-
-  
-  
-
-
-
   useEffect(() => {
     if ( authUser) {
       getAIChat();

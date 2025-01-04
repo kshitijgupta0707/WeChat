@@ -9,7 +9,7 @@ import otpGenerator from "otp-generator";
 
 
 
-export const sendOtp = async (req , res) =>{
+export const sendOtp = async (req, res) => {
   try {
     //fetch email from the request body
     const { email } = req.body;
@@ -66,11 +66,10 @@ export const sendOtp = async (req , res) =>{
     });
   }
 }
-
 export const signup = async (req, res) => {
   try {
     //fetch the data from the request
-    const { firstName, lastName, email, password, confirmPassword , otp } = req.body
+    const { firstName, lastName, email, password, confirmPassword, otp } = req.body
     // console.log(firstName, lastName, email, password, confirmPassword);
 
     //check if some data is missing
@@ -106,7 +105,7 @@ export const signup = async (req, res) => {
         message: "User already exists",
       });
     }
-  //compare the otp
+    //compare the otp
     //find the most recent stored for the user
 
     const recentOtp = await OTP.find({ email })
@@ -269,47 +268,44 @@ export const logout = (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
- export const updateProfile = async (req, res) => {
-    try {
-      const userId = req.user._id;
-      const profilePic = req.files?.profilePic;
-      const predefinedPhoto = req.body.profilePic; // Predefined photo URL
-  
-      if (!profilePic && !predefinedPhoto) {
-        return res.status(400).json({ message: "Profile picture is required" });
-      }
-  
-      let profilePicUrl = predefinedPhoto;
-  
-      if (profilePic) {
-        const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
-        if (!allowedTypes.includes(profilePic.mimetype)) {
-          return res.status(400).json({ message: "Only JPG and PNG files are allowed" });
-        }
-        // only 200kb photo rquired
-        if (profilePic.size > 200 * 1024) {
-          return res.status(400).json({ message: "File size must be less than 200Kb" });
-        }
-  
-        const uploadResponse = await uploadImageToCloudinary(profilePic, "CHATAPP");
-        profilePicUrl = uploadResponse.secure_url;
-      }
-  
-      const updatedUser = await User.findByIdAndUpdate(
-        userId,
-        { profilePic: profilePicUrl },
-        { new: true }
-      );
-  
-      res.status(200).json(updatedUser);
-    } catch (error) {
-      console.error("Error updating profile:", error.message);
-      res.status(500).json({ message: "Internal server error" });
+export const updateProfile = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const profilePic = req.files?.profilePic;
+    const predefinedPhoto = req.body.profilePic; // Predefined photo URL
+
+    if (!profilePic && !predefinedPhoto) {
+      return res.status(400).json({ message: "Profile picture is required" });
     }
-  };
-  
 
+    let profilePicUrl = predefinedPhoto;
 
+    if (profilePic) {
+      const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+      if (!allowedTypes.includes(profilePic.mimetype)) {
+        return res.status(400).json({ message: "Only JPG and PNG files are allowed" });
+      }
+      // only 200kb photo rquired
+      if (profilePic.size > 200 * 1024) {
+        return res.status(400).json({ message: "File size must be less than 200Kb" });
+      }
+
+      const uploadResponse = await uploadImageToCloudinary(profilePic, "CHATAPP");
+      profilePicUrl = uploadResponse.secure_url;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { profilePic: profilePicUrl },
+      { new: true }
+    );
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error("Error updating profile:", error.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 export const checkAuth = (req, res) => {
   try {
     res.status(200).json(req.user);
@@ -318,3 +314,4 @@ export const checkAuth = (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+

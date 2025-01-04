@@ -12,9 +12,7 @@ export const useAIStore = create((set, get) => ({
   getAIChat: async () => {
     set({ isAIMessagesLoading: true });
     try {
-      console.log("i am at get ai chat")
       const res = await axiosInstance.get("/getAllChats");
-      console.log("response is ", res)
       set({ aimessages: res.data });
     } catch (error) {
       toast.error(error.response.data.message);
@@ -25,9 +23,7 @@ export const useAIStore = create((set, get) => ({
   clearChatHistory: async () => {
     set({ isAIMessagesLoading: true });
     try {
-      console.log("clearChat history called")
       const res = await axiosInstance.post("/clearChats");
-      console.log("response is ", res)
       set({ aimessages: []});
       toast.success("Chat cleared successfully")
     } catch (error) {

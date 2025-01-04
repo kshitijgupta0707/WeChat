@@ -1,3 +1,9 @@
+// i have made this just to get the seperate gemini working
+// notuse in project  
+  
+  
+  
+  
   import {GoogleGenerativeAI } from "@google/generative-ai"  
   const apiKey = process.env.GEMINI_API_KEY;
   const genAI = new GoogleGenerativeAI(apiKey);

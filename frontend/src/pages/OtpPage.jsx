@@ -58,10 +58,6 @@ const OtpPage = () => {
     console.log(formData)
   },[formData])
   const [showPassword, setShowPassword] = useState(false);
-  // const [formData, setFormData] = useState({
-    //   email: "",
-    //   password: "",
-    // });
     const { signup  } = useAuthStore();
     const navigate = useNavigate()
 
@@ -69,10 +65,8 @@ const OtpPage = () => {
 
   const handleSubmit = async () => {
     const finalOtp = otp.join('');
-    console.log(finalOtp.length)
     if(formData && finalOtp.length == 6){
       formData.otp = finalOtp
-      console.log(formData)
       signup(formData , navigate)
     }
   };

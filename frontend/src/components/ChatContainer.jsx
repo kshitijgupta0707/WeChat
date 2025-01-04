@@ -22,10 +22,6 @@ const ChatContainer = () => {
   } = useChatStore();
   const { authUser,socket } = useAuthStore();
   const messageEndRef = useRef(null);
-
-  
-  
-
   const { subscribeToFriends , unSubscribeToFriends ,subscribeToFriendRequests , unSubscribeToFriendRequests , subscribeToMessageReciever ,unSubscribeToMessageReciever} = useFriendStore()
   const {  showMessageNotification , dontShowMessageNotification} = useChatStore();
    
@@ -58,18 +54,6 @@ const ChatContainer = () => {
       showMessageNotification,
       dontShowMessageNotification
   ])
-
-
-
-
-
-
-
-
-
-
-
-
   
   useEffect(() => {
     if (selectedUser&& authUser) {

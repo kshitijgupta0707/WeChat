@@ -15,14 +15,11 @@ const LoginPage = () => {
   const { login, isLoggingIn  } = useAuthStore();
 
   const validateForm = () => {
-    console.log("validating form function called");
 
     if (!formData.email.trim()) return toast.error("Email is required");
     //regular expression genereated with the help of ai
     if (!/\S+@\S+\.\S+/.test(formData.email)) return toast.error("Invalid email format");
     if (!formData.password) return toast.error("Password is required");
-
-    console.log("not reached here")
     return true;
   };
 

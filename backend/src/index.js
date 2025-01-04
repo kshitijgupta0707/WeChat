@@ -10,12 +10,12 @@ import mistralRouter from "./routes/mistralRoute.js"
 import friendRoutes from "./routes/friend.route.js"
 import cookieParser from 'cookie-parser'
 import { connectCloudinary } from '../src/config/cloudinary.js'
-import { app , server } from './config/socket.js'
 import fileUpload from "express-fileupload";
 import cors from "cors";
 import path from "path"
 import { deleteMessages } from './seeds/deleteAllMessages.js'
 import { seedDatabase } from './seeds/user.seeds.js'
+import { app , server } from './config/socket.js'
 //initiating the server
 // const app = express()
 

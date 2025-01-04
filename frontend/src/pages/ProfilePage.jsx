@@ -12,14 +12,6 @@ const predefinedPhotos = [
 const ProfilePage = () => {
   const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
   const [selectedImg, setSelectedImg] = useState(null);
-  // useEffect(() => {
-  //   console.log(authUser)
-  // }, {})
-
-  useEffect(() => {
-    console.log("Auth user");
-    console.log(authUser);
-  }, [])
   const handleImageUpload = async (e) => {
 
     // grabs the first file selected by the user.
@@ -46,7 +38,6 @@ const ProfilePage = () => {
     // reader.onload is triggered when file reading is complete.
     reader.onload = async () => {
       const base64Image = reader.result;
-      console.log("image :", base64Image)
       //so that image get shown in circle immediately
       await updateProfile({ profilePic: file });
       setSelectedImg(base64Image);

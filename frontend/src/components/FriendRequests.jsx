@@ -40,20 +40,16 @@ const FriendRequests = () => {
     }
     const handleOnSearch = (e) => {
         e.preventDefault()
-        console.log("handle on submit called")
-        console.log(users)
         // asynchronous hota hain toh it take time
         setsearchedUser(users.filter((user) => (user.firstName.startsWith(search))))
         setSearch("")
         // console.log("Users are " , filteredUsers)
     }
     useEffect(() => {
-        console.log("Filtered users (updated state): ", filteredUsers);
         setUsers(searchedUser)
     }, [searchedUser]);
 
     useEffect(() => {
-        console.log("called function get freinds")
         getFriendRequests();
     }, [getFriendRequests]);
 
@@ -65,7 +61,6 @@ const FriendRequests = () => {
         if ( authUser) {
             getFriendRequests();
             subscribeToFriendRequests(socket);
-            console.log("called by friend request page")
         }
         //2 times CALLING
         //CLEARING EVENT LISTENER

@@ -8,16 +8,12 @@ const AIChatInput = () => {
   const [text, setText] = useState("");
   const {sendMessageToAi  , isAIMessagesSending} = useAIStore();
   const handleSendMessageToAi = async (e) => {
-    console.log("handle send message to ai")
     e.preventDefault();
     if (!text.trim()) return;
-    console.log("handle")
     try {
       await sendMessageToAi({
         text: text.trim(),
-    
       });
-        console.log("ho")
       // Clear form
       setText("");
     } catch (error) {

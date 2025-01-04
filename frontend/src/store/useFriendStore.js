@@ -16,11 +16,9 @@ export const useFriendStore = create((set, get) => ({
   
   //basic function
   getFriends: async () => {
-    console.log("i am called")
     set({ isFriendsLoading: true });
     try {
       const res = await axiosInstance.get("/friends/getAllFriends");
-      console.log("Response get from the backjed to frontend " , res.data )
       set({ friends: res.data.data });
     } catch (error) {
       toast.error(error.response.data.message);
@@ -45,7 +43,6 @@ export const useFriendStore = create((set, get) => ({
  //after sending request I am updating the local storage
   sendFriendRequest: async(id)=>{
     try {
-        console.log("Sending the request ");
         const res = await axiosInstance.post(`/friends/sendFriendRequest/${id}`);
        
 
@@ -66,15 +63,12 @@ export const useFriendStore = create((set, get) => ({
   //functions to accept and dcline request and update the friend Request accordingly
   acceptFriendRequest: async(id)=>{
       try {
-      console.log("Accepting the request ");
       const {friendRequests} = get()
       const res = await axiosInstance.post(`/friends/acceptFriendRequest/${id}`);
      
       // i am doing this to update ui in real time
-      console.log("Requests are - ", friendRequests);
       const updatedRequests = friendRequests.filter((user) => user._id!== id)
      
-      console.log("Updated Requests are - ", updatedRequests);
       set({friendRequests: updatedRequests})
 
       toast.success("Friend Request accepted Successfully");
@@ -84,15 +78,12 @@ export const useFriendStore = create((set, get) => ({
 },
    declineFriendRequest: async(id)=>{
     try {
-        console.log("Declining the request ");
         const {friendRequests} = get()
         const res = await axiosInstance.post(`/friends/declineFriendRequest/${id}`);
 
         // i am doing this to update ui in real time
-        console.log("Requests are - ", friendRequests);
         const updatedRequests = friendRequests.filter((user) => user._id!== id)
        
-        console.log("Updated Requests are - ", updatedRequests);
         set({friendRequests: updatedRequests})
         toast.success("Friend Request Decline Successfully");
     } catch (error) {
@@ -104,7 +95,6 @@ export const useFriendStore = create((set, get) => ({
 //RealTime Functionality goes here
 ,
 subscribeToFriendRequests: (socket) => {
-  console.log("subscribed to Friend Request is called")
   if(!socket) {
     return
   }
@@ -114,17 +104,12 @@ subscribeToFriendRequests: (socket) => {
   const { showNotification } = useNotification.getState();
   
   socket.on("newFriendRequest", (data) => {
-   console.log(data)
-    console.log("Friend Request Recieved")
     // Show the notification
-    console.log(data.name)
-    console.log(data.friendRequests)
     showNotification(`You have a new friend request from ${data.name} !`);
     if (selectedScreen != "friendRequests") return;
     set({
       friendRequests: data.friendRequests
     });
-    console.log("new friend request data = " , data.friendRequests)
   });
 },
 
@@ -134,10 +119,8 @@ unSubscribeToFriendRequests: (socket) => {
 
 
 subscribeToMessageReciever: () =>{
-  console.log("SUBSCRIBE TO MESSAGE RECIEVER")
   const socket = useAuthStore.getState().socket
   socket.on("newMessage", (data) => {
-  console.log("UI UPDATE FUNCTION")
   const senderId = data.message.senderId;
   const text = data.message.text;
   const {friends} = get()
@@ -156,7 +139,6 @@ subscribeToMessageReciever: () =>{
 },
 
 unSubscribeToMessageReciever: () => {
-  console.log(" UN SUBSCRIBE TO MESAGE RECIEVER")
   const socket = useAuthStore.getState().socket
   socket.off("newMessage");
 },
@@ -167,23 +149,19 @@ subscribeToFriends: (socket) => {
   if(!socket) {
     return
   }
-  console.log("subscribed to Friends is called");
   const selectedScreen = useSideBarStore.getState().selectedScreen;
   const { showNotification } = useNotification.getState();
     
    socket.on("newFriend", (data) => {
      showNotification(`Your friend request has accepted by ${data.name} `)
-      console.log("friend req got accepted by some user")
     const{beMyFriends} = get()
      const newBeMyFriends = beMyFriends.filter((id) => id !== data.personWhoHasAccepted)
      localStorage.setItem("beMyFriends", newBeMyFriends)
      set({beMyFriends: newBeMyFriends})
-    console.log("Friend Request accetpted by " , data.name);
     if (selectedScreen != "chats") return;
     set({
       friends: data.updatedFriends
     });
-    console.log("new friends data = " , friendRequests)
   });
 },
 

@@ -7,18 +7,9 @@ import { useChatStore } from '../store/useChatStore';
 import { useNotification } from '../store/useNotification';
 import Lottie from "react-lottie"
 function BottomBar() {
-  // const defaultOptions = {
-  //   loop: true,
-  //   autoplay: true,
-  //   animationData: aiAnimation,
-  //   rendererSettings: {
-  //     preserveAspectRatio: "xMidYMid slice",
-  //   },
-  // };
 
   const {showSideBar , toggleSideBar , openSideBar , closeSideBar , selectedScreen , setSelectedScreen } = useSideBarStore() 
   const {selectedUser , setSelectedUser} = useChatStore()
-
   const {isVisible , setIsVisible , message , showNotification} = useNotification()
   return (
     <aside className= {`h-full  w-[0px]   items-center border-r border-base-300 flex flex-col transition-all duration-200 overflow-x-hidden `}>

@@ -7,9 +7,9 @@ import { io } from "socket.io-client";
 
 const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5001" : "/";
 
-export const useAuthStore = create((set,get) => ({
+export const useAuthStore = create((set, get) => ({
   authUser: null,
-  isSendingOtp: false ,
+  isSendingOtp: false,
   isSigningUp: false,
   isLoggingIn: false,
   isUpdatingProfile: false,
@@ -17,32 +17,27 @@ export const useAuthStore = create((set,get) => ({
   isCheckingAuth: true,
   onlineUsers: [],
   socket: null,
-  
+
   checkAuth: async () => {
     try {
-      console.log("check auth function in the store get called");
       const res = await axiosInstance.get("/auth/check");
-      console.log(res);
       set({ authUser: res.data });
-        get().connectSocket();
+      get().connectSocket();
     } catch (error) {
-      console.log("Error in checkAuth:", error);
       set({ authUser: null });
     } finally {
       set({ isCheckingAuth: false });
     }
   },
+  sendOtp: async (data, navigate) => {
 
-  sendOtp: async (data , navigate) => {
 
-   
     set({ isSendingOtp: true });
     try {
-      const res1 = await axiosInstance.post("/auth/sendotp" , data)
-      console.log("Mail has send successfully to your account check kro")
+      const res1 = await axiosInstance.post("/auth/sendotp", data)
       // const res = await axiosInstance.post("/auth/signup", data);
       // //so that the user get authenticated soon after the signup
-      toast.success("Otp Send on mail");  
+      toast.success("Otp Send on mail");
       set({ isSendingOtp: false });
       setTimeout(() => {
         // Use React Router's navigate function to redirect and pass state
@@ -53,16 +48,16 @@ export const useAuthStore = create((set,get) => ({
       toast.error(error.response.data.message);
     } finally {
       set({ isSendingOtp: false });
-     
+
     }
   },
-  signup: async (data , navigate) => {
+  signup: async (data, navigate) => {
     set({ isSigningUp: true });
     try {
       const res = await axiosInstance.post("/auth/signup", data);
       //so that the user get authenticated soon after the signup
       // set({ authUser: res.data });
-      toast.success("Account created successfully");  
+      toast.success("Account created successfully");
       set({ isSigningUp: false });
       setTimeout(() => {
         // Use React Router's navigate function to redirect and pass state
@@ -76,13 +71,10 @@ export const useAuthStore = create((set,get) => ({
 
     }
   },
-  
-
   login: async (data) => {
     set({ isLoggingIn: true });
     try {
       const res = await axiosInstance.post("/auth/login", data);
-      console.log("I have loggin to the id :" , res.data)
       set({ authUser: res.data.responseUser });
       toast.success("Logged in successfully ");
       get().connectSocket();
@@ -92,7 +84,6 @@ export const useAuthStore = create((set,get) => ({
       set({ isLoggingIn: false });
     }
   },
-
   logout: async () => {
     try {
       await axiosInstance.post("/auth/logout");
@@ -103,13 +94,9 @@ export const useAuthStore = create((set,get) => ({
       toast.error(error.response.data.message);
     }
   },
-
   updateProfile: async (data) => {
     set({ isUpdatingProfile: true });
     try {
-      console.log("In update profile ")
-      console.log(data);
-
 
       const formData = new FormData();
       formData.append("profilePic", data.profilePic); // `somefile` should be the file object
@@ -131,33 +118,31 @@ export const useAuthStore = create((set,get) => ({
       set({ isUpdatingProfile: false });
     }
   },
+  connectSocket: () => {
+    const { authUser } = get();
+    //alreadyConnected or not autheticated - not do it
+    if (!authUser || get().socket?.connected) return;
 
-    connectSocket: () => {
-      const { authUser } = get();
-      //alreadyConnected or not autheticated - not do it
-      if (!authUser || get().socket?.connected) return;
-
-      const socket = io(BASE_URL,{
-        // i am sending some data to the backend 
-        // sending the userId to know who is online
-        query: {
-          userId: authUser._id,
-          userName: authUser.firstName
-        },
-      }
+    const socket = io(BASE_URL, {
+      // i am sending some data to the backend 
+      // sending the userId to know who is online
+      query: {
+        userId: authUser._id,
+        userName: authUser.firstName
+      },
+    }
     );
     //connection established by the user with io so it give notification to the backend 
     //and you have written what to do now in backend
-      socket.connect();
+    socket.connect();
 
-      set({ socket: socket });
+    set({ socket: socket });
 
-      socket.on("getOnlineUsers", (userIds) => {
-        set({ onlineUsers: userIds });
-      });
-    },
-    disconnectSocket: () => {
-      console.log("disconnect socket from front end called")
-      if (get().socket?.connected) get().socket.disconnect();
-    },
+    socket.on("getOnlineUsers", (userIds) => {
+      set({ onlineUsers: userIds });
+    });
+  },
+  disconnectSocket: () => {
+    if (get().socket?.connected) get().socket.disconnect();
+  },
 }));

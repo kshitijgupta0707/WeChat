@@ -20,7 +20,6 @@ const SignUpPage = () => {
   const navigate = useNavigate();
 
   const validateForm = () => {
-    console.log("validating form function called");
     if (!formData.firstName.trim()) return toast.error(" name is required");
     if (!formData.lastName.trim()) return toast.error(" name is required");
     if (!formData.email.trim()) return toast.error("Email is required");
@@ -34,7 +33,6 @@ const SignUpPage = () => {
   };
 
   const handleSubmit = (e) => {
-    console.log("handle submit function called");
     e.preventDefault();
 
     const success = validateForm();

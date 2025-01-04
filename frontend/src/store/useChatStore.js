@@ -11,7 +11,7 @@ export const useChatStore = create((set, get) => ({
   selectedUser: null,
   isUsersLoading: false,
   isMessagesLoading: false,
-  setUsers: async(filteredUser) =>{
+  setUsers: async (filteredUser) => {
     set({ users: filteredUser });
   },
   getUsers: async () => {
@@ -39,73 +39,60 @@ export const useChatStore = create((set, get) => ({
   sendMessage: async (messageData) => {
     const { selectedUser, messages } = get();
     try {
-      
+
       const res = await axiosInstance.post(`/messages/send/${selectedUser._id}`, messageData);
       toast.success("Message sent Successfully");
       //update in the chat to show
       //on friends
-       const {messages} = get()
-       console.log("purane messages",messages)
-      const  newMessages = [...messages , res.data]
+      const { messages } = get()
+      console.log("purane messages", messages)
+      const newMessages = [...messages, res.data]
       console.log("nayeMessages", newMessages);
       // const {friends , setFriends} = useFriendStore().getState()
-   console.log("Message updated", newMessages)
+      console.log("Message updated", newMessages)
 
-      set({ messages: newMessages});
+      set({ messages: newMessages });
     } catch (error) {
       toast.error(error.response.data.message);
     }
   },
-
   //get notification about only message in real time
-  showMessageNotification: (socket) =>{
-    console.log("(Notification subscription)")
-    const { showNotification } = useNotification.getState();
-    
-     socket.on("newMessage", (data) => {
-      console.log("SHOW MESSAGE FUNCTION")
-      showNotification(`You recieved a new Message from ${data.name}`)
-    });
-  },
-  dontShowMessageNotification:(socket) =>{
-    console.log("Notification subscription unsubcribe")
+    showMessageNotification: (socket) => {
+      const { showNotification } = useNotification.getState();
+
+      socket.on("newMessage", (data) => {
+        showNotification(`You recieved a new Message from ${data.name}`)
+      });
+    },
+  dontShowMessageNotification: (socket) => {
     socket.off("newMessage");
   },
-
   //Below two function are just to show real time messaging between two persons (messages update of paticular user)
   subscribeToMessages: (socket) => {
-    const { selectedUser } = get();  
+    const { selectedUser } = get();
     socket.on("newMessage", (data) => {
-    console.log("(subscribe to message) Message Recieved by someone");    
-    
-     if (!selectedUser) return;
-     const isMessageSentFromSelectedUser = data.message.senderId === selectedUser._id;
-     if (!isMessageSentFromSelectedUser) return;
-     set({
-       messages: [...get().messages, data.message],
-     });
+
+      if (!selectedUser) return;
+      const isMessageSentFromSelectedUser = data.message.senderId === selectedUser._id;
+      if (!isMessageSentFromSelectedUser) return;
+      set({
+        messages: [...get().messages, data.message],
+      });
     });
   },
   unsubscribeFromMessages: (socket) => {
-    console.log("subscriber tomessage unsubcribe")
     socket.off("newMessage");
   },
   setSelectedUser: (selectedUser) => set({ selectedUser }),
-
-
   // tell backend that messages are seened
-  setMessagesAsSeen: async(id)=>{
+  setMessagesAsSeen: async (id) => {
     try {
-      console.log("Marking messages as seen of " , id);
       const res = await axiosInstance.post(`/messages/markMessageAsSeen/${id}`);
 
       //refresh friends here
-      
+
     } catch (error) {
       toast.error(error.response.data.message);
-  }
+    }
   },
-  subscribeToSeenMessages:(socket) =>{
-
-  }
 }));

@@ -3,6 +3,10 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+// i have made this just to get the seperate hugging face mistralm model working
+// notuse in project  
+// soon to be added in the project
+
 async function generateText(req, res) {
   try {
     // Extract input text from the request body

@@ -29,7 +29,6 @@ export const useSideBarStore = create((set, get) => ({
 ,
   setSelectedScreen: async(screen) =>{
     const {selectedScreen} = get();
-    console.log(screen)
     set({
         selectedScreen: screen
     })

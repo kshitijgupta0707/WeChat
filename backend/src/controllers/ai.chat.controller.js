@@ -36,9 +36,6 @@ const getResponseFromGemini = async(prompt) =>{
       console.error(e);
      }
 }
-
-
-
 const sendMessageToGemini = async (req,res) => {
   try {
     const { text} = req.body
@@ -94,8 +91,7 @@ const getAIChatHistory = async (req , res) => {
       return [];
     }
   };
-
-  const clearChatHistory = async (req , res) => {
+const clearChatHistory = async (req , res) => {
     try {
       console.log("clear chat history called")
       const userId = req.user._id
@@ -110,3 +106,9 @@ const getAIChatHistory = async (req , res) => {
   
   
 export {sendMessageToGemini , getAIChatHistory,clearChatHistory}
+
+
+// getResponseFromGemini
+// sendMessageToGemini
+// getAIChatHistory
+// clearChatHistory
