@@ -9,7 +9,7 @@ import { dbConnect } from '../config/database.js';
         try {
             dotenv.config()
             await dbConnect();  
-            await    User.deleteMany({})
+            await    Message.deleteMany({})
             .then(() => {
                 console.log('All messages have been deleted successfully.');
                 mongoose.disconnect();
