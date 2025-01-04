@@ -1,5 +1,5 @@
 
-# ![Image description](./frontend/public/logo3.svg) WeChat 
+#  WeChat 
 
  *Where every conversation becomes a moment*
 
