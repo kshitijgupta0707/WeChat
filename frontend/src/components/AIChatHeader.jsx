@@ -4,7 +4,7 @@ import { useSideBarStore } from "../store/useSideBarStore.js";
 import { useAIStore } from "../store/useAIStore.js";
 const AIChatHeader = () => {
   const {  selectedScreen, setSelectedScreen } = useSideBarStore();
-  const {clearChatHistory} = useAIStore()
+  const {clearChatHistory , aimessages} = useAIStore()
 
   return (
     <div className="p-2.5 border-b border-base-300">
@@ -27,11 +27,10 @@ const AIChatHeader = () => {
         </div>
            {/* Close button */}
            <div className="flex gap-5" >
-           <button onClick={() =>{
-              clearChatHistory()
-           }}>
+          {aimessages.length!= 0 && <button onClick={() =>{clearChatHistory()}}>
             <img src="./delete.png" className="w-10  rounded-full " />
         </button>
+          } 
            <button onClick={() => setSelectedScreen("chats")}>
           <X />
         </button>

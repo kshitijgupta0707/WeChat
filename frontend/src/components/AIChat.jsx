@@ -66,9 +66,7 @@ const AIChat = () => {
             key={message._id}
             className={`chat ${isUserSender ? "chat-end" : "chat-start"}`}
             ref={messageEndRef}
-          >{
-            console.log(authUser)
-          }
+          >
             <div className=" chat-image avatar">
               <div className="size-10 rounded-full border">
                 <img
@@ -94,7 +92,13 @@ const AIChat = () => {
                   className="sm:max-w-[200px] rounded-md mb-2"
                 />
               )}
-              {message.text && <p>{message.text}</p>}
+             {message.text && (
+    <div
+      dangerouslySetInnerHTML={{
+        __html: message.text,
+      }}
+    ></div>
+  )}
             </div>
           </div>
            )

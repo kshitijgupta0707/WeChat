@@ -28,8 +28,12 @@ const getResponseFromGemini = async(prompt) =>{
       }
     );
     const finalResponse = response.data.candidates[0].content.parts[0].text;
+    const finalResponse2 = finalResponse
+    .trim() // Remove leading/trailing whitespace
+    .replace(/\n/g, '<br>') // Replace newline characters with <br>
+    .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
 
-     return finalResponse;
+     return finalResponse2;
   
     } catch (e) {
       console.log("Error in getting response from Gemini")

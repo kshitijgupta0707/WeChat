@@ -111,7 +111,7 @@ const LoginPage = () => {
               )}
             </button>
             <button onClick={()=>{window.location.href = `${import.meta.env.VITE_SITE_URL}/auth/google/callback`;
-}} type="button" className="btn bg-[#f7faff] text-black w-full hover:bg-slate-300" disabled={isLoggingIn}>
+}} type="button" className="btn bg-[#f7faff] text-black w-full hover:bg-slate-300" >
              
                 <img className="w-5"  src={"./google.png"} alt="google" />
                 Login with Google
