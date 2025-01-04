@@ -1,5 +1,5 @@
 
-# Buzz Buddy
+# WeChat
 
 **Tagline**: *Where every conversation becomes a moment*
 
