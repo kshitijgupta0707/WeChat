@@ -21,7 +21,8 @@ import { seedDatabase } from './seeds/user.seeds.js'
 
 //for fetching env data
 import dotenv from "dotenv"
-dotenv.config()
+
+dotenv.config({ path: '../.env' });
 
 // Middleware for parsing files
 app.use(

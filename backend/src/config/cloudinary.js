@@ -2,7 +2,7 @@
 // Require the Cloudinary library
 import cloudinary from 'cloudinary'
 import dotenv from "dotenv";
-dotenv.config();
+// dotenv.config({ path: './.env' });
 
 
 export const connectCloudinary = async () => {

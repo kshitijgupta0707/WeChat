@@ -6,7 +6,7 @@ import dotenv from 'dotenv'
 
 const dbConnect = async() =>{
     try{
-        dotenv.config();
+    //    dotenv.config({ path: '../.env' });
         await mongoose.connect(process.env.DATABASE_URL);
         console.log("Database connected successfully")
     }

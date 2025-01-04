@@ -6,7 +6,6 @@ import dotenv from "dotenv"
 import cloudinary from "cloudinary"
 import { uploadImageToCloudinary } from '../utils/imageUploader.js';
 import otpGenerator from "otp-generator";
-dotenv.config()
 
 
 

@@ -53,9 +53,9 @@ const NoChatSelected = () => {
         </div>
 
         {/* Welcome Text */}
-        <h2 className=" text-2xl font-bold">{`Welcome to BuzzzBuddy!`}</h2>
+        <h2 className=" text-2xl font-bold">{`Welcome to WeChat!`}</h2>
         <p className=" hidden lg:block text-base-content/60 text-nowrap ">
-        Where Every Conversation Becomes a Moment. Choose a friend & start the buzz.
+        Where Every Conversation Becomes a Moment. Choose a friend and start chatting.
         </p>
       </div>
     </div>

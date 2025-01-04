@@ -4,7 +4,8 @@ import passport from "passport"
 import jwt from "jsonwebtoken"
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
-
+import dotenv from "dotenv"
+dotenv.config({ path: '../.env' });
 passport.use(new GoogleStrategy({
   clientID: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,

@@ -3,7 +3,7 @@
 
 **Tagline**: *Where every conversation becomes a moment*
 
-Buzz Buddy is a feature-rich chat application designed to make your conversations seamless, engaging, and memorable. With a focus on real-time interactions, personalization, and intelligent features, Buzz Buddy elevates the way you connect with others.
+WeChat is a feature-rich chat application designed to make your conversations seamless, engaging, and memorable. With a focus on real-time interactions, personalization, and intelligent features, WeChat elevates the way you connect with others.
 
 ---
 
@@ -37,7 +37,7 @@ Buzz Buddy is a feature-rich chat application designed to make your conversation
 - **Google Login**: Log in quickly and securely using your Google account.
 
 ### 7. **Full-Responsive UI**
-- **Optimized for Phones**: Buzz Buddy works marvelously on mobile devices, offering a seamless and intuitive user experience.
+- **Optimized for Phones**: WeChat works marvelously on mobile devices, offering a seamless and intuitive user experience.
 - **Real-Time Communication**: Enjoy smooth, real-time conversations with friends.
 
 ---
@@ -76,13 +76,13 @@ Buzz Buddy is a feature-rich chat application designed to make your conversation
 - MongoDB
 - Any modern web browser
 
-# Buzz Buddy
+# WeChat
 
 ## Steps
 
 ### 1. Clone the repository:
 ```bash
-git clone https://github.com/kshitijgupta0707/BuzzzBuddy.git
+git clone https://github.com/kshitijgupta0707/WeChat.git
 ```
 
 ### 2. Navigate to the frontend directory:
@@ -171,7 +171,7 @@ http://localhost:5173
 
 ## Contributing
 
-We welcome contributions to Buzz Buddy! Follow these steps to contribute:
+We welcome contributions to WeChat! Follow these steps to contribute:
 
 1. Fork the repository.
 2. Create a feature branch:
@@ -201,9 +201,9 @@ This project is licensed under the MIT License. See the LICENSE file for more de
 For any inquiries or support, please contact:
 
 - **Email:** kshitijgupta070704@gmail.com  
-- **GitHub:** [GitHub Repository](https://github.com/kshitijgupta0707/BuzzzBuddy)  
+- **GitHub:** [GitHub Repository](https://github.com/kshitijgupta0707/WeChat)  
 
-Thank you for choosing Buzz Buddy! Enjoy connecting with your friends and exploring intelligent features.
+Thank you for choosing WeChat! Enjoy connecting with your friends and exploring intelligent features.
 
 how to get gmail app password?
 how to get gmail login ?
