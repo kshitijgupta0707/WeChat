@@ -38,6 +38,24 @@ export function getReceiverSocketId(userId) {
     io.emit("getOnlineUsers", Object.keys(userSocketMap))
 
    console.log("Number of online users are" , Object.keys(userSocketMap).length)
+   socket.on("call-user", ({ offer, to }) => {
+    io.to(userSocketMap[to]).emit("incoming-call", {
+        from: socket.id,
+        offer
+    });
+});
+
+socket.on("call-answered", ({ answer, to }) => {
+    io.to(userSocketMap[to]).emit("call-answered", { answer });
+});
+
+socket.on("ice-candidate", ({ candidate, to }) => {
+    io.to(userSocketMap[to]).emit("ice-candidate", { candidate });
+});
+
+socket.on("end-call", ({ to }) => {
+    io.to(userSocketMap[to]).emit("call-ended");
+});
 
     socket.on("disconnect" , () =>{
         console.log("User disconnected with socket id = " , socket.id , " and name = ", userName)
