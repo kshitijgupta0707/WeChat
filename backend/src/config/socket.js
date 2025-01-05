@@ -38,24 +38,41 @@ export function getReceiverSocketId(userId) {
     io.emit("getOnlineUsers", Object.keys(userSocketMap))
 
    console.log("Number of online users are" , Object.keys(userSocketMap).length)
+   
+
    socket.on("call-user", ({ offer, to }) => {
-    io.to(userSocketMap[to]).emit("incoming-call", {
-        from: socket.id,
-        offer
-    });
+    const receiverSocketId = userSocketMap[to];
+    if (receiverSocketId) {
+        io.to(receiverSocketId).emit("incoming-call", { from: socket.id, offer });
+    } else {
+        console.error(`User with ID ${to} is not available.`);
+    }
 });
 
+
 socket.on("call-answered", ({ answer, to }) => {
+    console.log("call anser")
+    console.log(answer)
+    console.log(to)
     io.to(userSocketMap[to]).emit("call-answered", { answer });
 });
 
 socket.on("ice-candidate", ({ candidate, to }) => {
+    console.log("ice candidate")
+    console.log(candidate)
+    console.log(to)
     io.to(userSocketMap[to]).emit("ice-candidate", { candidate });
 });
 
 socket.on("end-call", ({ to }) => {
-    io.to(userSocketMap[to]).emit("call-ended");
+    const receiverSocketId = userSocketMap[to];
+    if (receiverSocketId) {
+        io.to(receiverSocketId).emit("call-ended");
+    } else {
+        console.error(`Cannot end call. User with ID ${to} is not available.`);
+    }
 });
+
 
     socket.on("disconnect" , () =>{
         console.log("User disconnected with socket id = " , socket.id , " and name = ", userName)
@@ -66,3 +83,4 @@ socket.on("end-call", ({ to }) => {
 
 
 export {io , server,app}
+
