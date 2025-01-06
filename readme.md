@@ -170,46 +170,13 @@ http://localhost:5173
 - **Real-Time Updates:** Socket.IO  
 
 ---
-
-## Contributing
-
-We welcome contributions to WeChat! Follow these steps to contribute:
-
-1. Fork the repository.
-2. Create a feature branch:
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-3. Commit your changes:
-   ```bash
-   git commit -m "Add your feature description"
-   ```
-4. Push to the branch:
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-5. Open a pull request.
-
----
-
-
-
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for more details.
-
----
-
 ## Contact
 
 For any inquiries or support, please contact:
 
 - **Email:** kshitijgupta070704@gmail.com  
-- **GitHub:** [GitHub Repository](https://github.com/kshitijgupta0707/WeChat)  
+- **LinkedIn:** [Linkedin](www.linkedin.com/in/kshitijgupta0707)
 
 Thank you for choosing WeChat! Enjoy connecting with your friends and exploring intelligent features.
 
-how to get gmail app password?
-how to get gmail login ?
-how to get gemini api key ?
-how to get llama api key?
+
