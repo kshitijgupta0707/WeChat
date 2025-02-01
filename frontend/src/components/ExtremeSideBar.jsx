@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { useChatStore } from '../store/useChatStore';
 import { useNotification } from '../store/useNotification';
 import Lottie from "react-lottie"
+import { HiUserGroup } from "react-icons/hi";
 
 function extremeSideBar() {
 
@@ -61,6 +62,23 @@ function extremeSideBar() {
         >
        <div className="relative mx-auto  ">
             <MessageCircle  size={32} />
+        </div> 
+
+        </button>
+              <button
+        //   key={user._id}
+          onClick={() => setSelectedScreen("groupchats")}
+          className={`
+            w-full p-3 sm:p-6 flex items-center ""
+            hover:bg-base-300 transition-colors
+            ${selectedScreen === "groupchats" ? "bg-base-300 ring-1 ring-base-300" : ""}
+            tooltip
+          `}
+          data-tip="group"
+        >
+       <div className="relative mx-auto p-0 m-0  ">
+            <HiUserGroup size={28} />
+          
         </div> 
 
         </button>

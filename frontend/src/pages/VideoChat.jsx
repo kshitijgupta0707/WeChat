@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import {Phone} from 'lucide-react'
 
 const VideoChat = ({ socket, userId, receiverId }) => {
     const [callStatus, setCallStatus] = useState('idle');
@@ -249,9 +250,9 @@ const VideoChat = ({ socket, userId, receiverId }) => {
             {callStatus === 'idle' && !isReceivingCall && (
                 <button 
                     onClick={startCall}
-                    className="bg-blue-500 text-white px-4 py-2 rounded"
+                    className=" text-white px-4 py-2 rounded"
                 >
-                    Start Call
+                   <Phone/>
                 </button>
             )}
             
@@ -272,10 +273,17 @@ const VideoChat = ({ socket, userId, receiverId }) => {
                     End Call
                 </button>
             )}
-            
+
+            {
+                callStatus == 'idle' ? 
+                <div> </div>
+                 :
             <div className="mt-2">
-                Status: {callStatus}
-            </div>
+            Status: {callStatus}
+        </div>
+
+            }
+           
         </div>
     );
 };

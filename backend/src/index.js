@@ -16,6 +16,7 @@ import path from "path"
 import { deleteMessages } from './seeds/deleteAllMessages.js'
 import { seedDatabase } from './seeds/user.seeds.js'
 import { app , server } from './config/socket.js'
+import groupRoute from "./routes/group.route.js"
 //initiating the server
 // const app = express()
 
@@ -56,6 +57,7 @@ app.use("/auth", googleAuth);
 app.use("/api/", geminiRouter);
 app.use("/api/",mistralRouter);
 app.use("/api/",aiChatRouter);
+app.use("/api/groups",groupRoute);
 
 //starting the server
 

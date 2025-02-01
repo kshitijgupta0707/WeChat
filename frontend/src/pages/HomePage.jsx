@@ -13,7 +13,10 @@ import FriendRequests from "../components/FriendRequests"
 import FindFriends from "../components/FindFriends";
 import { useSideBarStore } from "../store/useSideBarStore";
 import { useFriendStore } from "../store/useFriendStore";
+import GroupSidebar from "../components/GroupSidebar.jsx"
+import GroupChatContainer from '../components/GroupChatContainer.jsx'
 import { useState } from "react";
+import useGroupStore from "../store/useGroupStore.js";
 const HomePage = () => {
   
   const { selectedUser  , subscribeToMessages , unsubscribeFromMessages , showMessageNotification , dontShowMessageNotification} = useChatStore();
@@ -22,6 +25,8 @@ const HomePage = () => {
   const {friends , subscribeToFriends , unSubscribeToFriends ,subscribeToFriendRequests , unSubscribeToFriendRequests , subscribeToMessageReciever ,unSubscribeToMessageReciever} = useFriendStore()
   const [toggleModeOn, setToggleModeOn] = useState(false); 
   const [showBottomBar , setShowBottomBar] = useState(false);
+  const {selectedGroup} = useGroupStore();
+  
 
   useEffect(() => {
     const handleResize = () => {
@@ -85,15 +90,19 @@ const HomePage = () => {
       {toggleModeOn && selectedScreen && (
              selectedScreen === "friendRequests" ? <FriendRequests />
             : selectedScreen === "findFriends" ? <FindFriends />
-            : (selectedScreen === "chats" && selectedUser && friends && friends.some(friend => friend._id === selectedUser._id) ? <ChatContainer/> 
+            : (selectedScreen === "chats" && selectedUser && friends && friends.some(friend => friend._id === selectedUser._id)) ? <ChatContainer/>
             : selectedScreen == "chatWithAi" ? <AIChat/>
-            : <Sidebar/> ) 
+            : (selectedScreen === "groupchats" && selectedGroup) ? <GroupChatContainer/>
+            : <Sidebar/> 
        )
       }
 
         { !toggleModeOn && (
                selectedScreen === "chats" ? (
                 <Sidebar />
+              ):
+              selectedScreen === "groupchats" ? (
+                <GroupSidebar/>
               ) : selectedScreen === "friendRequests" ? (
                 <FriendRequests />
               ) : selectedScreen === "findFriends" ? (
@@ -103,7 +112,9 @@ const HomePage = () => {
           
             {!toggleModeOn && (selectedScreen == "chats" && selectedUser && friends.some(friend => friend._id === selectedUser._id))  ? 
               <ChatContainer />:
-              !toggleModeOn && selectedScreen == "chatWithAi" ?
+              (selectedScreen == "groupchats" && selectedGroup ) ?
+              <GroupChatContainer/>:
+              (!toggleModeOn && selectedScreen == "chatWithAi") ?
                 <AIChat/>
               :
               <NoChatSelected /> 

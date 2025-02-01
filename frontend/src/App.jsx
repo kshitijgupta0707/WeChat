@@ -16,6 +16,8 @@ import { useThemeStore } from "./store/useThemeStore"
 import { useEffect } from "react"
 import { useState } from "react"
 import { useNotification } from "./store/useNotification"
+import GroupModal from "./components/GroupModal"
+import GroupSidebar from "./components/GroupSidebar"
 import "./App.css"
 const App = () => {
  
