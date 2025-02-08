@@ -20,26 +20,38 @@ WeChat is a feature-rich chat application designed to make your conversations se
   - Friend requests accepted.
   - Incoming messages.
 
-### 3. **Dynamic Chat Updates**
+### 2. **Integrated WebRTC for real-time voice and video calls between friends**
+- Friends can call each other.
+
+### 3. **Real-Time Notifications**
+- Get instant notifications for:
+  - Friend requests received.
+  - Friend requests accepted.
+  - Incoming messages.
+
+
+### 4. **Dynamic Chat Updates**
 - **Message Reordering**: Chats are dynamically reordered based on the latest message, ensuring that the most recent conversations appear at the top.
 - **Seen and Unread Messages**: Easily track the number of unread messages for each chat.
 
-### 4. **Profile Customization**
+### 5. **Profile Customization**
 - **Avatar Management**: Update your profile with high-quality avatars or upload a custom photo.
 - **Themes**: Choose from a variety of themes to personalize your app experience.
 
-### 5. **AI-Powered Chatbot**
+### 6. **AI-Powered Chatbot**
 - **Chat with AI**: Engage with an intelligent chatbot to get answers to your queries.
 - **Clear Chat History**: Remove previous conversations with the chatbot as needed.
 
-### 6. **Authentication**
+### 7. **Authentication**
 - **Email-Based Signup**: Register using an email address with OTP verification for added security.
 - **Google Login**: Log in quickly and securely using your Google account.
 
-### 7. **Full-Responsive UI**
+### 8. **Full-Responsive UI**
 - **Optimized for Phones**: WeChat works marvelously on mobile devices, offering a seamless and intuitive user experience.
 - **Real-Time Communication**: Enjoy smooth, real-time conversations with friends.
 
+### 9. **Full-Responsive UI**
+- Integrated WebSpeech API for voice-to-text conversion.
 ---
 
 ## How It Works
