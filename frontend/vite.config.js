@@ -9,7 +9,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'robots.txt'],
       manifest: {
-        name: 'BaatCheet',
+        name: 'Zolo',
         short_name: 'Zolo',
         description: 'Real time Chat application',
         theme_color: '#ffffff',

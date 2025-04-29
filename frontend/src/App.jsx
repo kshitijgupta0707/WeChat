@@ -20,12 +20,12 @@ import GroupModal from "./components/GroupModal"
 import GroupSidebar from "./components/GroupSidebar"
 import "./App.css"
 const App = () => {
- 
- 
 
- const {isVisible , setIsVisible , message } = useNotification()
 
-  const { authUser, checkAuth, isCheckingAuth, onlineUsers , socket } = useAuthStore()
+
+  const { isVisible, setIsVisible, message } = useNotification()
+
+  const { authUser, checkAuth, isCheckingAuth, onlineUsers, socket } = useAuthStore()
   const { theme, setTheme } = useThemeStore()
   useEffect(() => {
     console.log("onlineUsers : ", onlineUsers)
@@ -44,61 +44,52 @@ const App = () => {
     );
 
 
-   
+
 
 
   return (
     <div data-theme={theme} className="flex flex-col  self-center content-center m-auto"  >
-      <Navbar />
-
+      <Navbar />  
       {isVisible && (
         <div className="z-50 fixed left-[50%] -translate-x-1/2 w-[400px]  lg:w-[600px]">
           <div role="alert" className="  alert shadow-lg flex justify-between">
-            
-                <div className="flex align-center justify-center items-center gap-3" >
-            <div  >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              className="stroke-info h-6 w-6 shrink-0"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              ></path>
-            </svg>
+
+            <div className="flex align-center justify-center items-center gap-3" >
+              <div  >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  className="stroke-info h-6 w-6 shrink-0"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
+                </svg>
+
+              </div>
+              <div>
+                <h3 className="font-bold hidden sm:block ">Notification</h3>
+                <div className="text-xs">{message}</div>
+              </div>
 
             </div>
-            <div>
-              <h3 className="font-bold hidden sm:block ">Notification</h3>
-              <div className="text-xs">{message}</div>
-            </div>
-
-                  </div>
-               <button className=" hidden sm:block  btn btn-sm" onClick={() => setIsVisible(false)}>
+            <button className=" hidden sm:block  btn btn-sm" onClick={() => setIsVisible(false)}>
               Close
-                </button>
+            </button>
           </div>
 
           <div className="relative w-full h-1">
-  <div className="absolute bottom-0 left-0 h-[2px] animate-progress-bar"></div>
-</div>
+            <div className="absolute bottom-0 left-0 h-[2px] animate-progress-bar"></div>
+          </div>
 
-          
+
         </div>
       )}
-
-
-
-
-     
-
       <Routes>
-
-
         <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />
         <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/" />} />
         <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
@@ -107,8 +98,6 @@ const App = () => {
         <Route path="/otp" element={authUser ? <HomePage /> : <OtpPage />} />
       </Routes>
       <Toaster />
-
-
     </div>
   )
 }
