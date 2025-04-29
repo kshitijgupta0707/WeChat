@@ -189,6 +189,7 @@ export const signup = async (req, res) => {
 export const login = async (req, res) => {
   try {
     //get data
+    console.log(" login called")
     const { email, password } = req.body;
 
     //validation on email and password
@@ -198,9 +199,11 @@ export const login = async (req, res) => {
         message: "Please fills all the details",
       });
     }
+    console.log(email , password)
 
     //check whethrer user exists or not
     let user = await User.findOne({ email });
+    // console.log(user)
 
     if (!user) {
       return res.status(401).json({
@@ -210,17 +213,25 @@ export const login = async (req, res) => {
     }
 
     //take the hash password
-    // console.log(user.password);
+    console.log(user.password);
+  
     const { password: hashedPassword } = user;
-
+    if(hashedPassword == null){
+      return res.status(400).json({
+        success: false ,
+        message: "Please login using google Auth"
+      })
+    }
     //now verify the password //decrypt
 
     const isPasswordCorrect = await bcrypt.compare(password, hashedPassword)
 
+    console.log("checking authenticity");
     if (!isPasswordCorrect) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
     //if correct
+    console.log("valid credentials");
 
     //Data that you want to hide in the token
     const payload = { id: user._id, email: user.email }
