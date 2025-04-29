@@ -10,7 +10,7 @@ export default defineConfig({
       includeAssets: ['favicon.ico', 'robots.txt'],
       manifest: {
         name: 'BaatCheet',
-        short_name: 'BC',
+        short_name: 'Zolo',
         description: 'Real time Chat application',
         theme_color: '#ffffff',
         background_color: '#ffffff',
