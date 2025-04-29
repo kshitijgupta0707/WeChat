@@ -18,6 +18,7 @@ import { useState } from "react"
 import { useNotification } from "./store/useNotification"
 import GroupModal from "./components/GroupModal"
 import GroupSidebar from "./components/GroupSidebar"
+import OfflineNotificationSetup from "./components/OfflineNotificationSetup"
 import "./App.css"
 const App = () => {
 
@@ -49,6 +50,7 @@ const App = () => {
 
   return (
     <div data-theme={theme} className="flex flex-col  self-center content-center m-auto"  >
+      <OfflineNotificationSetup/>
       <Navbar />  
       {isVisible && (
         <div className="z-50 fixed left-[50%] -translate-x-1/2 w-[400px]  lg:w-[600px]">

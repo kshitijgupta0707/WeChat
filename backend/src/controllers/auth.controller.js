@@ -6,7 +6,7 @@ import dotenv from "dotenv"
 import cloudinary from "cloudinary"
 import { uploadImageToCloudinary } from '../utils/imageUploader.js';
 import otpGenerator from "otp-generator";
-
+import { Token } from '../models/token.model.js';
 
 
 export const sendOtp = async (req, res) => {
@@ -199,7 +199,7 @@ export const login = async (req, res) => {
         message: "Please fills all the details",
       });
     }
-    console.log(email , password)
+    console.log(email, password)
 
     //check whethrer user exists or not
     let user = await User.findOne({ email });
@@ -214,11 +214,11 @@ export const login = async (req, res) => {
 
     //take the hash password
     console.log(user.password);
-  
+
     const { password: hashedPassword } = user;
-    if(hashedPassword == null){
+    if (hashedPassword == null) {
       return res.status(400).json({
-        success: false ,
+        success: false,
         message: "Please login using google Auth"
       })
     }
@@ -269,11 +269,23 @@ export const login = async (req, res) => {
     })
   }
 };
-export const logout = (req, res) => {
+export const logout = async(req, res) => {
   //we have to just clear out the cookies
   try {
     res.cookie("token", "", { maxAge: 0 }); //expire immediattely get removed by maxage , erased by " "
+
+
+
+    const userId = req.user._id;
+    // Remove the token for this user
+    //Also dlete all the token for the notification for the user
+    await Token.deleteMany({ userId });
+
     res.status(200).json({ message: "Logged out successfully" });
+
+
+
+
   } catch (error) {
     console.log("Error in logout controller", error.message);
     res.status(500).json({ message: "Internal Server Error" });

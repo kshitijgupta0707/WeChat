@@ -4,6 +4,7 @@ import Message from "../models/message.model.js";
 import { connectCloudinary } from "../config/cloudinary.js";
 import cloudinary from "cloudinary"
 import { getReceiverSocketId, io } from "../config/socket.js";
+import { sendNotificationToAll, sendNotificationToPerson } from "./notification.controller.js";
 
 
 //fetch all th user except yourself for the side bar 
@@ -82,6 +83,28 @@ export const sendMessage = async (req, res) => {
       //only send to particular client
       io.to(receiverSocketId).emit("newMessage", { message: newMessage, name: req.user.firstName });
       console.log("Notified to front end ")
+    }
+
+    try {
+      console.log("send message  controler is callled");
+      console.log("Notifyig that oerson");
+      const notifyPerson = await sendNotificationToPerson(
+        `New Message !`,
+        `You have recieved a new message from  ${req.user.firstName}.`,
+        { userId: receiverId, type: "new message recieved" }
+      );
+
+      // Send notification to all users - using the updated function with lock mechanism
+      const notificationResult = await sendNotificationToAll(
+        `New Message !`,
+        `You have recieved a new message from  ${req.user.firstName}.`,
+        { type: "new message recieved" }
+      );
+
+      console.log("Notification result:", notificationResult);
+    } catch (notificationError) {
+      // Log the error but don't fail the entire request
+      console.error("Failed to send notifications:", notificationError);
     }
 
     res.status(201).json(newMessage);

@@ -17,6 +17,7 @@ import { deleteMessages } from './seeds/deleteAllMessages.js'
 import { seedDatabase } from './seeds/user.seeds.js'
 import { app , server } from './config/socket.js'
 import groupRoute from "./routes/group.route.js"
+import notificationRoute from "./routes/fcm.notification.route.js"
 //initiating the server
 // const app = express()
 
@@ -58,6 +59,7 @@ app.use("/api/", geminiRouter);
 app.use("/api/",mistralRouter);
 app.use("/api/",aiChatRouter);
 app.use("/api/groups",groupRoute);
+app.use("/api/notification",notificationRoute);
 
 //starting the server
 
