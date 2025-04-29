@@ -70,8 +70,9 @@ const GroupChatContainer = () => {
                   src={
                     message.senderId === authUser._id
                       ? authUser.profilePic || "/avatar.png"
-                      : selectedUser.profilePic || "/avatar.png"
+                      : message?.senderId?.profilePic || "/avatar.png"
                   }
+                  // src="avatar.png"
                   alt="profile pic"
                 />
               </div>

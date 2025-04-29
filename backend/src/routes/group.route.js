@@ -60,7 +60,7 @@ router.get("/messages/:groupId", async (req, res) => {
     console.log("i am fetching all the messages for the group");
 
     console.log(req.params.groupId)
-    const messages = await GroupMessage.find({ groupId: req.params.groupId });
+    const messages = await GroupMessage.find({ groupId: req.params.groupId }).populate('senderId');
     console.log(messages)
     res.json(messages);
   } catch (error) {

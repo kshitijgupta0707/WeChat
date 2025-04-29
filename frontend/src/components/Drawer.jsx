@@ -16,6 +16,7 @@ function Drawer() {
     setSelectedScreen(screen); // Update the selected screen
     closeSideBar(); // Close the sidebar
   };
+  
 
   return (
     <div className="drawer z-50 ">
@@ -95,6 +96,24 @@ function Drawer() {
               </div>
               <div className=" lg:block text-left min-w-0">
                 <div className="font-medium truncate">Settings</div>
+              </div>
+            </button>
+          </li>
+          <li>
+          
+            <button
+              onClick={() => handleScreenChange("groupchats")}
+              className={`
+                w-full p-3 flex items-center gap-3
+                hover:bg-base-300 transition-colors
+                ${selectedScreen === "settings" ? "bg-base-300 ring-1 ring-base-300" : ""}
+              `}
+            >
+              <div className="relative  lg:mx-0">
+                <Settings />
+              </div>
+              <div className=" lg:block text-left min-w-0">
+                <div className="font-medium truncate">Group chats</div>
               </div>
             </button>
           </li>
