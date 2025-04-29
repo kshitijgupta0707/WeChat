@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { requestNotificationPermission } from "../lib/RequestPermission";
-import { useAuthStore } from "../store/useAuthstore";
+import { useAuthStore } from "../store/useAuthStore";
 import { onMessage, messaging } from "../firebase"
 
 const OfflineNotificationSetup = () => {
