@@ -7,8 +7,6 @@ import cloudinary from "cloudinary"
 import { uploadImageToCloudinary } from '../utils/imageUploader.js';
 import otpGenerator from "otp-generator";
 import { Token } from '../models/token.model.js';
-
-
 export const sendOtp = async (req, res) => {
   try {
     //fetch email from the request body
@@ -337,7 +335,6 @@ export const checkAuth = (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
 export const loginwithOAuth = async (req, res) => {
   try {
 

@@ -2,11 +2,16 @@ import express from "express";
 import Group from "../models/group.model.js";
 import { User } from "../models/user.model.js";
 import GroupMessage from "../models/groupchat.model.js";
+import { sendNotificationToAll, sendNotificationToPerson, sendNotificationToAdmins }
+  from
+  "../controllers/notification.controller.js";
+
+import { protectRoute } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
 // Create a new group
-router.post("/create", async (req, res) => {
+router.post("/create", protectRoute, async (req, res) => {
   try {
     const { name, members, admin } = req.body;
 
@@ -16,17 +21,36 @@ router.post("/create", async (req, res) => {
     }
 
 
+
     const newGroup = new Group({ name, members, admin });
     await newGroup.save();
     // Populate members field
     const populatedGroup = await Group.findById(newGroup._id).populate("members", "firstName lastName profilePic email");
+
+
+
+    for (let i = 0; i < members.length; i++) {
+      if (String(members[i]._id) !== String(admin)) {
+        try {
+          const notifyPerson = await sendNotificationToPerson(
+            `${req.user.firstName} add you in ${name} group!`,
+            `Starting zolo with each other`,
+            { userId: members[i]._id, type: "New Group Created" }
+          );
+          console.log("Notification result:", notifyPerson);
+        } catch (notificationError) {
+          console.error("Failed to send notification:", notificationError);
+        }
+      }
+    }
+
+
 
     res.status(201).json(populatedGroup);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
-
 // Fetch all groups of a user
 router.get("/user/:userId", async (req, res) => {
   try {
@@ -36,9 +60,8 @@ router.get("/user/:userId", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
 // Send a message in a group
-router.post("/message/send", async (req, res) => {
+router.post("/message/send", protectRoute, async (req, res) => {
   try {
     const { senderId, groupId, text, image } = req.body;
 
@@ -46,14 +69,36 @@ router.post("/message/send", async (req, res) => {
     await newMessage.save();
 
     // Add message to the group
-    await Group.findByIdAndUpdate(groupId, { $push: { messages: newMessage._id } });
+    // const g = await Group.findByIdAndUpdate(groupId, { $push: { messages: newMessage._id } }).populate('members');
+    const g = await Group.findByIdAndUpdate(
+      groupId,
+      { $push: { messages: newMessage._id } },
+      { new: true }
+    ).populate('members');
+
+    const members = g?.members
+
+    for (let i = 0; i < members.length; i++) {
+      if (String(members[i]._id) !== String(senderId)) {
+        try {
+          const notifyPerson = await sendNotificationToPerson(
+            `${req.user.firstName} in group!`,
+            `${text}`,
+            { userId: members[i]._id, type: "New message received" }
+          );
+          console.log("Notification result:", notifyPerson);
+        } catch (notificationError) {
+          console.error("Failed to send notification:", notificationError);
+        }
+      }
+    }
+
 
     res.status(201).json(newMessage);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
-
 // Get all messages in a group
 router.get("/messages/:groupId", async (req, res) => {
   try {

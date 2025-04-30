@@ -8,7 +8,7 @@ import { useAuthStore } from "../store/useAuthStore";
 import toast from "react-hot-toast";
 
 
-export const SignInWithGoogle = () => {
+export const SignInWithGoogle = ({name = "Login with Google"}) => {
   const { loginwithOAuth } = useAuthStore();
 
   async function googleLogin() {
@@ -64,7 +64,7 @@ export const SignInWithGoogle = () => {
             fill="#EA4335"
           />
         </svg>
-        <span className="font-medium"> Login using Google</span>
+        <span className="font-medium"> {`${name}`}</span>
       </button>
     </div>
   );

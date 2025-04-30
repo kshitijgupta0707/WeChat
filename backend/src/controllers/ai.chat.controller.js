@@ -41,7 +41,6 @@ const getResponseFromGemini = async (prompt, previousMessages = []) => {
     console.error(e);
   }
 };
-
 const sendMessageToGemini = async (req, res) => {
   try {
     const { text } = req.body;
@@ -85,8 +84,6 @@ const sendMessageToGemini = async (req, res) => {
     console.error('Error saving AI chat message:', error);
   }
 };
-
-
 const getAIChatHistory = async (req, res) => {
   try {
     const userId = req.user._id
@@ -109,8 +106,6 @@ const clearChatHistory = async (req, res) => {
     return res.json({}).status(400);
   }
 };
-
-
 export { sendMessageToGemini, getAIChatHistory, clearChatHistory }
 
 

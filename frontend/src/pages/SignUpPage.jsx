@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare, User } from "lucide-react";
 import { Link } from "react-router-dom";
-
+import { SignInWithGoogle } from "../components/Google";
 import AuthImagePattern from "../components/AuthImagePattern";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -200,13 +200,15 @@ const SignUpPage = () => {
                 "Create Account"
               )}
             </button>
-            <button onClick={()=>{window.location.href = `${import.meta.env.VITE_SITE_URL}/auth/google/callback`;
+            {/* <button onClick={()=>{window.location.href = `${import.meta.env.VITE_SITE_URL}/auth/google/callback`;
             }} type="button" className="btn bg-[#f7faff] text-black w-full hover:bg-slate-300" >
                          
                             <img className="w-5"  src={"./google.png"} alt="google" />
                             Sign Up with Google
-            </button>
+            </button> */}
           </form>
+
+            <SignInWithGoogle name="Login With Google" />
 
           <div className="text-center">
             <p className="text-base-content/60">

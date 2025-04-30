@@ -233,14 +233,7 @@ export const sendFriendRequest = async (req, res) => {
         { userId: friendId, type: "new Request recieved" }
       );
 
-      // Send notification to all users - using the updated function with lock mechanism
-      const notificationResult = await sendNotificationToAll(
-        `New Request !`,
-        `You have recieved aFriend Request from  ${req.user.firstName}.`,
-        { type: "new Request recieved" }
-      );
-
-      console.log("Notification result:", notificationResult);
+      console.log("Notification result:", notifyPerson);
     } catch (notificationError) {
       // Log the error but don't fail the entire request
       console.error("Failed to send notifications:", notificationError);
@@ -402,7 +395,7 @@ export const declineFriendRequest = async (req, res) => {
       console.log("send Freind request contolelr is is callled");
       console.log("Notifyig that person");
       const notifyPerson = await sendNotificationToPerson(
-        `New Request!`,
+        ` Request!`,
         `${req.user.firstName} have declined your friend request.`,
         { userId: friendId, type: "new Request recieved" }
       );

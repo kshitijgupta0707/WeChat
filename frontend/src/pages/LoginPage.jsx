@@ -4,7 +4,7 @@ import AuthImagePattern from "../components/AuthImagePattern";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare } from "lucide-react";
 import toast from "react-hot-toast";
-import { SignInWithGoogle } from "../components/SignInWithGoogle";
+import { SignInWithGoogle } from "../components/Google";
 
 const LoginPage = () => {
   const navigate = useNavigate()
@@ -124,7 +124,7 @@ const LoginPage = () => {
 
           </form>
           <div className="w-full" >
-          <SignInWithGoogle />
+          <SignInWithGoogle name="Login With Google" />
 
           </div>
 
