@@ -24,7 +24,7 @@ const serviceAccount = {
   client_x509_cert_url: process.env.client_x509_cert_url,
   universe_domain: process.env.universe_domain
 };
-const privateKey = process.env.PRIVATE_KEY?.replace(/\\n/g, '\n');
+const privateKey = process.env.private_key?.replace(/\\n/g, '\n');
 
 
 
@@ -39,7 +39,7 @@ const getAccessToken = async () => {
       key: privateKey,
       scopes: ["https://www.googleapis.com/auth/firebase.messaging"],
     });
-    console.log("client = ",client)
+    console.log("client = ", client)
 
     const { access_token } = await client.authorize();
     console.log('Access token', access_token)
