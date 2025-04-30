@@ -45,7 +45,7 @@ app.use(cookieParser());
 //to remove cors error
 app.use(cors(
   {
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", process.env.SITE_URL],
     credentials: true
   }
 ))

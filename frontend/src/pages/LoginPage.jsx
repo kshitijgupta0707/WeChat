@@ -12,7 +12,7 @@ const LoginPage = () => {
     email: "",
     password: "",
   });
-  const { login, isLoggingIn  } = useAuthStore();
+  const { login, isLoggingIn } = useAuthStore();
 
   const validateForm = () => {
 
@@ -25,7 +25,7 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const success  = validateForm();
+    const success = validateForm();
     if (success == true) {
       login(formData)
     }
@@ -33,7 +33,7 @@ const LoginPage = () => {
 
   return (
     <div className="h-screen grid lg:grid-cols-2">
-      
+
       {/* Left Side - Form */}
       <div className="flex flex-col justify-center items-center p-6 sm:p-12">
         <div className="w-full max-w-md space-y-8">
@@ -110,12 +110,17 @@ const LoginPage = () => {
                 "Login"
               )}
             </button>
-            <button onClick={()=>{window.location.href = `${import.meta.env.VITE_SITE_URL}/auth/google/callback`;
-}} type="button" className="btn bg-[#f7faff] text-black w-full hover:bg-slate-300" >
-             
-                <img className="w-5"  src={"./google.png"} alt="google" />
-                Login with Google
+            <button
+              onClick={() => {
+                window.location.href = `${import.meta.env.VITE_SITE_URL}/auth/google`;
+              }}
+              type="button"
+              className="btn bg-[#f7faff] text-black w-full hover:bg-slate-300"
+            >
+              <img className="w-5" src="./google.png" alt="google" />
+              Login with Google
             </button>
+
           </form>
 
           <div className="text-center">
