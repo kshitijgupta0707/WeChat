@@ -19,7 +19,7 @@ import { useState } from "react";
 import useGroupStore from "../store/useGroupStore.js";
 const HomePage = () => {
 
-  const { selectedUser, subscribeToMessages, unsubscribeFromMessages, showMessageNotification, dontShowMessageNotification } = useChatStore();
+  const { selectedUser, showMessageNotification, dontShowMessageNotification } = useChatStore();
   const { authUser, socket } = useAuthStore();
   const { selectedScreen } = useSideBarStore()
   const { friends, subscribeToFriends, unSubscribeToFriends, subscribeToFriendRequests, unSubscribeToFriendRequests, subscribeToMessageReciever, unSubscribeToMessageReciever } = useFriendStore()
@@ -91,7 +91,9 @@ const HomePage = () => {
                 : selectedScreen === "findFriends" ? <FindFriends />
                   : (selectedScreen === "chats" && selectedUser && friends && friends.some(friend => friend._id === selectedUser._id)) ? <ChatContainer />
                     : selectedScreen == "chatWithAi" ? <AIChat />
-                      : (selectedScreen === "groupchats" && selectedGroup) ? <GroupChatContainer />
+                      : (selectedScreen === "allgroups" && selectedGroup) ? <GroupChatContainer />
+                      : (selectedScreen === "allgroups" && !selectedGroup ) ? <GroupSidebar />
+                      
                         : <Sidebar />
             )
             }

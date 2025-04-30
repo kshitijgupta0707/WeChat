@@ -1,71 +1,67 @@
-// i have made this just to get the seperate gemini working
-// notuse in project  
-  
-  
-  
-  
-  import {GoogleGenerativeAI } from "@google/generative-ai"  
-  const apiKey = process.env.GEMINI_API_KEY;
-  const genAI = new GoogleGenerativeAI(apiKey);
-  import axios from "axios"
-  
-//   const model = genAI.getGenerativeModel({
-//     model: "gemini-2.0-flash-exp",
-//   });
+import AIChat from "../models/ai.chat.model.js"; 
+import axios from "axios";
 
-//it is done in the frontened because why do unneccessary call in our backend server
+const sendMessageToAi = async (req, res) => {
+  try {
+    console.error("send message to ai called")
+    const { text, userId } = req.body;
+
+    if (!text?.trim() || !userId) {
+      return res.status(400).json({
+        success: false,
+        message: "User ID and prompt text are required",
+      });
+    }
+
+    // Step 1: Fetch or create chat history for this user
+    let chat = await AIChat.findOne({ userId });
+    if (!chat) {
+      chat = await AIChat.create({ userId, messages: [] });
+    }
+    console.log("past messages")
+    console.log(chat);
 
 
-const sendMessageToAi = async(req  , res) =>{
-    try {
-        //get data
-        const { text } = req.body;
-    
-        //validation on email and password
-        if (!text.trim()) {
-          return res.status(404).json({
-            success: false,
-            message: "Enter the task for AI",
-          });
-        }
+    // Step 2: Add user message to DB (but don't wait for save yet)
+    chat.messages.push({ sender: "user", text: text.trim() });
 
-         const prompt = text
-            // Call the Gemini API directly using axios
-     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`;
-     const response = await axios.post(
-        apiUrl,
-        {
-          contents: [
-            {
-              parts: [
-                {
-                  text: prompt.trim(),
-                },
-              ],
-            },
-          ],
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      const finalResponse = response.data.candidates[0].content.parts[0].text;
+  
 
-        return res.json({
-          success: true,
-          response: response.data,
-          finalResponse
-        });
-    
-      } catch (e) {
-    
-        console.error(e);
-        res.status(400).json({
-          success: false,
-          data: "Not able to ask to AI",
-        })
-      }
-}
-export {sendMessageToAi}
+    // Step 3: Format chat history for Gemini API
+    const contents = chat.messages.map((msg) => ({
+      role: msg.sender === "user" ? "user" : "model",
+      parts: [{ text: msg.text }],
+    }));
+    console.log("content")
+    console.log(contents)
+
+    // Step 4: Call Gemini API
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`;
+    const response = await axios.post(
+      apiUrl,
+      { contents },
+      { headers: { "Content-Type": "application/json" } }
+    );
+
+    const geminiReply = response.data.candidates[0].content.parts[0].text;
+
+    // Step 5: Save Gemini's response to DB
+    chat.messages.push({ sender: "gemini", text: geminiReply });
+    await chat.save();
+
+    return res.json({
+      success: true,
+      response: geminiReply,
+      fullChat: chat.messages,
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Error communicating with Gemini AI",
+    });
+  }
+};
+
+export { sendMessageToAi };

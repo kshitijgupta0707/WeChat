@@ -51,7 +51,6 @@ const Navbar = () => {
                 to={"/settings"}
                 className={`
               btn btn-sm gap-2 transition-colors
-              addFriend:hidden
               `}
               >
                 <Settings className="w-4 h-4" />

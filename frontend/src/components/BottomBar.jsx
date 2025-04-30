@@ -89,8 +89,8 @@ function BottomBar() {
      
        {/* <MessageSquare className="w-10 h-10 text-primary" /> */}
 
-       <Circle className='w-8 h-8 animate-ping focus:animate-none absolute  text-cyan-200' />
-       <Circle className='w-8 h-8    text-cyan-200' />
+       <Circle className='w-8 h-8 animate-ping focus:animate-none absolute  text-primary' />
+       <Circle className='w-8 h-8    text-primary' />
        
           {/* <img src={chatbot} className='rounded-full w-32'  /> */}
         </div> 
@@ -133,40 +133,38 @@ data-tip="Requests"
 </button>
 
 
-
-
-
-<Link to="/settings">
 <button
 //   key={user._id}
-  onClick={() => {setSelectedScreen("settings")
-  setSelectedUser("")
-}}
+  onClick={() => {setSelectedScreen("allgroups")
+
+    setSelectedUser(null)
+  }}
   className={`
     w-full p-3 sm:p-6 flex items-center ""
-    
     hover:bg-base-300 transition-colors
-    ${selectedScreen === "settings" ? "bg-base-300 ring-1 ring-base-300" : ""}
+    ${selectedScreen === "allgroups" ? "bg-base-300 ring-1 ring-base-300" : ""}
     tooltip
   `}
-  data-tip="Settings"
+  data-tip="Find friends"
 >
-<div className="relative mx-auto ">
+<div className="relative mx-auto">
     {/* <img
       src={user.profilePic || "/avatar.png"}
       alt={user.name}
       className="size-12 object-cover rounded-full"
     /> */}
-    <Settings size={32} />
+    <Users size={32} />
 </div> 
 
   {/* User info - only visible on larger screens */}
   <div className="hidden lg:block text-left min-w-0">
-    {/* <div className="font-medium truncate">Settings</div> */}
+    {/* <div className="font-medium truncate">Find Friends</div> */}
   </div>
 </button>
-        
-</Link>
+
+
+
+
 
       </div>
   

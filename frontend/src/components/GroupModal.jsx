@@ -41,7 +41,7 @@ export default function GroupModal() {
 
   return (
     <dialog id="createGroupModal" className="modal p-0">
-      <div className="modal-box p-6 w-[500px] shadow-lg rounded-lg flex flex-col gap-6">
+      <div className="modal-box p-6 w-[100%] md:w-[500px] shadow-lg rounded-lg flex flex-col gap-6">
         {/* Close Button */}
         <div className="modal-action relative m-0  ">
       <form method="dialog">

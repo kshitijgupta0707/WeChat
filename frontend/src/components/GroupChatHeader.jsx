@@ -7,22 +7,22 @@ import { useEffect, useState } from "react";
 
 
 const GroupChatHeader = () => {
-    const {selectedGroup, selectGroup} = useGroupStore()
-      const { selectedUser, setSelectedUser } = useChatStore();
-  const { authUser, onlineUsers , socket } = useAuthStore();
-  const [members , setMembers] = useState("");
-useEffect(()=>{
-  
-     
-        let mem = ""
-        for(let i = 0 ; i < selectedGroup.members.length ; i++){
-           mem += selectedGroup.members[i].firstName + " ";
-        }
+  const { selectedGroup, setSelectedGroupAsNull} = useGroupStore()
+  const { selectedUser, setSelectedUser } = useChatStore();
+  const { authUser, onlineUsers, socket } = useAuthStore();
+  const [members, setMembers] = useState("");
+  useEffect(() => {
 
-        setMembers(mem);
-        console.log(members);
 
-},[selectedGroup])
+    let mem = ""
+    for (let i = 0; i < selectedGroup.members.length; i++) {
+      mem += selectedGroup.members[i].firstName + " ";
+    }
+
+    setMembers(mem);
+    console.log(members);
+
+  }, [selectedGroup])
   return (
     <div className="p-2.5 border-b border-base-300">
       <div className="flex items-center justify-between">
@@ -39,25 +39,28 @@ useEffect(()=>{
           {/* User info */}
           <div>
             <h3 className="font-medium">{
-         
-            selectedGroup.name}</h3>
-            <h6 className=" font-light text-sm">{
-               members.trim()
-              }</h6>
 
-          
+              selectedGroup.name}</h3>
+            <h6 className=" font-light text-sm">{
+              members.trim()
+            }</h6>
+
+
           </div>
         </div>
         {/* Close button */}
         <div className="flex justify-center items-center" >
 
-        {/* <VideoChat socket={socket} 
+          {/* <VideoChat socket={socket} 
               userId={authUser._id}
               receiverId={selectedGroup._id} 
         />  */}
-        <button onClick={() => selectGroup(null)}>
-          <X />
-        </button>
+          <button onClick={() => {
+            console.log("selected group is becomiing null")
+            setSelectedGroupAsNull()
+          }}>
+            <X />
+          </button>
         </div>
       </div>
     </div>
