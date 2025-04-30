@@ -20,7 +20,7 @@ function extremeSideBar() {
 
   const { isVisible, setIsVisible, message, showNotification } = useNotification()
   return (
-    <aside className={`h-full  w-[6rem]   items-center border-r border-base-300 flex flex-col transition-all duration-200 overflow-x-hidden`}>
+    <aside className={`h-full  w-[8rem]   items-center border-r border-base-300 flex flex-col transition-all duration-200 overflow-x-hidden overflow-y-hidden`}>
 
 
       <Drawer />

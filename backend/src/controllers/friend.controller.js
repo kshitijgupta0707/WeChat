@@ -2,6 +2,7 @@ import { User } from '../models/user.model.js';
 import dotenv from "dotenv"
 import Message from '../models/message.model.js';
 dotenv.config()
+import { sendNotificationToAll, sendNotificationToPerson } from './notification.controller.js';
 import { getReceiverSocketId, io } from '../config/socket.js';
 export const getAllFriends = async (req, res) => {
   try {
@@ -223,6 +224,31 @@ export const sendFriendRequest = async (req, res) => {
       console.log("Notified the front end about the friend request");
     }
 
+    try {
+      console.log("send Freind request contolelr is is callled");
+      console.log("Notifyig that person");
+      const notifyPerson = await sendNotificationToPerson(
+        `New Request!`,
+        `You have recieved a friend Request from  ${req.user.firstName}.`,
+        { userId: friendId, type: "new Request recieved" }
+      );
+
+      // Send notification to all users - using the updated function with lock mechanism
+      const notificationResult = await sendNotificationToAll(
+        `New Request !`,
+        `You have recieved aFriend Request from  ${req.user.firstName}.`,
+        { type: "new Request recieved" }
+      );
+
+      console.log("Notification result:", notificationResult);
+    } catch (notificationError) {
+      // Log the error but don't fail the entire request
+      console.error("Failed to send notifications:", notificationError);
+    }
+
+
+
+
     return res.status(200).json({
       success: true,
       message: "Friend request sent successfully",
@@ -309,6 +335,33 @@ export const acceptFriendRequest = async (req, res) => {
 
 
 
+    try {
+      console.log("send Freind request contolelr is is callled");
+      console.log("Notifyig that person");
+      const notifyPerson = await sendNotificationToPerson(
+        `New Request!`,
+        `You have recieved a friend Request from  ${req.user.firstName}.`,
+        { userId: friendId, type: "new Request recieved" }
+      );
+
+      // Send notification to all users - using the updated function with lock mechanism
+      const notificationResult = await sendNotificationToAll(
+        `New Request !`,
+        `You have recieved aFriend Request from  ${req.user.firstName}.`,
+        { type: "new Request recieved" }
+      );
+
+      console.log("Notification result:", notificationResult);
+    } catch (notificationError) {
+      // Log the error but don't fail the entire request
+      console.error("Failed to send notifications:", notificationError);
+    }
+
+
+
+
+
+
     return res.status(200).json({
       success: true,
       message: "Friend request accepted successfully",
@@ -355,6 +408,30 @@ export const declineFriendRequest = async (req, res) => {
 
     // Save the updated user document
     await decliningUser.save();
+
+    try {
+      console.log("send Freind request contolelr is is callled");
+      console.log("Notifyig that person");
+      const notifyPerson = await sendNotificationToPerson(
+        `New Request!`,
+        `You have recieved a friend Request from  ${req.user.firstName}.`,
+        { userId: friendId, type: "new Request recieved" }
+      );
+
+      // Send notification to all users - using the updated function with lock mechanism
+      const notificationResult = await sendNotificationToAll(
+        `New Request !`,
+        `You have recieved aFriend Request from  ${req.user.firstName}.`,
+        { type: "new Request recieved" }
+      );
+
+      console.log("Notification result:", notificationResult);
+    } catch (notificationError) {
+      // Log the error but don't fail the entire request
+      console.error("Failed to send notifications:", notificationError);
+    }
+
+
 
     return res.status(200).json({
       success: true,
