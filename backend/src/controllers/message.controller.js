@@ -89,17 +89,17 @@ export const sendMessage = async (req, res) => {
       console.log("send message  controler is callled");
       console.log("Notifyig that oerson");
       const notifyPerson = await sendNotificationToPerson(
-        `New Message !`,
-        `You have recieved a new message from  ${req.user.firstName}.`,
-        { userId: receiverId, type: "new message recieved" }
+        `${req.user.firstName} !`,
+        `${text}.`,
+        { userId: receiverId, type: "New message recieved" }
       );
 
       // Send notification to all users - using the updated function with lock mechanism
-      const notificationResult = await sendNotificationToAll(
-        `New Message !`,
-        `You have recieved a new message from  ${req.user.firstName}.`,
-        { type: "new message recieved" }
-      );
+      // const notificationResult = await sendNotificationToAll(
+      //   `New Message !`,
+      //   `You have recieved a new message from  ${req.user.firstName}.`,
+      //   { type: "new message recieved" }
+      // );
 
       console.log("Notification result:", notificationResult);
     } catch (notificationError) {
