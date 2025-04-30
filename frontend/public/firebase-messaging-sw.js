@@ -20,8 +20,8 @@
 
         const notificationOptions = {
             body: body,
-            icon: '/logoo.png', // your app icon,
-            badge: '/logoo.png',
+            icon: '/zolo.png', // your app icon,
+            badge: '/zolo.png',
             data: {
                 url: payload.data?.route || '/', // link to open on click
             },
