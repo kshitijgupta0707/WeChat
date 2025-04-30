@@ -49,7 +49,7 @@ const App = () => {
 
 
   return (
-    <div data-theme={theme} className="flex flex-col  self-center content-center m-auto"  >
+    <div data-theme={theme} className=" flex flex-col  self-center content-center "  >
       <OfflineNotificationSetup/>
       <Navbar />  
       {isVisible && (

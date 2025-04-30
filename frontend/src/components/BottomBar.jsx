@@ -23,7 +23,7 @@ function BottomBar() {
     <aside className={`h-full  w-[0px]   items-center border-r border-base-300 flex flex-col transition-all duration-200 overflow-x-hidden `}>
       <Drawer />
 
-      <div className=' flex fixed bottom-0 items-center left-1/2 -translate-x-1/2 gap-3 sm:gap-7 bg-base-300 w-full px-7 z-50' >
+      <div className=' flex fixed bottom-0 items-center left-1/2 -translate-x-1/2 gap-3 sm:gap-7 bg-base-300 w-full px-7 z-40' >
 
 
         <button

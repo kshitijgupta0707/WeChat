@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageCircle, UserPlus, Users, Settings, UserRoundPen, LogOut } from "lucide-react";
+import { MessageCircle,UserSearch, UserPlus, Users, Settings, UserRoundPen, LogOut, UsersRound } from "lucide-react";
 import { useSideBarStore } from '../store/useSideBarStore';
 
 function Drawer() {
@@ -20,6 +20,7 @@ function Drawer() {
 
   return (
     <div className="drawer z-50 ">
+      <div className='w-full h-full bg-white' ></div>
       <input id="my-drawer" type="checkbox" className="drawer-toggle" checked={showSideBar} readOnly />
       <div className="drawer-side">
         <label 
@@ -28,7 +29,11 @@ function Drawer() {
           className="drawer-overlay" 
           onClick={closeSideBar}
         ></label>
-        <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4 text-center flex flex-col">
+          <div className=' w-screen h-screen  backdrop-blur-sm  fixed' onClick={closeSideBar} >
+jljn
+
+          </div>
+        <ul className="menu bg-base-200 text-base-content min-h-full   w-56 lg:w-80 p-4 text-center flex flex-col">
           {/* Sidebar content here */}
          
           <li>
@@ -75,7 +80,7 @@ function Drawer() {
               `}
             >
               <div className="relative  lg:mx-0">
-                <Users />
+                <UserSearch />
               </div>
               <div className=" lg:block text-left min-w-0">
                 <div className="font-medium truncate">Find Friends</div>
@@ -102,7 +107,7 @@ function Drawer() {
           <li>
           
             <button
-              onClick={() => handleScreenChange("groupchats")}
+              onClick={() => handleScreenChange("allgroup")}
               className={`
                 w-full p-3 flex items-center gap-3
                 hover:bg-base-300 transition-colors
@@ -110,7 +115,7 @@ function Drawer() {
               `}
             >
               <div className="relative  lg:mx-0">
-                <Settings />
+                <UsersRound />
               </div>
               <div className=" lg:block text-left min-w-0">
                 <div className="font-medium truncate">Group chats</div>

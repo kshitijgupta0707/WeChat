@@ -146,4 +146,21 @@ export const useAuthStore = create((set, get) => ({
   disconnectSocket: () => {
     if (get().socket?.connected) get().socket.disconnect();
   },
+  loginwithOAuth: async (data) => {
+    
+    set({ isLoggingIn: true });
+    try {
+      console.log(data);
+      const res = await axiosInstance.post("/auth/loginwithOAuth", data);
+      set({ authUser: res.data.responseUser });
+
+      toast.success("Logged in successfully ");
+      get().connectSocket();
+      console.log("connected to the socket")
+    } catch (error) {
+      toast.error(error.response.data.message);
+    } finally {
+      set({ isLoggingIn: false });
+    }
+  },
 }));

@@ -10,7 +10,13 @@ import { useChatStore } from '../store/useChatStore';
 import { useNotification } from '../store/useNotification';
 import Lottie from "react-lottie"
 import { HiUserGroup } from "react-icons/hi";
-
+import {
+  Mail,
+  UserSearch,
+  BrainCircuit,
+  UserCheck,
+  UsersRound,
+} from "lucide-react";
 function extremeSideBar() {
 
 
@@ -20,11 +26,11 @@ function extremeSideBar() {
 
   const { isVisible, setIsVisible, message, showNotification } = useNotification()
   return (
-    <aside className={`h-full  w-[8rem]   items-center border-r border-base-300 flex flex-col transition-all duration-200 overflow-x-hidden overflow-y-hidden`}>
+    <aside className={`h-full  w-[6rem]  border-r border-base-300 flex flex-col   transition-all duration-200 overflow-x-hidden overflow-y-hidden`}>
 
 
       <Drawer />
-      <div className="overflow-y-auto w-full h-full py-3 pt-0 flex flex-col   justify-between   ">
+      <div className="overflow-y-auto w-full h-full  pt-0 flex flex-col   justify-between   ">
 
         <div className='' >
 
@@ -79,13 +85,42 @@ function extremeSideBar() {
             data-tip="group"
           >
             <div className="relative mx-auto p-0 m-0  ">
-              <HiUserGroup size={28} />
+              <UsersRound size={32} />
+
 
             </div>
 
           </button>
 
+          <button
+            //   key={user._id}
+            onClick={() => {
+              setSelectedScreen("chatWithAi")
+              setSelectedUser(null)
+            }}
+            className={`
+            w-full  sm:p-6 flex items-center justify-center m-auto
+            hover:bg-base-300 transition-colors
+            ${selectedScreen === "chatWithAi" ? "bg-base-300 ring-1 ring-base-300" : ""}
+            tooltip
+          `}
+            data-tip="Chat with AI"
+          >
+            <div className="relative mx-auto ">
 
+              <Circle className='w-8 h-8 animate-ping focus:animate-none absolute  text-primary' />
+              <Circle className='w-8 h-8 text-primary' />
+
+
+              {/* <Lottie options={defaultOptions} height={60} width={60} /> */}
+              {/* <img src="./chatbot.png" className='  rounded-full'  /> */}
+            </div>
+
+            {/* User info - only visible on larger screens */}
+            <div className="hidden lg:block text-left min-w-0">
+              {/* <div className="font-medium truncate">Find Friends</div> */}
+            </div>
+          </button>
 
           <button
             //   key={user._id}
@@ -108,7 +143,7 @@ function extremeSideBar() {
               alt={user.name}
               className="size-12 object-cover rounded-full"
             /> */}
-              <Users size={32} />
+              <UserSearch size={32} />
             </div>
 
             {/* User info - only visible on larger screens */}
@@ -116,35 +151,7 @@ function extremeSideBar() {
               {/* <div className="font-medium truncate">Find Friends</div> */}
             </div>
           </button>
-          <button
-            //   key={user._id}
-            onClick={() => {
-              setSelectedScreen("chatWithAi")
-              setSelectedUser(null)
-            }}
-            className={`
-            w-full  sm:p-6 flex items-center justify-center m-auto
-            hover:bg-base-300 transition-colors
-            ${selectedScreen === "chatWithAi" ? "bg-base-300 ring-1 ring-base-300" : ""}
-            tooltip
-          `}
-            data-tip="Chat with AI"
-          >
-            <div className="relative mx-auto ">
 
-              <Circle className='w-8 h-8 animate-ping focus:animate-none absolute  text-cyan-200' />
-              <Circle className='w-8 h-8    text-cyan-200' />
-
-
-              {/* <Lottie options={defaultOptions} height={60} width={60} /> */}
-              {/* <img src="./chatbot.png" className='  rounded-full'  /> */}
-            </div>
-
-            {/* User info - only visible on larger screens */}
-            <div className="hidden lg:block text-left min-w-0">
-              {/* <div className="font-medium truncate">Find Friends</div> */}
-            </div>
-          </button>
 
 
           <button
@@ -179,71 +186,8 @@ function extremeSideBar() {
 
 
 
-          <Link to="/profile" >
-            <button
-              //   key={user._id}
-              onClick={() => {
-                //yeh bs isliye kiya hain kyuki routeing se tum chlegye but home mein kuch ni khulega
-                setSelectedScreen("profile")
-                setSelectedUser(null)
-              }}
-              className={`
-            w-full p-3 sm:p-6 flex items-center ""
-            hover:bg-base-300 transition-colors
-            ${selectedScreen === "profile" ? "bg-base-300 ring-1 ring-base-300" : ""}
 
-            tooltip 
-           
-          `}
-              data-tip="Profile"
-            >
-              <div className="relative mx-auto ">
-                {/* <img
-              src={user.profilePic || "/avatar.png"}
-              alt={user.name}
-              className="size-12 object-cover rounded-full"
-            /> */}
-                <UserRoundPen size={32} />
-              </div>
 
-              {/* User info - only visible on larger screens */}
-              <div className="hidden lg:block text-left min-w-0">
-                {/* <div className="font-medium truncate">Profile</div> */}
-              </div>
-            </button>
-          </Link>
-
-          <Link to="/settings">
-            <button
-              //   key={user._id}
-              onClick={() => {
-                setSelectedScreen("settings")
-                setSelectedUser("")
-              }}
-              className={`
-            w-full p-3 sm:p-6 flex items-center ""
-            hover:bg-base-300 transition-colors
-            ${selectedScreen === "settings" ? "bg-base-300 ring-1 ring-base-300" : ""}
-            tooltip
-          `}
-              data-tip="Settings"
-            >
-              <div className="relative mx-auto ">
-                {/* <img
-              src={user.profilePic || "/avatar.png"}
-              alt={user.name}
-              className="size-12 object-cover rounded-full"
-            /> */}
-                <Settings size={32} />
-              </div>
-
-              {/* User info - only visible on larger screens */}
-              <div className="hidden lg:block text-left min-w-0">
-                {/* <div className="font-medium truncate">Settings</div> */}
-              </div>
-            </button>
-
-          </Link>
 
         </div>
 

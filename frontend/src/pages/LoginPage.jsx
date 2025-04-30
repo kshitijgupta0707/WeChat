@@ -4,6 +4,7 @@ import AuthImagePattern from "../components/AuthImagePattern";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare } from "lucide-react";
 import toast from "react-hot-toast";
+import { SignInWithGoogle } from "../components/SignInWithGoogle";
 
 const LoginPage = () => {
   const navigate = useNavigate()
@@ -32,10 +33,10 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="h-screen grid lg:grid-cols-2">
+    <div className=" h-screen  sm:h-auto grid lg:grid-cols-2 mt-6">
 
       {/* Left Side - Form */}
-      <div className="flex flex-col justify-center items-center p-6 sm:p-12">
+      <div className="flex flex-col  justify-center items-center p-6 sm:p-16">
         <div className="w-full max-w-md space-y-8">
           {/* Logo */}
           <div className="text-center mb-8">
@@ -110,7 +111,7 @@ const LoginPage = () => {
                 "Login"
               )}
             </button>
-            <button
+            {/* <button
               onClick={() => {
                 window.location.href = `${import.meta.env.VITE_SITE_URL}/auth/google`;
               }}
@@ -119,9 +120,13 @@ const LoginPage = () => {
             >
               <img className="w-5" src="./google.png" alt="google" />
               Login with Google
-            </button>
+            </button> */}
 
           </form>
+          <div className="w-full" >
+          <SignInWithGoogle />
+
+          </div>
 
           <div className="text-center">
             <p className="text-base-content/60">
