@@ -1,6 +1,8 @@
 import React from 'react';
 import { MessageCircle,UserSearch, UserPlus, Users, Settings, UserRoundPen, LogOut, UsersRound } from "lucide-react";
 import { useSideBarStore } from '../store/useSideBarStore';
+import { Link, useActionData } from 'react-router-dom';
+import { useAuthStore } from '../store/useAuthStore';
 
 function Drawer() {
   const { 
@@ -11,6 +13,7 @@ function Drawer() {
     selectedScreen, 
     setSelectedScreen 
   } = useSideBarStore();
+  const {logout} = useAuthStore();
 
   const handleScreenChange = (screen) => {
     setSelectedScreen(screen); // Update the selected screen
@@ -30,8 +33,6 @@ function Drawer() {
           onClick={closeSideBar}
         ></label>
           <div className=' w-screen h-screen  backdrop-blur-sm  fixed' onClick={closeSideBar} >
-jljn
-
           </div>
         <ul className="menu bg-base-200 text-base-content min-h-full   w-56 lg:w-80 p-4 text-center flex flex-col">
           {/* Sidebar content here */}
@@ -87,9 +88,10 @@ jljn
               </div>
             </button>
           </li>
+            <Link to={'/settings'} >
           <li>
             <button
-              onClick={() => handleScreenChange("settings")}
+              // onClick={() => handleScreenChange("settings")}
               className={`
                 w-full p-3 flex items-center gap-3
                 hover:bg-base-300 transition-colors
@@ -104,15 +106,16 @@ jljn
               </div>
             </button>
           </li>
+            </Link>
           <li>
           
             <button
-              onClick={() => handleScreenChange("allgroup")}
+              onClick={() => handleScreenChange("allgroups")}
               className={`
                 w-full p-3 flex items-center gap-3
                 hover:bg-base-300 transition-colors
                 ${selectedScreen === "settings" ? "bg-base-300 ring-1 ring-base-300" : ""}
-              `}
+                `}
             >
               <div className="relative  lg:mx-0">
                 <UsersRound />
@@ -122,6 +125,7 @@ jljn
               </div>
             </button>
           </li>
+            <Link to={'/profile'} >
           <li>
             <button
               onClick={() => handleScreenChange("profile")}
@@ -129,7 +133,7 @@ jljn
                 w-full p-3 flex items-center gap-3
                 hover:bg-base-300 transition-colors
                 ${selectedScreen === "profile" ? "bg-base-300 ring-1 ring-base-300" : ""}
-              `}
+                `}
             >
               <div className="relative  lg:mx-0">
                 <UserRoundPen />
@@ -139,9 +143,10 @@ jljn
               </div>
             </button>
           </li>
+            </Link>
           <li className='  items-end justify-end content-end   ' >
             <button
-              onClick={() => handleScreenChange("logout")}
+              onClick={logout}
               className={`
                 w-full p-3 flex items-center gap-3
                 hover:bg-base-300 transition-colors
