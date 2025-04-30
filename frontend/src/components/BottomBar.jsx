@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { MessageCircle, Circle, MessageSquare, UserPlus, Users, Settings, UserRoundPen, LogOut, ChevronsRight, ChevronRight } from "lucide-react"
 import Drawer from './Drawer';
+import {
+  Mail,
+  UserSearch,
+  BrainCircuit,
+  UserCheck,
+  UsersRound,
+} from "lucide-react";
+
 import { useSideBarStore } from '../store/useSideBarStore';
 import { Link } from 'react-router-dom';
 import { useChatStore } from '../store/useChatStore';
@@ -58,7 +66,8 @@ function BottomBar() {
       alt={user.name}
       className="size-12 object-cover rounded-full"
     /> */}
-            <Users size={32} />
+            {/* <Users size={32} /> */}
+            <UserSearch size={32} />
           </div>
 
           {/* User info - only visible on larger screens */}
@@ -127,6 +136,8 @@ function BottomBar() {
       className="size-12 object-cover rounded-full"
     /> */}
             <UserPlus size={32} />
+            {/* <UserCheck size={32} /> */}
+
           </div>
 
           {/* User info - only visible on larger screens */}
@@ -157,7 +168,10 @@ function BottomBar() {
       alt={user.name}
       className="size-12 object-cover rounded-full"
     /> */}
-            <Users size={32} />
+            {/* <Users size={32} /> */}
+            {/*  */}
+            <UsersRound size={32} />
+
           </div>
 
           {/* User info - only visible on larger screens */}
