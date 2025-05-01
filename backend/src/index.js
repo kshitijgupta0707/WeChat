@@ -13,7 +13,7 @@ import { connectCloudinary } from '../src/config/cloudinary.js'
 import fileUpload from "express-fileupload";
 import cors from "cors";
 import path from "path"
-import { deleteMessages } from './seeds/deleteAllMessages.js'
+// import { deleteMessages } from './seeds/deleteAllMessages.js'
 import { seedDatabase } from './seeds/user.seeds.js'
 import { app , server } from './config/socket.js'
 import groupRoute from "./routes/group.route.js"

@@ -148,7 +148,6 @@ export const getAllFriendRequests = async (req, res) => {
         message: "User not found",
       });
     }
-    // console.log("fetched User is",fetchedUser)
 
     return res.status(200).json({
       success: true,
@@ -216,17 +215,10 @@ export const sendFriendRequest = async (req, res) => {
 
     // Send in real-time if the user is online
     if (receiverSocketId) {
-      console.log("this is what I am sending to the client:");
-      console.log(updatedUser.friendRequests);
-      console.log("printing from backend");
-      console.log(req.user.firstName);
       io.to(receiverSocketId).emit("newFriendRequest", { friendRequests: updatedUser.friendRequests, name: req.user.firstName });
-      console.log("Notified the front end about the friend request");
     }
 
     try {
-      console.log("send Freind request contolelr is is callled");
-      console.log("Notifyig that person");
       const notifyPerson = await sendNotificationToPerson(
         `New Request!`,
         `You have recieved a friend Request from  ${req.user.firstName}.`,
@@ -238,9 +230,6 @@ export const sendFriendRequest = async (req, res) => {
       // Log the error but don't fail the entire request
       console.error("Failed to send notifications:", notificationError);
     }
-
-
-
 
     return res.status(200).json({
       success: true,

@@ -10,10 +10,8 @@ import { sendNotificationToAll, sendNotificationToPerson } from "./notification.
 //fetch all th user except yourself for the side bar 
 export const getUsersForSidebar = async (req, res) => {
   try {
-    console.log("Backend : GetUsersForSidebar function called")
     const loggedInUserId = req.user._id;
     const filteredUsers = await User.find({ _id: { $ne: loggedInUserId } }).select("-password");
-
     res.status(200).json(filteredUsers);
   } catch (error) {
     console.error("Error in getUsersForSidebar: ", error.message);
@@ -26,7 +24,6 @@ export const getMessages = async (req, res) => {
     //fetching the id jinke message chiye and renaming it
     const { id: userToChatId } = req.params;
     const myId = req.user._id;
-
 
     //fetching all the message where either (sender id is mine and reciever id is his) || (reciever id is mine and sendeer id is his)
     const messages = await Message.find({
@@ -44,12 +41,10 @@ export const getMessages = async (req, res) => {
 };
 export const sendMessage = async (req, res) => {
   try {
-    console.log("i am at sendMessge controller in backend")
     const { text, image } = req.body;
     const { id: receiverId } = req.params;
-
     const senderId = req.user._id;
-    console.log("Sender name is ", req.user.firstName)
+
     let imageUrl;
     if (image) {
       // Upload base64 image to cloudinary
@@ -64,14 +59,9 @@ export const sendMessage = async (req, res) => {
       image: imageUrl,
     });
 
-    console.log(newMessage);
-
     await newMessage.save();
 
     // real time functionality goes here we will do it afterwards
-
-
-
 
 
     const receiverSocketId = getReceiverSocketId(receiverId);
@@ -82,26 +72,15 @@ export const sendMessage = async (req, res) => {
 
       //only send to particular client
       io.to(receiverSocketId).emit("newMessage", { message: newMessage, name: req.user.firstName });
-      console.log("Notified to front end ")
     }
 
     try {
-      console.log("send message  controler is callled");
-      console.log("Notifyig that oerson");
       const notifyPerson = await sendNotificationToPerson(
         `${req.user.firstName} !`,
         `${text}.`,
         { userId: receiverId, type: "New message recieved" }
       );
-
-      // Send notification to all users - using the updated function with lock mechanism
-      // const notificationResult = await sendNotificationToAll(
-      //   `New Message !`,
-      //   `You have recieved a new message from  ${req.user.firstName}.`,
-      //   { type: "new message recieved" }
-      // );
-
-      console.log("Notification result:", notificationResult);
+      console.log("Notification result:", notifyPerson);
     } catch (notificationError) {
       // Log the error but don't fail the entire request
       console.error("Failed to send notifications:", notificationError);

@@ -28,14 +28,17 @@ router.post("/create", protectRoute, async (req, res) => {
     const populatedGroup = await Group.findById(newGroup._id).populate("members", "firstName lastName profilePic email");
 
 
+    console.log("members are ", members)
+
 
     for (let i = 0; i < members.length; i++) {
-      if (String(members[i]._id) !== String(admin)) {
+      if (String(members[i]) !== String(admin)) {
         try {
+          console.log("sending notification")
           const notifyPerson = await sendNotificationToPerson(
             `${req.user.firstName} add you in ${name} group!`,
             `Starting zolo with each other`,
-            { userId: members[i]._id, type: "New Group Created" }
+            { userId: members[i], type: "New Group Created" }
           );
           console.log("Notification result:", notifyPerson);
         } catch (notificationError) {
@@ -79,10 +82,11 @@ router.post("/message/send", protectRoute, async (req, res) => {
     const members = g?.members
 
     for (let i = 0; i < members.length; i++) {
+      console.log("Members id" , members[i]._id)
       if (String(members[i]._id) !== String(senderId)) {
         try {
           const notifyPerson = await sendNotificationToPerson(
-            `${req.user.firstName} in group!`,
+            `${req.user.firstName} in ${g.name} group!`,
             `${text}`,
             { userId: members[i]._id, type: "New message received" }
           );
