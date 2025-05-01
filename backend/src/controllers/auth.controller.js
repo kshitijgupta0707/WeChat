@@ -340,10 +340,13 @@ export const loginwithOAuth = async (req, res) => {
 
     console.log("Login with o auth called");
     let { email, name } = req.body;
+    console.log(email, name)
+    console.log(req.body);
 
     name = name.split(' ');
     let firstName = name[0]
     let lastName = name[1]
+    console.log('firstName = ', firstName, " last name = ", lastName)
 
     // Check if both fields are provided
     if (!email) {
@@ -353,10 +356,15 @@ export const loginwithOAuth = async (req, res) => {
 
     // Find user by email
     let user = await User.findOne({ email });
+    console.log(user)
     if (!user) {
-      user = User.create({ email, firstName, lastName })
+      console.log("andar ghusa")
+      console.log(user)
+      user = await User.create({ email, firstName, lastName })
     }
 
+    console.log(user)
+    console.log("***********************************")
 
     const payload = {
       id: user._id,

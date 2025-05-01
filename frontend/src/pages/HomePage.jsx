@@ -1,5 +1,4 @@
 import { useChatStore } from "../store/useChatStore";
-
 import Sidebar from "../components/Sidebar";
 import NoChatSelected from "../components/NoChatSelected";
 import AIChat from "../components/AIChat";
@@ -9,7 +8,7 @@ import { useAuthStore } from "../store/useAuthStore";
 import ExtremeSideBar from "../components/ExtremeSideBar";
 import BottomBar from "../components/BottomBar";
 import FriendRequests from "../components/FriendRequests"
-// import FindFriends from "../components/FindFriends";
+// import FindFriends from "../components/FindFriends`";
 import FindFriends from "../components/FindFriends";
 import { useSideBarStore } from "../store/useSideBarStore";
 import { useFriendStore } from "../store/useFriendStore";

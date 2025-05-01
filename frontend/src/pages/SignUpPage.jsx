@@ -45,10 +45,10 @@ const SignUpPage = () => {
 
   return (
 
-    <div className="min-h-screen grid lg:grid-cols-2  text-fuchsia-50">
+    <div className="min-h-screen  grid lg:grid-cols-2  text-fuchsia-50">
 
       {/* left side */}
-      <div className="flex flex-col justify-center items-center p-6 sm:p-12">
+      <div className="flex flex-col justify-center items-center p-6 sm:p-12 mt-12">
         <div className="w-full max-w-md space-y-8">
           {/* LOGO */}
 
@@ -208,7 +208,7 @@ const SignUpPage = () => {
             </button> */}
           </form>
 
-            <SignInWithGoogle name="Login With Google" />
+            <SignInWithGoogle name="Sign up Using Google" />
 
           <div className="text-center">
             <p className="text-base-content/60">

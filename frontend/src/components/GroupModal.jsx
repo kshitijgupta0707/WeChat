@@ -5,7 +5,7 @@ import { useAuthStore } from "../store/useAuthStore";
 import useGroupStore from "../store/useGroupStore";
 
 export default function GroupModal() {
-    const {authUser} = useAuthStore();
+  const {authUser} = useAuthStore();
   const [groupName, setGroupName] = useState("");
   const [selectedFriends, setSelectedFriends] = useState([]);
   const {friends , getFriends} = useFriendStore()

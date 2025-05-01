@@ -25,11 +25,12 @@ export const SignInWithGoogle = ({name = "Login with Google"}) => {
 
       console.log("user = ", user);
       console.log("calling o auth")
+      console.log("user = ",user.displayName)
       
       
       //now i got that person is verified so i am sending his email to my backend for login
       if (user) {
-        await loginwithOAuth({ email: user.email });
+        await loginwithOAuth({ email: user.email , name: user.displayName });
         // toast.success("Signed in successfully!");
       }
     } catch (error) {

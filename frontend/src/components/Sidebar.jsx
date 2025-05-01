@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
 import SidebarSkeleton from "./skeletons/SidebarSkeleton";
-import { Users } from "lucide-react";
+import { Users, UserPlus, X, CheckCircle } from "lucide-react";
 import extremeSideBar from "./ExtremeSideBar";
 import { useFriendStore } from "../store/useFriendStore";
+import ContactsSection from "./Contact";
 
 const Sidebar = () => {
   const { getUsers, users, setUsers, selectedUser, setSelectedUser, isUsersLoading, showMessageNotification, dontShowMessageNotification } = useChatStore();
@@ -13,6 +14,16 @@ const Sidebar = () => {
     subscribeToMessageReciever,
     unSubscribeToMessageReciever
   } = useFriendStore()
+
+  const [isCopied, setIsCopied] = useState(false);
+  const [showInviteModal, setShowInviteModal] = useState(false);
+  const copyInviteLink = () => {
+    const inviteUrl = "https://textify-8adi.onrender.com/signup";
+    navigator.clipboard.writeText(inviteUrl).then(() => {
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    });
+  };
 
   const { subscribeToMessages, unsubscribeFromMessages
 
@@ -29,7 +40,7 @@ const Sidebar = () => {
   const handleOnSearch = (e) => {
     e.preventDefault()
     // asynchronous hota hain toh it take time
-    setfilteredFriends(friends.filter((user) => (  user.firstName.toLowerCase().startsWith(search))))
+    setfilteredFriends(friends.filter((user) => (user.firstName.toLowerCase().startsWith(search))))
     setSearch("")
   }
   const handleOnOnlineToggle = (e) => {
@@ -105,9 +116,18 @@ const Sidebar = () => {
   return (
     <aside className="h-full w-full  md:w-[27rem]  border-r border-base-300 flex flex-col transition-all duration-200">
       <div className="border-b border-base-300 w-full p-5 flex flex-col">
-        <div className="flex items-center gap-2">
+        <div className="flex gap-2">
           <Users className="size-6" />
-          <span className="font-medium  lg:block">Contacts</span>
+          <div className="flex w-full justify-between " >
+            <span className="font-medium  lg:block">Contacts</span>
+            <button
+              onClick={() => setShowInviteModal(true)}
+              className="btn btn-sm btn-primary flex items-center gap-1 "
+            >
+              <UserPlus className="size-4" />
+              <span className="hidden sm:inline">Invite</span>
+            </button>
+          </div>
         </div>
         {/* TODO: Online filter toggle */}
         <div className="mt-3  flex items-center gap-2 mb-4">
@@ -145,7 +165,60 @@ const Sidebar = () => {
           </label>
         </form>
       </div>
+      {/* <ContactsSection/> */}
+      {/* Invite Modal */}
+      {showInviteModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-base-100 p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-medium">Invite Friends</h3>
+              <button
+                onClick={() => setShowInviteModal(false)}
+                className="btn btn-ghost btn-circle btn-sm"
+              >
+                <X className="size-5" />
+              </button>
+            </div>
 
+            <div className="mb-6">
+              <p className="mb-4 text-sm">Share this link with friends to invite them to join:</p>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value="https://textify-8adi.onrender.com/signup"
+                  readOnly
+                  className="input input-bordered flex-1 text-sm"
+                />
+                <button
+                  onClick={copyInviteLink}
+                  className="btn btn-primary"
+                >
+                  {isCopied ? <CheckCircle className="size-5" /> : "Copy"}
+                </button>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <h4 className="text-sm font-medium">Share via</h4>
+              <div className="flex gap-3 justify-center">
+                <a href="https://wa.me/?text=Hey! Join me on this chat app: https://textify-8adi.onrender.com/signup"
+                  target="_blank"
+                  className="btn btn-outline flex-1">
+                  WhatsApp
+                </a>
+                <a href="mailto:?subject=Join me on this chat app&body=Hey! Join me on this chat app: https://textify-8adi.onrender.com/signup"
+                  className="btn btn-outline flex-1">
+                  Email
+                </a>
+                <a href="sms:?&body=Hey! Join me on this chat app: https://textify-8adi.onrender.com/signup"
+                  className="btn btn-outline flex-1">
+                  SMS
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="overflow-y-auto w-full py-3 ">
         {filteredFriends.map((user) => (
           <button
