@@ -267,7 +267,7 @@ export const login = async (req, res) => {
     })
   }
 };
-export const logout = async(req, res) => {
+export const logout = async (req, res) => {
   //we have to just clear out the cookies
   try {
     res.cookie("token", "", { maxAge: 0 }); //expire immediattely get removed by maxage , erased by " "
@@ -339,24 +339,23 @@ export const loginwithOAuth = async (req, res) => {
   try {
 
     console.log("Login with o auth called");
-    const { email } = req.body;
+    let { email, name } = req.body;
 
-    console.log("this is hte meail id i got")
-    console.log("email id" , email)
+    name = name.split(' ');
+    let firstName = name[0]
+    let lastName = name[1]
 
     // Check if both fields are provided
     if (!email) {
       return res.status(400).json({ success: false, message: "Email required" });
+
     }
 
     // Find user by email
-    const user = await User.findOne({ email });
+    let user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({ success: false, message: "Please Sign up normally first" });
+      user = User.create({ email, firstName, lastName })
     }
-
-
-
 
 
     const payload = {
